@@ -17,7 +17,7 @@ import ImportDataSetBtn from "@/components/ImportDataSetBtn.vue";
 import ViewExampleDataSetBtn from "@/components/ViewExampleDataSetBtn.vue";
 
 export default {
-  name: "Home",
+  name: "Landing",
   components: {
     ImportDataSetBtn,
     ViewExampleDataSetBtn,
@@ -39,10 +39,11 @@ export default {
   font-family: "Roboto", sans-serif;
   font-size: 43px;
   margin-bottom: 1rem;
+  letter-spacing: 0.05em;
 }
 
 .introduction {
   color: rgb(95, 95, 95);
-  margin: 20px 0;
+  margin: 16px 0 20px 0;
 }
 </style>

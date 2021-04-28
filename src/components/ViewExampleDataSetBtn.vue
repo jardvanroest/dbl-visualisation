@@ -16,7 +16,7 @@ p {
 
   &:hover {
     cursor: pointer;
-    color: rgb(46, 46, 46);
+    color: #2e2e2e;
   }
 }
 </style>
