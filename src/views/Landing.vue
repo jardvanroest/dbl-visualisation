@@ -3,10 +3,10 @@
     <div class="centered-container">
       <h1 class="title">MailVis</h1>
       <p class="introduction">
-        A tool to analyze e-mailtraffic. You can import your own dataset or view
-        an example.
+        A tool to analyze e-mail traffic. You can import your own dataset or
+        view an example.
       </p>
-      <ImportDataSetBtn />
+      <ImportDataSetBtn v-on:save-data="saveData" ref="dataSetel" />
       <ViewExampleDataSetBtn />
     </div>
   </div>
