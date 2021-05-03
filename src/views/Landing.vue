@@ -15,12 +15,26 @@
 <script>
 import ImportDataSetBtn from "@/components/ImportDataSetBtn.vue";
 import ViewExampleDataSetBtn from "@/components/ViewExampleDataSetBtn.vue";
+import * as d3 from "d3";
 
 export default {
   name: "Landing",
   components: {
     ImportDataSetBtn,
     ViewExampleDataSetBtn,
+  },
+  // mounted() {
+  //   console.log("beginning of function call");
+  //   d3.csv("./data/enron-v1.csv", function (error, data) {
+  //     console.log("loggin the data: ");
+  //     console.log(data);
+  //   });
+  //   console.log("end of function call");
+  // },
+  async mounted() {
+    console.log("beginning of function call");
+    const data = await d3.csv("data/enron-v1.csv");
+    console.log(data);
   },
 };
 </script>
