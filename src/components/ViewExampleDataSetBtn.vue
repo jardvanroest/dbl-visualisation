@@ -8,8 +8,8 @@ export default {
   methods: {
     pressed() {
       console.log(this.$store.state.tables); // just a test
-    }
-  }
+    },
+  },
 };
 </script>
 
