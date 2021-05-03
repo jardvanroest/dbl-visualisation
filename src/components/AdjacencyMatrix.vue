@@ -8,7 +8,6 @@ export default {
   name: "AdjacencyMatrix",
   data() {
     return {
-      mynumber: 5,
       size: 400,
     };
   },
