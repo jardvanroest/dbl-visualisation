@@ -3,34 +3,15 @@
     <p v-on:click="importFile">Import dataset (.csv)</p>
     <input type="file" class="hidden" ref="fileInput" @change="onPickedFile" />
   </div>
-  <div class="progress" v-bind:class="{ hidden: !isActive }">
-    <KProgress class="progress_bar" :percent="percent" />
-  </div>
 </template>
 
 <script>
-import KProgress from "k-progress-v3";
-
 export default {
   name: "ImportDataSetBtn",
-  components: {
-    KProgress,
-  },
-  watch: {
-    percent: {
-      handler: function () {
-        if (this.percent == 100) {
-          this.isActive = false;
-        }
-      },
-      deep: true,
-    },
-  },
+  components: {},
   data() {
     return {
       isActive: false,
-      percent: 0,
-      objectives: 0,
       acceptableFormats: [
         "application/vnd.ms-excel",
         "application/text",
@@ -48,7 +29,7 @@ export default {
         throw "file not supported"; //throw err
       }
       this.isActive = true;
-      console.log(file.type);
+
       const reader = new FileReader();
       reader.readAsText(file, "UTF-8");
 
@@ -79,41 +60,9 @@ export default {
         for (let j = 0; j < data.length; j++) {
           obj[keys[j]] = data[j].trim();
         }
-
         objects.push(obj);
-        this.percent = this.getPercent(i, arr_all.length);
       }
-      this.percent = 100;
-      this.objectives = 0;
       return objects;
-    },
-    getPercent(curr, max) {
-      if (curr / max > 99) {
-        if (this.objectives < 5) {
-          this.objectives++;
-        }
-        return 99;
-      } else if (curr / max > 75) {
-        if (this.objectives < 4) {
-          this.objectives++;
-        }
-        return 75;
-      } else if (curr / max > 50) {
-        if (this.objectives < 3) {
-          this.objectives++;
-        }
-        return 50;
-      } else if (curr / max > 25) {
-        if (this.objectives < 2) {
-          this.objectives++;
-        }
-        return 25;
-      } else if (curr / max > 10) {
-        if (this.objectives < 1) {
-          this.objectives++;
-        }
-        return 10;
-      }
     },
   },
 };
@@ -140,8 +89,5 @@ p {
 }
 .progress_bar {
   width: 100%;
-}
-.progress_components {
-  //display: auto;
 }
 </style>
