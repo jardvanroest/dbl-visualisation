@@ -45,7 +45,7 @@ export default {
         this.isActive = false;
       };
     },
-    async saveData(data) {
+    saveData(data) {
       this.$store.state.tables.push(this.returnTable_JSON(data));
       this.percent = 0;
     },
