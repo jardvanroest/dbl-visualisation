@@ -2,9 +2,6 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    tables: [],
+    dataset: undefined,
   },
-  mutations: {},
-  actions: {},
-  modules: {},
 });

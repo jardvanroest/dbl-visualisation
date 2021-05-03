@@ -13,6 +13,7 @@
 
 <script>
 import { parseFile } from "@/logic/parsing.js";
+import { Dataset } from "@/logic/dataset.js";
 
 export default {
   name: "ImportDataSetBtn",
@@ -22,14 +23,14 @@ export default {
     },
     importFile(event) {
       const file = this.getFile(event.target);
-      parseFile(file).then(this.saveResult).catch(this.handleError);
+      parseFile(file).then(this.saveData).catch(this.handleError);
     },
     getFile(src) {
       return src.files[0];
     },
-    saveResult(result) {
-      console.log(result);
-      // TODO: store result
+    saveData(data) {
+      this.$store.state.dataset = new Dataset(data);
+      console.log(this.$store.state);
     },
     handleError(error) {
       console.error(error.message);

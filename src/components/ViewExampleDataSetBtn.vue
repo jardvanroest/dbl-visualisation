@@ -1,15 +1,10 @@
 <template>
-  <p @click="pressed">Or view an example instead</p>
+  <p>Or view an example instead</p>
 </template>
 
 <script>
 export default {
   name: "ViewExampleDataSetBtn",
-  methods: {
-    pressed() {
-      console.log(this.$store.state.tables); // just a test
-    },
-  },
 };
 </script>
 
