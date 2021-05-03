@@ -1,5 +1,5 @@
 <template>
-  <svg :width="width" :height="height"></svg>
+  <svg :width="size" :height="size"></svg>
 </template>
 
 <script>
@@ -9,8 +9,7 @@ export default {
   data() {
     return {
       mynumber: 5,
-      width: 400,
-      height: 400,
+      size: 400,
     };
   },
   mounted() {
@@ -21,15 +20,19 @@ export default {
       { fromId: 30, toId: 36 },
     ];
 
+    var size = 400;
+
     var svg = d3.select("svg");
 
-    var cell_size = 10;
+    var maxId = 36;
+
+    var cell_size = size / (maxId + 1);
 
     svg
       .append("rect")
       .attr("class", "background")
-      .attr("width", 400)
-      .attr("height", 400)
+      .attr("width", size)
+      .attr("height", size)
       .attr("fill", "green");
 
     data.forEach((link) => {
