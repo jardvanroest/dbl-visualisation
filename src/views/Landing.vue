@@ -6,7 +6,7 @@
         A tool to analyze e-mail traffic. You can import your own dataset or
         view an example.
       </p>
-      <ImportDataSetBtn v-on:save-data="saveData" ref="dataSetel" />
+      <ImportDataSetBtn />
       <ViewExampleDataSetBtn />
     </div>
   </div>
