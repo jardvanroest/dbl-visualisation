@@ -30,7 +30,6 @@ export default {
     },
     saveData(data) {
       this.$store.state.dataset = new Dataset(data);
-      console.log(this.$store.state);
     },
     handleError(error) {
       console.error(error.message);
