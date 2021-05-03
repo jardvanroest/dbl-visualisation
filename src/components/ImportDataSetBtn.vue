@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p @click="openFileSelector">Import dataset (.csv)</p>
+    <p @click="openFilePicker">Import dataset (.csv)</p>
     <input
       type="file"
       accept=".csv"
@@ -17,7 +17,7 @@ import { parseFile } from "@/logic/parsing.js";
 export default {
   name: "ImportDataSetBtn",
   methods: {
-    openFileSelector() {
+    openFilePicker() {
       this.$refs.fileInput.click();
     },
     importFile(event) {
@@ -29,6 +29,7 @@ export default {
     },
     saveResult(result) {
       console.log(result);
+      // TODO: store result
     },
     handleError(error) {
       console.error(error.message);

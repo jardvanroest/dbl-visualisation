@@ -1,6 +1,6 @@
 export function parseFile(file) {
   return new Promise((resolve, reject) => {
-    const reader = createFileReader(file);
+    const reader = readFile(file);
 
     reader.onload = () => {
       const text = reader.result;
@@ -8,24 +8,21 @@ export function parseFile(file) {
       resolve(arrayOfObjects);
     };
 
-    reader.onerror = () => {
-      const error = reader.error;
-      reject(error);
-    };
+    reader.onerror = () => reject(reader.error);
   });
 }
 
-function createFileReader(file) {
+function readFile(file) {
   const reader = new FileReader();
   reader.readAsText(file, "UTF-8");
   return reader;
 }
 
 function convertToArrayOfObjects(text) {
-  let lines = splitIntoLines(text);
-  let columnNames = getColumnNames(lines);
+  const lines = splitIntoLines(text);
+  const columnNames = splitIntoItems(lines[0]);
 
-  let array = [];
+  const array = [];
 
   lines.slice(1).forEach((line) => {
     const object = convertLineToObject(line, columnNames);
@@ -39,17 +36,17 @@ function splitIntoLines(text) {
   return text.split("\n");
 }
 
-function getColumnNames(rows) {
-  return rows[0].split(",");
-}
-
 function convertLineToObject(line, columnNames) {
-  const entries = line.split(",");
+  const items = splitIntoItems(line);
   const object = {};
 
-  entries.forEach((entry, i) => {
-    object[columnNames[i]] = entry;
+  items.forEach((item, i) => {
+    object[columnNames[i]] = item;
   });
 
   return object;
+}
+
+function splitIntoItems(line) {
+  return line.split(",").map((item) => item.trim());
 }
