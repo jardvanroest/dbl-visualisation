@@ -1,0 +1,81 @@
+$flaticon-font: "flaticon";
+
+@font-face {
+    font-family: $flaticon-font;
+    src: url("./flaticon.ttf?877b2fc91ce6a9f67951a0279d7bc84e") format("truetype"),
+url("./flaticon.woff?877b2fc91ce6a9f67951a0279d7bc84e") format("woff"),
+url("./flaticon.woff2?877b2fc91ce6a9f67951a0279d7bc84e") format("woff2"),
+url("./flaticon.eot?877b2fc91ce6a9f67951a0279d7bc84e#iefix") format("embedded-opentype"),
+url("./flaticon.svg?877b2fc91ce6a9f67951a0279d7bc84e#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon-map: (
+    "information": "\f101",
+    "info": "\f102",
+    "screenshot": "\f103",
+    "screenshot-1": "\f104",
+    "image": "\f105",
+    "import": "\f106",
+    "import-1": "\f107",
+    "cloud-computing": "\f108",
+    "upload": "\f109",
+    "upload-1": "\f10a",
+    "cloud-computing-1": "\f10b",
+    "loupe": "\f10c",
+    "search": "\f10d",
+    "double-right-arrows-angles": "\f10e",
+);
+
+.flaticon-information:before {
+    content: map-get($flaticon-map, "information");
+}
+.flaticon-info:before {
+    content: map-get($flaticon-map, "info");
+}
+.flaticon-screenshot:before {
+    content: map-get($flaticon-map, "screenshot");
+}
+.flaticon-screenshot-1:before {
+    content: map-get($flaticon-map, "screenshot-1");
+}
+.flaticon-image:before {
+    content: map-get($flaticon-map, "image");
+}
+.flaticon-import:before {
+    content: map-get($flaticon-map, "import");
+}
+.flaticon-import-1:before {
+    content: map-get($flaticon-map, "import-1");
+}
+.flaticon-cloud-computing:before {
+    content: map-get($flaticon-map, "cloud-computing");
+}
+.flaticon-upload:before {
+    content: map-get($flaticon-map, "upload");
+}
+.flaticon-upload-1:before {
+    content: map-get($flaticon-map, "upload-1");
+}
+.flaticon-cloud-computing-1:before {
+    content: map-get($flaticon-map, "cloud-computing-1");
+}
+.flaticon-loupe:before {
+    content: map-get($flaticon-map, "loupe");
+}
+.flaticon-search:before {
+    content: map-get($flaticon-map, "search");
+}
+.flaticon-double-right-arrows-angles:before {
+    content: map-get($flaticon-map, "double-right-arrows-angles");
+}
