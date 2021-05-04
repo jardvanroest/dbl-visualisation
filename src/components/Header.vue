@@ -6,19 +6,20 @@
         <span>WebVis</span>
       </div>
       <div class="import_data">
-        <img src="../assets/fonticon/upload1.svg" alt="upload" />
+        <img src="../assets/fonticon/upload.svg" alt="upload" />
         <Btn class="upload_btn" text="Upload a dataset" />
       </div>
       <div class="nav_icons">
         <ul>
           <li>
+            <!-- FLATICON NOT WORKING <i class="flaticon-information"></i> -->
             <img src="../assets/fonticon/settings.svg" alt="settings" />
           </li>
           <li>
             <img src="../assets/fonticon/import.svg" alt="screenshot" />
           </li>
           <li>
-            <img src="../assets/fonticon/info1.svg" alt="information" />
+            <img src="../assets/fonticon/info.svg" alt="information" />
           </li>
         </ul>
       </div>
@@ -39,8 +40,6 @@ export default {
 
 <style scoped>
 * {
-  margin: 0;
-  padding: 0;
   transition: all ease-in-out 300ms;
 }
 
@@ -97,7 +96,7 @@ export default {
 
 .nav_icons ul :hover,
 :focus {
-  background: #73cdc2;
+  background: var(--accent-color);
 }
 
 .nav_icons li {
@@ -108,22 +107,4 @@ export default {
   height: 50px;
   width: 50px;
 }
-
-/*
-.nav_icons li::after {
-  content: "";
-  display: block;
-  background-color: black;
-
-  position: absolute;
-  top: 48px;
-  width: 0;
-  height: 3px;
-}
-
-.nav_icons li:hover::after,
-.nav_icons li:focus::after {
-  width: 33%;
-}
-*/
 </style>

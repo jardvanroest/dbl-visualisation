@@ -1,0 +1,49 @@
+$flaticon-font: "flaticon";
+
+@font-face {
+    font-family: $flaticon-font;
+    src: url("./flaticon.ttf?66481ffa510cf5bfc6fd3338cc88e33e") format("truetype"),
+url("./flaticon.woff?66481ffa510cf5bfc6fd3338cc88e33e") format("woff"),
+url("./flaticon.woff2?66481ffa510cf5bfc6fd3338cc88e33e") format("woff2"),
+url("./flaticon.eot?66481ffa510cf5bfc6fd3338cc88e33e#iefix") format("embedded-opentype"),
+url("./flaticon.svg?66481ffa510cf5bfc6fd3338cc88e33e#flaticon") format("svg");
+}
+
+i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
+    font-family: flaticon !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+$flaticon-map: (
+    "information": "\f101",
+    "upload": "\f102",
+    "loupe": "\f103",
+    "double-right-arrows-angles": "\f104",
+    "settings": "\f105",
+    "import": "\f106",
+);
+
+.flaticon-information:before {
+    content: map-get($flaticon-map, "information");
+}
+.flaticon-upload:before {
+    content: map-get($flaticon-map, "upload");
+}
+.flaticon-loupe:before {
+    content: map-get($flaticon-map, "loupe");
+}
+.flaticon-double-right-arrows-angles:before {
+    content: map-get($flaticon-map, "double-right-arrows-angles");
+}
+.flaticon-settings:before {
+    content: map-get($flaticon-map, "settings");
+}
+.flaticon-import:before {
+    content: map-get($flaticon-map, "import");
+}

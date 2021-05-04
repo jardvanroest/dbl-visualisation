@@ -1,8 +1,8 @@
 <template>
-  <Header :style="cssProps"></Header>
+  <Header />
   <div class="grid-container">
-    <Visualisations class="vis" :style="cssProps" />
-    <Settings class="settings" :style="cssProps" />
+    <Visualisations class="vis" />
+    <Settings class="settings" />
   </div>
 </template>
 
@@ -18,22 +18,10 @@ export default {
     Visualisations,
     Settings,
   },
-  computed: {
-    cssProps() {
-      return {
-        "--accent-color": "#73cdc2",
-      };
-    },
-  },
 };
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .grid-container {
   height: calc(100vh - 50px);
   display: grid;
