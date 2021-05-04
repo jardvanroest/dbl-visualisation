@@ -31,7 +31,7 @@ export default {
 .vis1 {
   grid-row: 1;
   grid-column: 1;
-  background-color: pink;
+  background-color: white;
 }
 
 .vis2 {
