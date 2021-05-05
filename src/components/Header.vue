@@ -12,7 +12,6 @@
       <div class="nav_icons">
         <ul>
           <li>
-            <!-- FLATICON NOT WORKING <i class="flaticon-information"></i> -->
             <img src="../assets/fonticon/settings.svg" alt="settings" />
           </li>
           <li>

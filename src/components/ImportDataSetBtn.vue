@@ -27,13 +27,19 @@ export default {
     },
     importFile(event) {
       const file = this.getFile(event.target);
-      parseFile(file).then(this.saveData).catch(this.handleError);
+      parseFile(file)
+        .then(this.saveData)
+        .then(this.goToVisualisationPage)
+        .catch(this.handleError);
     },
     getFile(src) {
       return src.files[0];
     },
     saveData(data) {
       this.$store.state.dataset = new Dataset(data);
+    },
+    goToVisualisationPage() {
+      this.$router.push({ path: "visualisation" });
     },
     handleError(error) {
       console.error(error.message);
