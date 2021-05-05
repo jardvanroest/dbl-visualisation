@@ -2,23 +2,23 @@
   <header>
     <div class="container">
       <div class="logo">
-        <img src="../assets/fonticon/graph.svg" alt="logo" />
+        <img src="@/assets/icons/graph.svg" alt="logo" />
         <span>WebVis</span>
       </div>
       <div class="import_data">
-        <img src="../assets/fonticon/upload.svg" alt="upload" />
+        <img src="@/assets/icons/upload.svg" alt="upload" />
         <Btn class="upload_btn" text="Upload a dataset" />
       </div>
       <div class="nav_icons">
         <ul>
           <li>
-            <img src="../assets/fonticon/settings.svg" alt="settings" />
+            <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
           <li>
-            <img src="../assets/fonticon/import.svg" alt="screenshot" />
+            <img src="@/assets/icons/import.svg" alt="screenshot" />
           </li>
           <li>
-            <img src="../assets/fonticon/info.svg" alt="information" />
+            <img src="@/assets/icons/info.svg" alt="information" />
           </li>
         </ul>
       </div>
