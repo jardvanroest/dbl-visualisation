@@ -8,7 +8,6 @@
       </p>
       <ImportDataSetBtn />
       <ViewExampleDataSetBtn />
-      <AdjacencyMatrix />
     </div>
   </div>
 </template>
@@ -16,14 +15,12 @@
 <script>
 import ImportDataSetBtn from "@/components/ImportDataSetBtn.vue";
 import ViewExampleDataSetBtn from "@/components/ViewExampleDataSetBtn.vue";
-import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
 
 export default {
   name: "Landing",
   components: {
     ImportDataSetBtn,
     ViewExampleDataSetBtn,
-    AdjacencyMatrix,
   },
 };
 </script>
