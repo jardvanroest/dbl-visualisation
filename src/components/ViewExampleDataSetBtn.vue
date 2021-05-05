@@ -11,7 +11,6 @@ export default {
 <style scoped lang="scss">
 p {
   text-decoration: underline;
-  text-align: left;
   margin: 4px;
 
   &:hover {
