@@ -3,11 +3,6 @@
 </template>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .container {
   background-color: #ffeaa7;
 }

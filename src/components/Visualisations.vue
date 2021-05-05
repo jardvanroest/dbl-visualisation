@@ -19,11 +19,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;

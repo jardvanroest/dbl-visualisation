@@ -11,6 +11,10 @@
 /* Import fonts from fonts.google.com */
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@300&display=swap");
 
+:root {
+  --accent-color: #73cdc2;
+}
+
 #app {
   font-family: "Open Sans", Avenir, Helvetica, Arial, sans-serif;
 }
