@@ -32,5 +32,6 @@ button:hover,
 button:focus {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
+  color: white;
 }
 </style>
