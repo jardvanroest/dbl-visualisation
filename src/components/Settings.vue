@@ -4,6 +4,6 @@
 
 <style scoped>
 .container {
-  background-color: #ffeaa7;
+  text-color: white;
 }
 </style>

@@ -65,6 +65,8 @@ export default {
   margin: 0 auto;
   justify-content: space-between;
   align-items: center;
+  box-shadow: rgba(68, 68, 68, 0.3) 0px 1px 2px 0px,
+    rgba(61, 61, 61, 0.15) 0px 1px 3px 1px;
 }
 
 .container img {
@@ -97,6 +99,7 @@ export default {
 .import_data div {
   display: flex;
   align-items: center;
+  height: 50px;
 }
 
 .import_data img {
