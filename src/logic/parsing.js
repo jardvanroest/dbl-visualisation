@@ -4,15 +4,12 @@ export function parseFile(file) {
 
     reader.onload = () => {
       const text = reader.result;
-      const arrayOfObjects = convertToArrayOfObjects(text);
+      const arrayOfObjects = parseString(text);
       resolve(arrayOfObjects);
     };
 
     reader.onerror = () => reject(reader.error);
   });
-}
-export function parseString(string) {
-  return convertToArrayOfObjects(string);
 }
 
 function readFile(file) {
@@ -21,7 +18,7 @@ function readFile(file) {
   return reader;
 }
 
-function convertToArrayOfObjects(text) {
+export function parseString(text) {
   const lines = splitIntoLines(text);
   const columnNames = splitIntoItems(lines[0]);
 
