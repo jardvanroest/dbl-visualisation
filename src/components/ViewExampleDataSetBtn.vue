@@ -5,7 +5,7 @@
 <script>
 import { parseString } from "@/logic/parsing.js";
 import { Dataset } from "@/logic/dataset.js";
-import exampleDataSet from "@/assets/resources/exampleDataset.csv";
+import exampleDataSet from "@/assets/datasets/exampleDataset.csv";
 
 export default {
   name: "ViewExampleDataSetBtn",
