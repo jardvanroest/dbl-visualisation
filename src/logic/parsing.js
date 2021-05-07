@@ -11,6 +11,9 @@ export function parseFile(file) {
     reader.onerror = () => reject(reader.error);
   });
 }
+export function parseString(string) {
+  return convertToArrayOfObjects(string);
+}
 
 function readFile(file) {
   const reader = new FileReader();
