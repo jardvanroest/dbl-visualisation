@@ -1,22 +1,22 @@
 <template>
   <div class="container">
-    <div class="selected_setting_type">
+    <div>
       <SettingType text="Global" />
-      <SettingType text="Vis1" class="unselected" />
-      <SettingType text="Vis2" class="unselected" />
+      <SettingType text="Vis1" />
+      <SettingType text="Vis2" />
     </div>
-    <ToolTips />
+    <Inspector />
   </div>
 </template>
 
 <script>
-import ToolTips from "@/components/ToolTips.vue";
+import Inspector from "@/components/Inspector.vue";
 import SettingType from "@/components/SettingType.vue";
 
 export default {
   name: "Settings",
   components: {
-    ToolTips,
+    Inspector,
     SettingType,
   },
 };

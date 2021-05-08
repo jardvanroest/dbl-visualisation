@@ -2,19 +2,18 @@
   <header>
     <div class="container">
       <div class="logo" @click="redirectToHome()">
-        <img src="../assets/fonticon/graph.svg" alt="logo" />
+        <img src="@/assets/icons/graph.svg" alt="logo" />
         <span>WebVis</span>
       </div>
       <div class="import_data">
         <div>
-          <img src="../assets/fonticon/upload.svg" alt="upload" />
+          <img src="@/assets/icons/upload.svg" alt="upload" />
           <span>{{ upload_text }}</span>
         </div>
       </div>
       <div class="nav_icons">
         <ul>
           <li @click="$emit('toggle-settings')">
-            <!-- FLATICON NOT WORKING <i class="flaticon-information"></i> -->
             <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
           <li @click="screenshot()">
