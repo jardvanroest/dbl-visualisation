@@ -11,15 +11,16 @@
 
 /* Global variables to be used troughout the whole site */
 :root {
-  --accent-color: #bbc3f1;
+  --accent-color: #38ada9;
 }
 
 #app {
   font-family: "Open Sans", Avenir, Helvetica, Arial, sans-serif;
 }
 
-/* Prevent user-selection of elements listed below */
-.header {
+/* Prevent user-selection of elements listed below by giving them class of no_highlight*/
+header,
+.no_highlight {
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
