@@ -1,8 +1,8 @@
 <template>
-  <Header />
+  <Header @toggle-settings="toggleSettings" />
   <div class="grid-container">
     <Visualisations class="vis" />
-    <Settings class="settings" />
+    <Settings v-if="showSettings" class="settings" />
   </div>
 </template>
 
@@ -18,23 +18,31 @@ export default {
     Visualisations,
     Settings,
   },
+  data() {
+    return {
+      showSettings: true,
+    };
+  },
+  methods: {
+    toggleSettings() {
+      this.showSettings = !this.showSettings;
+    },
+  },
 };
 </script>
 
 <style scoped>
 .grid-container {
   height: calc(100vh - 50px);
-  display: grid;
-  grid-template-columns: 4fr 1fr;
+  display: flex;
 }
 
 .vis {
-  grid-row: 1;
-  grid-column: 1;
+  flex-grow: 1;
 }
 
 .settings {
-  grid-row: 1;
-  grid-column: 2;
+  width: 300px;
+  height: 100%;
 }
 </style>

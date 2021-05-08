@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Landing from "../views/Landing.vue";
 import VisualisationPage from "../views/VisualisationPage.vue";
+import InfoPage from "../views/InfoPage.vue";
 import store from "@/store";
 
 const routes = [
@@ -16,6 +17,11 @@ const routes = [
     meta: {
       requiresDataset: true,
     },
+  },
+  {
+    path: "/info",
+    name: "infoPage",
+    component: InfoPage,
   },
 ];
 
