@@ -1,6 +1,6 @@
 <template>
   <h3>Info Page Placeholder</h3>
-  <Btn @btn-click="redirectToVisualisation" text="Back to visualisation" />
+  <Btn @click="redirectToVisualisation" text="Back to visualisation" />
 </template>
 
 <script>

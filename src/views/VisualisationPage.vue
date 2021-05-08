@@ -1,8 +1,8 @@
 <template>
   <Header @toggle-settings="toggleSettings" />
-  <div class="grid-container" v-bind:class="{ hidenSettings: hideSettings }">
+  <div class="grid-container">
     <Visualisations class="vis" />
-    <Settings class="settings" />
+    <Settings v-if="showSettings" class="settings" />
   </div>
 </template>
 
@@ -20,12 +20,12 @@ export default {
   },
   data() {
     return {
-      hideSettings: false,
+      showSettings: true,
     };
   },
   methods: {
     toggleSettings() {
-      this.hideSettings = !this.hideSettings;
+      this.showSettings = !this.showSettings;
     },
   },
 };
@@ -34,26 +34,15 @@ export default {
 <style scoped>
 .grid-container {
   height: calc(100vh - 50px);
-  display: grid;
-  grid-template-columns: 4fr 1fr;
+  display: flex;
 }
 
 .vis {
-  grid-row: 1;
-  grid-column: 1;
+  flex-grow: 1;
 }
 
 .settings {
-  grid-row: 1;
-  grid-column: 2;
-}
-
-/* Hide settings based on class of parent*/
-.hidenSettings {
-  grid-template-columns: 100%;
-}
-
-.hidenSettings > .settings {
-  display: none;
+  width: 300px;
+  height: 100%;
 }
 </style>
