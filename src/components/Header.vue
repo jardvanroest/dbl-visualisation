@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header>
     <div class="container">
       <div class="logo" @click="redirectToHome()">
         <img src="../assets/fonticon/graph.svg" alt="logo" />
@@ -15,13 +15,13 @@
         <ul>
           <li @click="$emit('toggle-settings')">
             <!-- FLATICON NOT WORKING <i class="flaticon-information"></i> -->
-            <img src="../assets/fonticon/settings.svg" alt="settings" />
+            <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
           <li @click="screenshot()">
-            <img src="../assets/fonticon/import.svg" alt="screenshot" />
+            <img src="@/assets/icons/import.svg" alt="screenshot" />
           </li>
           <li @click="redirectToInfo()">
-            <img src="../assets/fonticon/info.svg" alt="information" />
+            <img src="@/assets/icons/info.svg" alt="information" />
           </li>
         </ul>
       </div>
