@@ -83,16 +83,13 @@ export default {
   font-family: "Roboto", sans-serif;
   display: flex;
   align-items: center;
+  font-size: 22pt;
 }
 
 .logo img {
-  padding-right: 1em;
+  padding-right: 10px;
   width: 44px;
   height: 44px;
-}
-
-.logo span {
-  font-size: 22pt;
 }
 
 /* Format upload div*/

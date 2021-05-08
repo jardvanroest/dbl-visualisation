@@ -44,6 +44,7 @@ export default {
 }
 
 .settings {
+  height: 100%;
   grid-row: 1;
   grid-column: 2;
 }
