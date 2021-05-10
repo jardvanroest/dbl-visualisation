@@ -33,7 +33,9 @@ export function parseString(text) {
 }
 
 function splitIntoLines(text) {
-  return text.split("\n");
+  const lines = text.split("\n");
+  lines.pop(); // split causes last item to be an empty string
+  return lines;
 }
 
 function convertLineToObject(line, columnNames) {
