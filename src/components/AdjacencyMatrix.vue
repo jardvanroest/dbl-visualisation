@@ -48,7 +48,7 @@ export default {
         .classed("svg-content", true);
 
       // Set size variables
-      const width = 430, // TODO: resizing shouldn't be hard coded in (might be fine tho)
+      const width = 426, // TODO: resizing shouldn't be hard coded in (might be fine tho)
         rectLen = width / (nodes + 2),
         rectMargin = rectLen * 0.06;
 
