@@ -31,7 +31,7 @@ export default {
         let v = parseInt(d[i]["toId"]);
 
         if (isNaN(u) || isNaN(v)) {
-          console.log(i, u, v);
+          console.warn("NaN values found on row: " + i);
           continue;
         }
 
@@ -68,7 +68,7 @@ export default {
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
-        let u = edges[i][0]; // when i = 31041 edges[i][0/1] - NaN
+        let u = edges[i][0];
         let v = edges[i][1];
 
         data[u][v] = edgeCol;
