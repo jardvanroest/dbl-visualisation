@@ -37,7 +37,6 @@ export default {
     },
     saveData(data) {
       this.$store.state.dataset = new Dataset(data);
-      console.log(this.$store.state.dataset);
     },
     goToVisualisationPage() {
       this.$router.push({ path: "visualisation" });

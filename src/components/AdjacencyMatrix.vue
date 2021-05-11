@@ -25,9 +25,9 @@ export default {
       var nodes = 0;
       var edges = [];
 
+      console.log(d);
       // Iterate through {d} to compute {nodes} and {edges}
-      // ! Last row is empty !
-      for (let i = 1; i < d.length - 1; i++) {
+      for (let i = 0; i < d.length; i++) {
         let u = parseInt(d[i]["fromId"]);
         let v = parseInt(d[i]["toId"]);
 

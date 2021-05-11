@@ -26,12 +26,10 @@ export default {
 .vis1 {
   grid-row: 1;
   grid-column: 1;
-  background-color: white;
 }
 
 .vis2 {
   grid-row: 1;
   grid-column: 2;
-  background-color: #a29bfe;
 }
 </style>
