@@ -25,11 +25,15 @@ export default {
       var nodes = 0;
       var edges = [];
 
-      console.log(d);
       // Iterate through {d} to compute {nodes} and {edges}
       for (let i = 0; i < d.length; i++) {
         let u = parseInt(d[i]["fromId"]);
         let v = parseInt(d[i]["toId"]);
+
+        if (isNaN(u) || isNaN(v)) {
+          console.log(i, u, v);
+          continue;
+        }
 
         nodes = d3.max([nodes, u, v]);
         edges.push([u, v]);
@@ -64,7 +68,7 @@ export default {
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
-        let u = edges[i][0];
+        let u = edges[i][0]; // when i = 31041 edges[i][0/1] - NaN
         let v = edges[i][1];
 
         data[u][v] = edgeCol;
