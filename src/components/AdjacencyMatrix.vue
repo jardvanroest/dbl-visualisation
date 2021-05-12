@@ -13,7 +13,16 @@ import { mapGetters } from "vuex";
 export default {
   name: "AdjacencyMatrix",
   computed: {
-    ...mapGetters(["emails"]),
+    ...mapGetters(["emails", "numberOfPersons"]),
+  },
+  watch: {
+    emails: {
+      deep: true,
+      handler() {
+        d3.select("svg").remove();
+        this.generateMatrix();
+      },
+    },
   },
   mounted() {
     this.generateMatrix();
@@ -24,27 +33,11 @@ export default {
       const edgeCol = "#DF848F";
       const normalCol = "#B8E0F6";
 
-      var d = this.emails;
-
-      var nodes = 0;
-      var edges = [];
-
-      // Iterate through {d} to compute {nodes} and {edges}
-      for (let i = 0; i < d.length; i++) {
-        let u = parseInt(d[i]["fromId"]);
-        let v = parseInt(d[i]["toId"]);
-
-        if (isNaN(u) || isNaN(v)) {
-          console.warn("NaN values found on row: " + i);
-          continue;
-        }
-
-        nodes = d3.max([nodes, u, v]);
-        edges.push([u, v]);
-      }
+      const nodes = this.numberOfPersons;
+      const edges = this.emails;
 
       // Append the svg object to the div
-      var svg = d3
+      const svg = d3
         .select("#area")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
@@ -72,8 +65,8 @@ export default {
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
-        let u = edges[i][0];
-        let v = edges[i][1];
+        let u = edges[i].fromId;
+        let v = edges[i].toId;
 
         data[u][v] = edgeCol;
       }

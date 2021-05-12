@@ -4,11 +4,11 @@ export default {
   },
   addPerson(state, newPerson) {
     if (
-      !state.people.some((person) => {
+      !state.persons.some((person) => {
         return person.id === newPerson.id;
       })
     ) {
-      state.people.push(newPerson);
+      state.persons.push(newPerson);
     }
   },
 };

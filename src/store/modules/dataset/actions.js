@@ -24,7 +24,6 @@ export default {
       context.commit("addEmail", email);
       context.commit("addPerson", sendingPerson);
       context.commit("addPerson", receivingPerson);
-      // Add receivingPerson if not yet in people
     });
   },
 };

@@ -5,10 +5,8 @@ import actions from "./actions.js";
 export default {
   state() {
     return {
-      people: [],
+      persons: [],
       emails: [],
-      personFilters: [],
-      peopleFilters: [],
     };
   },
   getters,
