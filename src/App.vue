@@ -14,6 +14,8 @@
 /* Global variables to be used troughout the whole site */
 :root {
   --accent-color: #38ada9;
+  --link-color: #0000ff;
+  --error-color: #ff0000;
 }
 
 #app {

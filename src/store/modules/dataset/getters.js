@@ -1,15 +1,7 @@
 export default {
   emails(state, getters) {
-    const filteredEmails = [];
-
-    // Only return emails where the to or from id is from a selected person (if there are people selected)
     if (getters.thereAreSelectedEmailAddresses) {
-      state.emails.forEach((email) => {
-        if (isSelected(state, email.fromId) || isSelected(state, email.toId)) {
-          filteredEmails.push(email);
-        }
-      });
-
+      const filteredEmails = getFilteredEmails(state);
       return filteredEmails;
     } else {
       return state.emails;
@@ -26,6 +18,21 @@ export default {
   },
 };
 
-function isSelected(state, id) {
+function getFilteredEmails(state) {
+  const filteredEmails = [];
+
+  state.emails.forEach((email) => {
+    if (
+      isSelectedPerson(state, email.fromId) ||
+      isSelectedPerson(state, email.toId)
+    ) {
+      filteredEmails.push(email);
+    }
+  });
+
+  return filteredEmails;
+}
+
+function isSelectedPerson(state, id) {
   return state.persons[id].isSelected;
 }

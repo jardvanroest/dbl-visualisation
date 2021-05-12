@@ -13,12 +13,14 @@ export default {
         id: entry.fromId,
         emailAddress: entry.fromEmail,
         jobTitle: entry.fromJobtitle,
+        isSelected: false,
       };
 
       const receivingPerson = {
         id: entry.toId,
         emailAddress: entry.toEmail,
         jobTitle: entry.toJobTitle,
+        isSelected: false,
       };
 
       context.commit("addEmail", email);
