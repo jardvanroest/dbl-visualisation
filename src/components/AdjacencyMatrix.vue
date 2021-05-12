@@ -111,7 +111,7 @@ export default {
             console.log("Edge does not exist in the adjacency matrix!");
           } else if (_data["dataIndex"] === undefined) {
             // If clicked on index row/column
-            console.log(i);
+            console.log(_data);
           } else {
             // If it exists log the data
             console.log(d[_data["dataIndex"]]);
