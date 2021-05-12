@@ -8,9 +8,13 @@
 
 <script>
 import * as d3 from "d3";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AdjacencyMatrix",
+  computed: {
+    ...mapGetters(["emails"]),
+  },
   mounted() {
     this.generateMatrix();
   },
@@ -20,7 +24,7 @@ export default {
       const edgeCol = "#DF848F";
       const normalCol = "#B8E0F6";
 
-      var d = this.$store.state.dataset.getRawData();
+      var d = this.emails;
 
       var nodes = 0;
       var edges = [];
