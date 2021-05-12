@@ -45,7 +45,12 @@ export default {
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
         .attr("viewBox", "0 0 450 450")
-        .classed("svg-content", true);
+        .classed("svg-content", true)
+        .call(
+          d3.zoom().on("zoom", function (event) {
+            svg.attr("transform", event.transform);
+          })
+        );
 
       // Set size variables
       const width = 426, // TODO: resizing shouldn't be hard coded in (might be fine tho)
