@@ -148,7 +148,7 @@ export default {
 .import_data :hover,
 .import_data :focus {
   background: var(--accent-color);
-  color: white;
+  color: var(--background-color);
 }
 
 .nav_icons li:hover img,

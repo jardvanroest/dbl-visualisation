@@ -17,11 +17,11 @@ export default {
   methods: {
     generateMatrix() {
       // Colors
+      // ADDED new colors
       const edgeCol = "#DF848F";
-      const normalCol = "#B8E0F6";
+      const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
 
       var d = this.$store.state.dataset.getRawData();
-
       var nodes = 0;
       var edges = [];
 
@@ -35,8 +35,8 @@ export default {
           continue;
         }
 
-        nodes = d3.max([nodes, u, v]);
-        edges.push([u, v]);
+        nodes = d3.max([nodes, u, v]); //WHY count nodes in such a way also maybe transpose matrix?
+        edges.push({ from: u, to: v, index: i }); // ADDED passes on {i} for additional data + object
       }
 
       // Append the svg object to the div
@@ -68,10 +68,10 @@ export default {
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
-        let u = edges[i][0];
-        let v = edges[i][1];
+        let from = edges[i]["from"]; // ADDED new way because using object
+        let to = edges[i]["to"]; // ADDED new way because using object
 
-        data[u][v] = edgeCol;
+        data[to][from] = { fillColor: edgeCol, dataIndex: edges[i]["index"] };
       }
 
       // Create a group for each row so it can be translated vertically
@@ -103,7 +103,21 @@ export default {
           // Color based on {data} matrix
           if (Number.isInteger(d)) return "#d3d3d3";
           // TODO: add node labels?
-          else return d.toString();
+          // ADDED new way to color based on new data
+          else return d["fillColor"];
+        })
+        // ADDED click event
+        .on("click", function (event, i) {
+          if (i["dataIndex"] === -1) {
+            // In case edge doesn't exist
+            console.log("Edge does not exist in the adjacency matrix!");
+          } else if (i["dataIndex"] === undefined) {
+            // If clicked on index row/column
+            console.log(i);
+          } else {
+            // If it exists log the data
+            console.log(d[i["dataIndex"]]);
+          }
         });
     },
   },
