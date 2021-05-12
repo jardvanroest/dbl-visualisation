@@ -1,19 +1,17 @@
 <template>
   <div class="container">
-    <AdjacencyMatrix class="vis1" />
-    <Visualisation class="vis2" />
+    <Visualisation class="vis1" type="adjacencymatrix" />
+    <Visualisation class="vis2" type="testvis" />
   </div>
 </template>
 
 <script>
 import Visualisation from "@/components/Visualisation.vue";
-import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
 
 export default {
   name: "Visualisations",
   components: {
     Visualisation,
-    AdjacencyMatrix,
   },
 };
 </script>

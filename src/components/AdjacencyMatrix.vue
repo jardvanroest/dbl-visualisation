@@ -1,7 +1,5 @@
 <template>
   <div style="text-align: center">
-    <h1>Adjacency Matrix</h1>
-    <br />
     <div id="area" style="padding: 30px"></div>
   </div>
 </template>
@@ -48,9 +46,12 @@ export default {
         .classed("svg-content", true)
         .append("g")
         .call(
-          d3.zoom().on("zoom", function (event) {
-            svg.attr("transform", event.transform);
-          })
+          d3
+            .zoom()
+            .scaleExtent([1, 2])
+            .on("zoom", function (event) {
+              svg.attr("transform", event.transform);
+            })
         );
 
       // Set size variables
