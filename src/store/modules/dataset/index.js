@@ -5,7 +5,7 @@ import actions from "./actions.js";
 export default {
   state() {
     return {
-      persons: [],
+      persons: {},
       emails: [],
     };
   },
