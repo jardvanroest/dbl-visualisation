@@ -16,12 +16,11 @@ export default {
   },
   methods: {
     generateMatrix() {
-      // Colors
+      // Colors and data object
       const edgeCol = "#DF848F";
-      const normalCol = "#B8E0F6";
+      const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
 
       var d = this.$store.state.dataset.getRawData();
-
       var nodes = 0;
       var edges = [];
 
@@ -36,7 +35,7 @@ export default {
         }
 
         nodes = d3.max([nodes, u, v]);
-        edges.push([u, v]);
+        edges.push({ from: u, to: v, index: i });
       }
 
       // Append the svg object to the div
@@ -68,10 +67,10 @@ export default {
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
-        let u = edges[i][0];
-        let v = edges[i][1];
+        let from = edges[i]["from"];
+        let to = edges[i]["to"];
 
-        data[u][v] = edgeCol;
+        data[to][from] = { fillColor: edgeCol, dataIndex: edges[i]["index"] };
       }
 
       // Create a group for each row so it can be translated vertically
@@ -103,7 +102,20 @@ export default {
           // Color based on {data} matrix
           if (Number.isInteger(d)) return "#d3d3d3";
           // TODO: add node labels?
-          else return d.toString();
+          else return d["fillColor"];
+        })
+        // Add on click event
+        .on("click", function (event, _data) {
+          if (_data["dataIndex"] === -1) {
+            // In case edge doesn't exist
+            console.log("Edge does not exist in the adjacency matrix!");
+          } else if (_data["dataIndex"] === undefined) {
+            // If clicked on index row/column
+            console.log(_data);
+          } else {
+            // If it exists log the data
+            console.log(d[_data["dataIndex"]]);
+          }
         });
     },
   },

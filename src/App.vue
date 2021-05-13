@@ -14,6 +14,9 @@
 /* Global variables to be used troughout the whole site */
 :root {
   --accent-color: #38ada9;
+  --accent-color-2: #0f8c88;
+  --background-color: white;
+  --border-color: rgba(221, 221, 221);
 }
 
 #app {
@@ -21,7 +24,7 @@
 }
 
 /* Prevent user-selection of elements listed below by giving them class of no_highlight*/
-.header,
+header,
 .no_highlight {
   -webkit-user-select: none;
   -khtml-user-select: none;
