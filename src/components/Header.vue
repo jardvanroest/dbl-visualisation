@@ -13,7 +13,7 @@
       </div>
       <div class="nav_icons">
         <ul>
-          <li @click="$emit('toggle-settings')">
+          <li @click="rotateSettings($event)">
             <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
           <li @click="screenshot()">
@@ -35,6 +35,7 @@ export default {
   data() {
     return {
       upload_text: "Start visualising...",
+      rotSett: false,
     };
   },
   methods: {
@@ -46,6 +47,18 @@ export default {
     },
     screenshot() {
       console.log("screenshot");
+    },
+    rotateSettings(e) {
+      // Add/remove rotatable class
+      this.rotSett = !this.rotSett;
+      if (this.rotSett) {
+        e.srcElement.firstChild.classList.add("rotatable");
+      } else {
+        e.srcElement.firstChild.classList.remove("rotatable");
+      }
+
+      // Emit corresponding event
+      this.$emit("toggle-settings");
     },
   },
 };
@@ -124,22 +137,28 @@ export default {
   width: 50px;
 }
 
+/* Rotate settings icon on click */
+.rotatable {
+  transform: rotate(-70deg);
+}
+
 /* Color image white and background var(--accent-color) when hovered */
 .nav_icons ul :hover,
 .nav_icons ul :focus,
 .import_data :hover,
 .import_data :focus {
   background: var(--accent-color);
-  color: white;
+  color: var(--background-color);
 }
+
 .nav_icons li:hover img,
 .import_data:hover img {
   filter: invert(1);
 }
 
 .nav_icons li img,
-.import_data img,
-.import_data span {
+.import_data div img,
+.import_data div span {
   pointer-events: none;
 }
 </style>
