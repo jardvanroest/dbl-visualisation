@@ -35,7 +35,18 @@ export default {
         }
 
         nodes = d3.max([nodes, u, v]);
-        edges.push({ from: u, to: v, index: i });
+        // Get index of edge in {edges}
+        let indexOfEdge = edges.findIndex(
+          (element) => element["from"] === u && element["to"] === v
+        );
+        // If edge does not exist
+        if (indexOfEdge === -1) {
+          // Push the edge
+          edges.push({ from: u, to: v, index: [i] });
+        } else {
+          // Else add new index
+          edges[indexOfEdge]["index"].push(i);
+        }
       }
 
       // Append the svg object to the div
@@ -70,7 +81,11 @@ export default {
         let from = edges[i]["from"];
         let to = edges[i]["to"];
 
-        data[to][from] = { fillColor: edgeCol, dataIndex: edges[i]["index"] };
+        data[to][from] = {
+          fillColor: edgeCol,
+          dataIndex: edges[i]["index"],
+          weight: edges[i]["index"].length,
+        };
       }
 
       // Create a group for each row so it can be translated vertically
@@ -114,7 +129,7 @@ export default {
             console.log(_data);
           } else {
             // If it exists log the data
-            console.log(d[_data["dataIndex"]]);
+            console.log(_data["dataIndex"]);
           }
         });
     },
