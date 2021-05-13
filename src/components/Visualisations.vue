@@ -22,6 +22,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
 .vis1 {
   grid-row: 1;
   grid-column: 1;

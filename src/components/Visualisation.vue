@@ -1,15 +1,11 @@
 <template>
-  <div class="container">
-    <div style="text-align: center">
-      <div id="area" style="padding: 30px">
-        <svg :id="id" viewBox="0 0 450 450">
-          <g>
-            <AdjacencyMatrix :id="id" v-if="type === 'adjacencymatrix'" />
-            <TestVis :id="id" v-if="type === 'testvis'" />
-          </g>
-        </svg>
-      </div>
-    </div>
+  <div id="area" style="padding: 30px">
+    <svg :id="id" viewBox="0 0 450 450">
+      <g>
+        <AdjacencyMatrix :id="id" v-if="type === 'adjacencymatrix'" />
+        <TestVis :id="id" v-if="type === 'testvis'" />
+      </g>
+    </svg>
   </div>
 </template>
 
@@ -26,10 +22,9 @@ export default {
     TestVis,
   },
   mounted() {
-    console.log("." + this.id);
-
     var g = d3
       .select("#" + this.id)
+      .attr("preserveAspectRatio", "xMinYMin meet")
       .call(
         d3
           .zoom()

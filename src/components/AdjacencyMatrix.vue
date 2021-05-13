@@ -1,8 +1,5 @@
 <template>
-  <!-- <div style="text-align: center">
-    <div id="area" style="padding: 30px"></div>
-  </div> -->
-  <rect></rect>
+  <p id="placeholder"></p>
 </template>
 
 <script>
@@ -16,6 +13,8 @@ export default {
   props: ["id"],
   methods: {
     generateMatrix() {
+      var g = d3.select("#" + this.id).selectChild("g");
+
       // Colors
       const edgeCol = "#DF848F";
       const normalCol = "#B8E0F6";
@@ -38,25 +37,6 @@ export default {
         nodes = d3.max([nodes, u, v]);
         edges.push([u, v]);
       }
-
-      // Append the svg object to the div
-      // var svg = d3
-      //   .select("#area")
-      //   .append("svg")
-      //   .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
-      //   .attr("viewBox", "0 0 450 450")
-      //   .classed("svg-content", true)
-      //   .append("g")
-      //   .call(
-      //     d3
-      //       .zoom()
-      //       .scaleExtent([1, 2])
-      //       .on("zoom", function (event) {
-      //         svg.attr("transform", event.transform);
-      //       })
-      //   );
-
-      var g = d3.select("#" + this.id).selectChild("g");
 
       // Set size variables
       const width = 426, // TODO: resizing shouldn't be hard coded in (might be fine tho)
@@ -120,17 +100,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-
-.svg-content {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-</style>
