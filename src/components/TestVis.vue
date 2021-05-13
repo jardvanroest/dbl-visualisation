@@ -1,7 +1,5 @@
 <template>
-  <div style="text-align: center">
-    <div id="area" style="padding: 30px"></div>
-  </div>
+  <rect></rect>
 </template>
 
 <script>
@@ -12,27 +10,18 @@ export default {
   mounted() {
     this.generateMatrix();
   },
+  props: ["id"],
   methods: {
     generateMatrix() {
       // Append the svg object to the div
-      var svg = d3
-        .select("#area")
-        .append("svg")
-        .call(
-          d3
-            .zoom()
-            .scaleExtent([1, 2])
-            .on("zoom", function (event) {
-              svg.attr("transform", event.transform);
-            })
-        )
-        .attr("viewBox", "0 0 450 450")
-        .append("g");
+
+      // var svg = d3.select("#" + this.id);
+
+      var g = d3.select("#" + this.id).selectChild("g");
 
       const width = 200;
 
-      svg
-        .append("rect")
+      g.append("rect")
         .attr("width", width)
         .attr("height", width)
         .attr("fill", "#d3d3d3");

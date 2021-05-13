@@ -1,7 +1,8 @@
 <template>
-  <div style="text-align: center">
+  <!-- <div style="text-align: center">
     <div id="area" style="padding: 30px"></div>
-  </div>
+  </div> -->
+  <rect></rect>
 </template>
 
 <script>
@@ -12,6 +13,7 @@ export default {
   mounted() {
     this.generateMatrix();
   },
+  props: ["id"],
   methods: {
     generateMatrix() {
       // Colors
@@ -38,21 +40,23 @@ export default {
       }
 
       // Append the svg object to the div
-      var svg = d3
-        .select("#area")
-        .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
-        .attr("viewBox", "0 0 450 450")
-        .classed("svg-content", true)
-        .append("g")
-        .call(
-          d3
-            .zoom()
-            .scaleExtent([1, 2])
-            .on("zoom", function (event) {
-              svg.attr("transform", event.transform);
-            })
-        );
+      // var svg = d3
+      //   .select("#area")
+      //   .append("svg")
+      //   .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
+      //   .attr("viewBox", "0 0 450 450")
+      //   .classed("svg-content", true)
+      //   .append("g")
+      //   .call(
+      //     d3
+      //       .zoom()
+      //       .scaleExtent([1, 2])
+      //       .on("zoom", function (event) {
+      //         svg.attr("transform", event.transform);
+      //       })
+      //   );
+
+      var g = d3.select("#" + this.id).selectChild("g");
 
       // Set size variables
       const width = 426, // TODO: resizing shouldn't be hard coded in (might be fine tho)
@@ -82,7 +86,7 @@ export default {
       }
 
       // Create a group for each row so it can be translated vertically
-      var rowGrp = svg
+      var rowGrp = g
         .selectAll("g")
         .data(data)
         .enter()
