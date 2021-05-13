@@ -1,30 +1,21 @@
 <template>
   <div id="area" style="padding: 30px">
-    <svg :id="id" viewBox="0 0 450 450">
-      <g>
-        <AdjacencyMatrix :id="id" v-if="type === 'adjacencymatrix'" />
-        <TestVis :id="id" v-if="type === 'testvis'" />
-      </g>
-    </svg>
+    <svg :id="id"></svg>
   </div>
 </template>
 
 <script>
-import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
-import TestVis from "@/components/TestVis.vue";
+import * as visualisations from "@/visualisations";
 import * as d3 from "d3";
 
 export default {
   name: "Visualisations",
   props: ["type", "id"],
-  components: {
-    AdjacencyMatrix,
-    TestVis,
-  },
   mounted() {
     var g = d3
       .select("#" + this.id)
       .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 450 450")
       .call(
         d3
           .zoom()
@@ -33,7 +24,12 @@ export default {
             g.attr("transform", event.transform);
           })
       )
-      .selectChild("g");
+      .append("g");
+
+    visualisations[this.type].create(
+      "#" + this.id,
+      this.$store.state.dataset.getRawData()
+    );
   },
 };
 </script>

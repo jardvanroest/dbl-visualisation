@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Visualisation id="vis1" class="vis1" type="adjacencymatrix" />
-    <Visualisation id="vis2" class="vis2" type="testvis" />
+    <Visualisation id="vis1" type="adjacency_matrix" />
+    <Visualisation id="vis2" type="test_vis" />
   </div>
 </template>
 
@@ -10,7 +10,6 @@ import Visualisation from "@/components/Visualisation.vue";
 
 export default {
   name: "Visualisations",
-  props: ["id"],
   components: {
     Visualisation,
   },
@@ -23,12 +22,12 @@ export default {
   grid-template-columns: 1fr 1fr;
 }
 
-.vis1 {
+#vis1 {
   grid-row: 1;
   grid-column: 1;
 }
 
-.vis2 {
+#vis2 {
   grid-row: 1;
   grid-column: 2;
 }
