@@ -67,10 +67,6 @@ export default {
 </script>
 
 <style scoped>
-div {
-  --settings-border: 2px solid var(--border-color);
-}
-
 /* Settings occupies 60% of the space */
 .settings {
   display: flex;
@@ -110,7 +106,7 @@ div {
 }
 
 .select_mode ul :hover {
-  color: var(--accent-color);
+  color: var(--accent-color-2);
 }
 
 .select_mode li {
@@ -151,7 +147,8 @@ div {
 /* Make open space for the selected settings type on bottom */
 .select_mode ul .selected {
   background-color: var(--background-color);
-  color: var(--accent-color-2);
+  font-weight: bold;
+  color: var(--accent-color);
   transition: step-start 200ms;
 }
 

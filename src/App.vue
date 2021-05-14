@@ -17,6 +17,7 @@
   --accent-color-2: #0f8c88;
   --background-color: white;
   --border-color: rgba(221, 221, 221);
+  --settings-border: 2px solid var(--border-color);
 }
 
 #app {
