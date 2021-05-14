@@ -8,6 +8,7 @@
 
 <script>
 import * as d3 from "d3";
+import { mapActions } from "vuex";
 
 export default {
   name: "AdjacencyMatrix",
@@ -15,14 +16,16 @@ export default {
     this.generateMatrix();
   },
   methods: {
+    ...mapActions(["changeInspetorData"]),
     generateMatrix() {
       // Colors and data object
       const edgeCol = "#DF848F";
-      const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
+      const normalCol = { fillColor: "#B8E0F6", dataIndex: [-1], weight: 0 }; // -1 for non-existing data points
 
       var d = this.$store.state.dataset.getRawData();
       var nodes = 0;
       var edges = [];
+      let vm = this; // Create correct {this.} context for use in d3
 
       // Iterate through {d} to compute {nodes} and {edges}
       for (let i = 0; i < d.length; i++) {
@@ -119,18 +122,9 @@ export default {
           // TODO: add node labels?
           else return d["fillColor"];
         })
-        // Add on click event
-        .on("click", function (event, _data) {
-          if (_data["dataIndex"] === -1) {
-            // In case edge doesn't exist
-            console.log("Edge does not exist in the adjacency matrix!");
-          } else if (_data["dataIndex"] === undefined) {
-            // If clicked on index row/column
-            console.log(_data);
-          } else {
-            // If it exists log the data
-            console.log(_data["dataIndex"]);
-          }
+        //On click change the inspector data by calling {changeInspectorData}
+        .on("click", function (event, data) {
+          vm.changeInspetorData(data);
         });
     },
   },
