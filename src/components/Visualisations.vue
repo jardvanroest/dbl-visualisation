@@ -21,10 +21,7 @@ export default {
 <style scoped>
 .container {
   display: grid;
-  /*
   grid-template-columns: 1fr 1fr;
-   */
-  grid-template-columns: 1fr;
 }
 .vis1 {
   grid-row: 1;
@@ -32,10 +29,7 @@ export default {
 }
 
 .vis2 {
-  display: none;
-  /* 
   grid-row: 1;
   grid-column: 2;
-  */
 }
 </style>
