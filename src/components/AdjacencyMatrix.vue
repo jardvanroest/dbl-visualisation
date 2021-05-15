@@ -1,23 +1,48 @@
 <template>
   <div style="text-align: center">
-    <h1>Adjacency Matrix</h1>
+    <h1 @click="asad">Adjacency Matrix</h1>
+
     <br />
-    <div id="area" style="padding: 30px"></div>
+    <div id="area" ref="container" style="padding: 30px">
+      <Tooltip
+        ref="tooltip"
+        :data="tooltip_data"
+        :posX="tooltip_posX"
+        :posY="tooltip_posY"
+        :visible="tooltip_visible"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
+import Tooltip from "./Tooltip";
+//import { convertIntoTooltipData } from "@/logic/componentsLogic";
 
 export default {
   name: "AdjacencyMatrix",
+  components: {
+    Tooltip,
+  },
+  data() {
+    return {
+      tooltip_data: {},
+      tooltip_posX: 0,
+      tooltip_posY: 0,
+      tooltip_visible: false,
+    };
+  },
   mounted() {
+    //setTimeout(() => {
     this.generateMatrix();
+    //}, 100);
   },
   methods: {
     generateMatrix() {
       // Colors
       // ADDED new colors
+      let outsideScope = this;
       const edgeCol = "#DF848F";
       const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
 
@@ -118,6 +143,22 @@ export default {
             // If it exists log the data
             console.log(d[i["dataIndex"]]);
           }
+        })
+        // hoover event
+        .on("mouseover", function (event, i) {
+          // method for creating an object
+          //console.log(event);
+          if (i["dataIndex"] !== undefined)
+            if (i["dataIndex"] > -1) {
+              // If it exists log the data
+              outsideScope.$data.tooltip_data = d[i["dataIndex"]];
+              outsideScope.$data.tooltip_posX = event.clientX;
+              outsideScope.$data.tooltip_posY = event.clientY;
+              outsideScope.$data.tooltip_visible = true;
+            }
+        })
+        .on("mouseleave", function () {
+          outsideScope.$data.tooltip_visible = false;
         });
     },
   },
@@ -135,5 +176,8 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
+}
+.laina {
+  top: 100;
 }
 </style>
