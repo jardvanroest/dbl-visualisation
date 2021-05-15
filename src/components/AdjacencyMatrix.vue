@@ -18,7 +18,7 @@
 <script>
 import * as d3 from "d3";
 import Tooltip from "./Tooltip";
-//import { convertIntoTooltipData } from "@/logic/componentsLogic";
+import { mapActions } from "vuex";
 
 export default {
   name: "AdjacencyMatrix",
@@ -39,16 +39,16 @@ export default {
     //}, 100);
   },
   methods: {
+    ...mapActions(["changeInspetorData"]),
     generateMatrix() {
-      // Colors
-      // ADDED new colors
       let outsideScope = this;
       const edgeCol = "#DF848F";
-      const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
+      const normalCol = { fillColor: "#B8E0F6", dataIndex: [-1], weight: 0 }; // -1 for non-existing data points
 
       var d = this.$store.state.dataset.getRawData();
       var nodes = 0;
       var edges = [];
+      let vm = this; // Create correct {this.} context for use in d3
 
       // Iterate through {d} to compute {nodes} and {edges}
       for (let i = 0; i < d.length; i++) {
@@ -60,8 +60,19 @@ export default {
           continue;
         }
 
-        nodes = d3.max([nodes, u, v]); //WHY count nodes in such a way also maybe transpose matrix?
-        edges.push({ from: u, to: v, index: i }); // ADDED passes on {i} for additional data + object
+        nodes = d3.max([nodes, u, v]);
+        // Get index of edge in {edges}
+        let indexOfEdge = edges.findIndex(
+          (element) => element["from"] === u && element["to"] === v
+        );
+        // If edge does not exist
+        if (indexOfEdge === -1) {
+          // Push the edge
+          edges.push({ from: u, to: v, index: [i] });
+        } else {
+          // Else add new index
+          edges[indexOfEdge]["index"].push(i);
+        }
       }
 
       // Append the svg object to the div
@@ -93,10 +104,14 @@ export default {
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
-        let from = edges[i]["from"]; // ADDED new way because using object
-        let to = edges[i]["to"]; // ADDED new way because using object
+        let from = edges[i]["from"];
+        let to = edges[i]["to"];
 
-        data[to][from] = { fillColor: edgeCol, dataIndex: edges[i]["index"] };
+        data[to][from] = {
+          fillColor: edgeCol,
+          dataIndex: edges[i]["index"],
+          weight: edges[i]["index"].length,
+        };
       }
 
       // Create a group for each row so it can be translated vertically
@@ -128,30 +143,20 @@ export default {
           // Color based on {data} matrix
           if (Number.isInteger(d)) return "#d3d3d3";
           // TODO: add node labels?
-          // ADDED new way to color based on new data
           else return d["fillColor"];
         })
         // ADDED click event
-        .on("click", function (event, i) {
-          if (i["dataIndex"] === -1) {
-            // In case edge doesn't exist
-            console.log("Edge does not exist in the adjacency matrix!");
-          } else if (i["dataIndex"] === undefined) {
-            // If clicked on index row/column
-            console.log(i);
-          } else {
-            // If it exists log the data
-            console.log(d[i["dataIndex"]]);
-          }
+        .on("click", function (event, data) {
+          vm.changeInspetorData(data);
         })
         // hoover event
-        .on("mouseover", function (event, i) {
+        .on("mouseover", function (event, data) {
           // method for creating an object
           //console.log(event);
-          if (i["dataIndex"] !== undefined)
-            if (i["dataIndex"] > -1) {
+          if (data["dataIndex"] !== undefined)
+            if (data["dataIndex"] > -1) {
               // If it exists log the data
-              outsideScope.$data.tooltip_data = d[i["dataIndex"]];
+              outsideScope.$data.tooltip_data = d[data["dataIndex"]];
               outsideScope.$data.tooltip_posX = event.clientX;
               outsideScope.$data.tooltip_posY = event.clientY;
               outsideScope.$data.tooltip_visible = true;
