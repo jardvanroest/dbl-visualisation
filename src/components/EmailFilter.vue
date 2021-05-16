@@ -47,8 +47,6 @@ export default {
         )
         .sort((personA, personB) => personB.isSelected - personA.isSelected);
 
-      console.log(persons[0].isSelected);
-
       if (this.searchTextLowerCase === "") {
         return persons;
       } else {

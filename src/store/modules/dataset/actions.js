@@ -2,30 +2,32 @@ export default {
   saveData(context, data) {
     data.forEach((entry) => {
       const email = {
-        date: entry.date,
-        fromId: entry.fromId,
-        toId: entry.toId,
+        date: Date.parse(entry.date),
+        fromId: parseInt(entry.fromId),
+        toId: parseInt(entry.toId),
         messageType: entry.messageType,
-        sentiment: entry.sentiment,
+        sentiment: parseFloat(entry.sentiment),
       };
 
       const sendingPerson = {
-        id: entry.fromId,
+        id: parseInt(entry.fromId),
         emailAddress: entry.fromEmail,
         jobTitle: entry.fromJobtitle,
-        isSelected: false,
+        sendEmails: [],
+        receivedEmails: [],
       };
 
       const receivingPerson = {
-        id: entry.toId,
+        id: parseInt(entry.toId),
         emailAddress: entry.toEmail,
         jobTitle: entry.toJobTitle,
-        isSelected: false,
+        sendEmails: [],
+        receivedEmails: [],
       };
 
-      context.commit("addEmail", email);
       context.commit("addPerson", sendingPerson);
       context.commit("addPerson", receivingPerson);
+      context.commit("addEmail", email);
     });
   },
 };
