@@ -36,6 +36,5 @@ export default {
   },
   setFilteredInPersons(context, persons) {
     context.commit("setFilteredInPersons", persons);
-    console.log("done with action");
   },
 };

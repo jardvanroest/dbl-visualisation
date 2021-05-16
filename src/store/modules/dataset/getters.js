@@ -11,7 +11,6 @@ export default {
       person.sendEmails.concat(person.receivedEmails)
     );
 
-    console.log("done with filtering emails");
     return [...new Set(filteredEmails)];
   },
   persons(state) {

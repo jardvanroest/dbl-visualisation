@@ -8,7 +8,6 @@ export default {
     }
   },
   setFilteredInPersons(state, persons) {
-    console.log("Setting filtered in persons");
     state.filteredInPersons = persons;
   },
   addSendEmailToPerson(state, payload) {

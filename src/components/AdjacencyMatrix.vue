@@ -34,7 +34,7 @@ export default {
       const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
 
       var d = this.filteredEmails;
-      var nodes = 0;
+      var nodes = this.numberOfPersons;
       var edges = [];
 
       // Iterate through {d} to compute {nodes} and {edges}
@@ -85,7 +85,6 @@ export default {
         data[to][from] = { fillColor: edgeCol, dataIndex: edges[i]["index"] };
       }
 
-      console.log("Start rowgroup creation");
       // Create a group for each row so it can be translated vertically
       var rowGrp = svg
         .selectAll("g")
