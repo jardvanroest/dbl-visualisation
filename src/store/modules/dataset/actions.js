@@ -21,7 +21,7 @@ export default {
       const receivingPerson = {
         id: parseInt(entry.toId),
         emailAddress: entry.toEmail,
-        jobTitle: entry.toJobTitle,
+        jobTitle: entry.toJobtitle,
         sendEmails: [],
         receivedEmails: [],
         isSelectedInEmailFilter: false,
