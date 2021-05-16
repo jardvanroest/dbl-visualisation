@@ -5,4 +5,3 @@ export function convertIntoTooltipData_Aliases(obj, aliases) {
   }
   return returnObj;
 }
-

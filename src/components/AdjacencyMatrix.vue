@@ -151,12 +151,9 @@ export default {
         })
         // hoover event
         .on("mouseover", function (event, data) {
-          // method for creating an object
-          //console.log(event);
-          if (data["dataIndex"] !== undefined)
-            if (data["dataIndex"] > -1) {
-              // If it exists log the data
-              outsideScope.$data.tooltip_data = d[data["dataIndex"]];
+          if (data["dataIndex"][0] !== undefined)
+            if (data["weight"] > 0) {
+              outsideScope.$data.tooltip_data = d[data["dataIndex"][0]]; // for now it shows only the first row of data;  
               outsideScope.$data.tooltip_posX = event.clientX;
               outsideScope.$data.tooltip_posY = event.clientY;
               outsideScope.$data.tooltip_visible = true;
