@@ -15,6 +15,7 @@ export default {
         jobTitle: entry.fromJobtitle,
         sendEmails: [],
         receivedEmails: [],
+        isSelectedInEmailFilter: false,
       };
 
       const receivingPerson = {
@@ -23,11 +24,18 @@ export default {
         jobTitle: entry.toJobTitle,
         sendEmails: [],
         receivedEmails: [],
+        isSelectedInEmailFilter: false,
       };
 
       context.commit("addPerson", sendingPerson);
       context.commit("addPerson", receivingPerson);
       context.commit("addEmail", email);
+      context.commit("addSendEmailToPerson", { id: email.fromId, email });
+      context.commit("addReceivedEmailToPerson", { id: email.toId, email });
     });
+  },
+  setFilteredInPersons(context, persons) {
+    context.commit("setFilteredInPersons", persons);
+    console.log("done with action");
   },
 };

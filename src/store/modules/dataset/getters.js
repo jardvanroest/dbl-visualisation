@@ -1,11 +1,18 @@
 export default {
-  emails(state, getters) {
-    if (getters.thereAreSelectedEmailAddresses) {
-      const filteredEmails = getFilteredEmails(state);
-      return filteredEmails;
-    } else {
-      return state.emails;
-    }
+  emails(state) {
+    return state.emails;
+  },
+  filteredEmails(state, getters) {
+    if (!getters.thereAreSelectedEmailAddresses) return state.emails;
+
+    const persons = state.filteredInPersons;
+
+    const filteredEmails = persons.flatMap((person) =>
+      person.sendEmails.concat(person.receivedEmails)
+    );
+
+    console.log("done with filtering emails");
+    return [...new Set(filteredEmails)];
   },
   persons(state) {
     return Object.values(state.persons);
@@ -13,26 +20,7 @@ export default {
   numberOfPersons(state, getters) {
     return getters.persons.length;
   },
-  thereAreSelectedEmailAddresses(state, getters) {
-    return getters.persons.some((person) => person.isSelected);
+  thereAreSelectedEmailAddresses(state) {
+    return state.filteredInPersons.length > 0;
   },
 };
-
-function getFilteredEmails(state) {
-  const filteredEmails = [];
-
-  state.emails.forEach((email) => {
-    if (
-      isSelectedPerson(state, email.fromId) ||
-      isSelectedPerson(state, email.toId)
-    ) {
-      filteredEmails.push(email);
-    }
-  });
-
-  return filteredEmails;
-}
-
-function isSelectedPerson(state, id) {
-  return state.persons[id].isSelected;
-}

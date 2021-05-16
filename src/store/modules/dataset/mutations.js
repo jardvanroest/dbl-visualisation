@@ -3,6 +3,18 @@ export default {
     state.emails.push(email);
   },
   addPerson(state, person) {
-    state.persons[person.id] = person;
+    if (state.persons[person.id] === undefined) {
+      state.persons[person.id] = person;
+    }
+  },
+  setFilteredInPersons(state, persons) {
+    console.log("Setting filtered in persons");
+    state.filteredInPersons = persons;
+  },
+  addSendEmailToPerson(state, payload) {
+    state.persons[payload.id].sendEmails.push(payload.email);
+  },
+  addReceivedEmailToPerson(state, payload) {
+    state.persons[payload.id].receivedEmails.push(payload.email);
   },
 };

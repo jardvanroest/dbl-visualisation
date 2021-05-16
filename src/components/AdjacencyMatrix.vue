@@ -13,10 +13,10 @@ import { mapGetters } from "vuex";
 export default {
   name: "AdjacencyMatrix",
   computed: {
-    ...mapGetters(["emails", "numberOfPersons"]),
+    ...mapGetters(["filteredEmails", "numberOfPersons"]),
   },
   watch: {
-    emails: {
+    filteredEmails: {
       deep: true,
       handler() {
         d3.select("svg").remove();
@@ -34,7 +34,9 @@ export default {
       const normalCol = "#B8E0F6";
 
       const nodes = this.numberOfPersons;
-      const edges = this.emails;
+      const edges = this.filteredEmails;
+
+      console.log("Redraw");
 
       // Append the svg object to the div
       const svg = d3
@@ -63,6 +65,7 @@ export default {
         data.push(temp);
       }
 
+      console.log("Start population");
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
         let u = edges[i].fromId;
@@ -70,7 +73,9 @@ export default {
 
         data[u][v] = edgeCol;
       }
+      console.log("End population");
 
+      console.log("Start rowgroup creation");
       // Create a group for each row so it can be translated vertically
       var rowGrp = svg
         .selectAll("g")
@@ -82,6 +87,7 @@ export default {
           return "translate(0, " + (rectLen + rectMargin) * i + ")";
         });
 
+      console.log("Start adding rectangles");
       // Add rectangles for each row group and color accordingly
       rowGrp
         .selectAll("g")
@@ -102,6 +108,7 @@ export default {
           // TODO: add node labels?
           else return d.toString();
         });
+      console.log("End");
     },
   },
 };

@@ -15,7 +15,7 @@
         <input
           type="checkbox"
           name="checkbox-item"
-          v-model="person.isSelected"
+          v-model="person.isSelectedInEmailFilter"
         />
         <label class="email-adress" for="checkbox-item">{{
           person.emailAddress
@@ -32,11 +32,17 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
     return { numShownEmailAddresses: 10, searchText: "" };
+  },
+  watch: {
+    selectedPersons(currentlySelectedPersons) {
+      console.log(currentlySelectedPersons);
+      this.setFilteredInPersons(currentlySelectedPersons);
+    },
   },
   computed: {
     ...mapGetters(["persons"]),
@@ -45,7 +51,10 @@ export default {
         .sort((personA, personB) =>
           personA.emailAddress < personB.emailAddress ? -1 : 1
         )
-        .sort((personA, personB) => personB.isSelected - personA.isSelected);
+        .sort(
+          (personA, personB) =>
+            personB.isSelectedInEmailFilter - personA.isSelectedInEmailFilter
+        );
 
       if (this.searchTextLowerCase === "") {
         return persons;
@@ -58,11 +67,15 @@ export default {
     searchTextLowerCase() {
       return this.searchText.toLowerCase();
     },
+    selectedPersons() {
+      return this.persons.filter((x) => x.isSelectedInEmailFilter);
+    },
   },
   methods: {
     increaseShownEmailAddresses() {
       this.numShownEmailAddresses += 5;
     },
+    ...mapActions(["setFilteredInPersons"]),
   },
 };
 </script>
