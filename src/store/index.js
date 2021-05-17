@@ -1,7 +1,8 @@
 import { createStore } from "vuex";
+import dataset from "./modules/dataset";
 
 export default createStore({
-  state: {
-    dataset: undefined,
+  modules: {
+    dataset,
   },
 });

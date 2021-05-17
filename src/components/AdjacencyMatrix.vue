@@ -8,9 +8,22 @@
 
 <script>
 import * as d3 from "d3";
+import { mapGetters } from "vuex";
 
 export default {
   name: "AdjacencyMatrix",
+  computed: {
+    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
+  },
+  watch: {
+    filteredEmails: {
+      deep: true,
+      handler() {
+        this.resetMatrix();
+        this.generateMatrix();
+      },
+    },
+  },
   mounted() {
     this.generateMatrix();
   },
@@ -20,8 +33,9 @@ export default {
       const edgeCol = "#DF848F";
       const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
 
-      var d = this.$store.state.dataset.getRawData();
-      var nodes = 0;
+      var d = this.filteredEmails;
+      var nodes = this.numberOfPersons;
+
       var edges = [];
 
       // Iterate through {d} to compute {nodes} and {edges}
@@ -34,12 +48,11 @@ export default {
           continue;
         }
 
-        nodes = d3.max([nodes, u, v]);
         edges.push({ from: u, to: v, index: i });
       }
 
       // Append the svg object to the div
-      var svg = d3
+      const svg = d3
         .select("#area")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
@@ -117,6 +130,9 @@ export default {
             console.log(d[_data["dataIndex"]]);
           }
         });
+    },
+    resetMatrix() {
+      d3.select("svg").remove();
     },
   },
 };
