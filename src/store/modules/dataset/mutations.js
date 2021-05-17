@@ -2,7 +2,7 @@ export default {
   removeCurrentDataset(state) {
     state.emails = [];
     state.persons = {};
-    state.setFilteredPersons = [];
+    state.filteredPersons = [];
   },
   addEmail(state, email) {
     state.emails.push(email);
