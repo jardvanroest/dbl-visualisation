@@ -18,7 +18,7 @@ export default {
 <style scoped>
 /* Format section titles */
 .section {
-  margin-top: 1em;
+  margin-top: 0.8em;
 
   font-weight: bold;
   font-size: 12pt;

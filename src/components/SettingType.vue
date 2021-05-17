@@ -1,6 +1,5 @@
 <template>
-  <div class="container">
-    {{ text }}
+  <div class="container-settingType">
     <slot></slot>
   </div>
 </template>
@@ -8,16 +7,19 @@
 <script>
 export default {
   name: "Settings",
-  props: {
-    text: String,
-  },
 };
 </script>
 
 <style scoped>
-.container {
+.container-settingType {
+  padding-left: 15px;
+  margin: 1em 0;
   height: 100%;
+
+  font-size: 10pt;
   background-color: lemonchiffon;
-  padding-left: 4px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

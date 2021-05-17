@@ -4,11 +4,11 @@
       <Section title="Sender" first="true" />
       <inspectorField field="Email" :info="sender['email']" />
       <inspectorField field="Id" :info="sender['id']" />
-      <inspectorField field="Job" :info="sender['jobTitle']" />
+      <inspectorField field="Title" :info="sender['jobTitle']" />
       <Section title="Recipient" />
       <inspectorField field="Email" :info="recipient['email']" />
       <inspectorField field="Id" :info="recipient['id']" />
-      <inspectorField field="Job" :info="recipient['jobTitle']" />
+      <inspectorField field="Title" :info="recipient['jobTitle']" />
       <Section title="Additional information" />
       <div class="nodeColor">
         <inspectorField field="Node color" :info="nodeColor" />

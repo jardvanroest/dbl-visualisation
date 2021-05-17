@@ -1,7 +1,9 @@
 <template>
-  <span class="field" :class="{ tabbed: tabbed }">{{ field }}: </span>
-  <span>{{ info }}</span>
-  <br />
+  <div :class="{ smallerText: tabbed }">
+    <span class="field" :class="{ tabbed: tabbed }">{{ field }}: </span>
+    <span>{{ info }}</span>
+    <br />
+  </div>
 </template>
 
 <script>
@@ -25,5 +27,9 @@ export default {
 
 .tabbed {
   margin-left: 1.4em;
+}
+
+.smallerText {
+  font-size: 9pt;
 }
 </style>

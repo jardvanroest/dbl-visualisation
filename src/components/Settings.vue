@@ -9,7 +9,7 @@
         </ul>
       </div>
       <div class="selected_setting_type">
-        <SettingType text="Global">
+        <SettingType>
           <Setting name="Filter e-mail">
             <EmailFilter />
           </Setting>
@@ -79,7 +79,7 @@ export default {
 .settings {
   display: flex;
   flex-direction: column;
-  height: 60%;
+  height: 65%;
 }
 
 /* Occupy remaining space */
@@ -103,6 +103,10 @@ export default {
 }
 
 /* Settings type selection */
+.select_mode {
+  height: 40px;
+}
+
 .select_mode ul {
   padding: 0;
   margin: 0;
