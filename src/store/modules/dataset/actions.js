@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-export default {
-  changeInspetorData(context, newData) {
-    context.commit("newInspectorData", newData);
-=======
 import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
+  changeInspetorData(context, newData) {
+    context.commit("newInspectorData", newData);
+  },
   saveData(context, data) {
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
 
@@ -21,6 +19,5 @@ export default {
   },
   setFilteredPersons(context, persons) {
     context.commit("setFilteredPersons", persons);
->>>>>>> main
   },
 };

@@ -1,8 +1,4 @@
 export default {
-<<<<<<< HEAD
-  newInspectorData(state, newData) {
-    state.inspectorData = newData;
-=======
   removeCurrentDataset(state) {
     state.emails = [];
     state.persons = {};
@@ -20,6 +16,8 @@ export default {
   },
   setFilteredPersons(state, persons) {
     state.filteredPersons = persons;
->>>>>>> main
+  },
+  newInspectorData(state, newData) {
+    state.inspectorData = newData;
   },
 };

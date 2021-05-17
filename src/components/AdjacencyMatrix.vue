@@ -1,18 +1,12 @@
 <template>
-  <div style="text-align: center">
-    <h1>Adjacency Matrix</h1>
-    <br />
+  <div>
     <div id="area" style="padding: 30px"></div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
-<<<<<<< HEAD
-import { mapActions } from "vuex";
-=======
-import { mapGetters } from "vuex";
->>>>>>> main
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "AdjacencyMatrix",
@@ -32,7 +26,7 @@ export default {
     this.generateMatrix();
   },
   methods: {
-    ...mapActions(["changeInspetorData"]),
+    ...mapActions("dataset", ["changeInspetorData"]),
     generateMatrix() {
       // Colors
       const edgeCol = "#DF848F";
@@ -54,8 +48,6 @@ export default {
           continue;
         }
 
-<<<<<<< HEAD
-        nodes = d3.max([nodes, u, v]);
         // Get index of edge in {edges}
         let indexOfEdge = edges.findIndex(
           (element) => element["from"] === u && element["to"] === v
@@ -68,9 +60,6 @@ export default {
           // Else add new index
           edges[indexOfEdge]["index"].push(i);
         }
-=======
-        edges.push({ from: u, to: v, index: i });
->>>>>>> main
       }
 
       // Append the svg object to the div

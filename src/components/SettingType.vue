@@ -1,11 +1,7 @@
 <template>
   <div class="container">
-<<<<<<< HEAD
-    <div>{{ text }}</div>
-=======
     {{ text }}
     <slot></slot>
->>>>>>> main
   </div>
 </template>
 

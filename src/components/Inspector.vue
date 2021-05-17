@@ -1,23 +1,15 @@
 <template>
-  <div class="container">
-    <div v-if="emailsExist">
-      <div class="section">Sender</div>
-      <hr />
-      <inspectorField field="Email" :info="email['fromEmail']" />
-      <inspectorField field="Id" :info="email['fromId']" />
-      <inspectorField field="Job" :info="email['fromJobtitle']" />
-      <div class="section">Recipient</div>
-      <hr />
-      <inspectorField field="Email" :info="email['toEmail']" />
-      <inspectorField field="Id" :info="email['toId']" />
-      <inspectorField field="Job" :info="email['toJobtitle']" />
-      <div class="section">Additional information</div>
-      <hr />
-      <inspectorField field="Emails" :info="newData['weight']" />
-      <inspectorField v-if="!sameDate" field="First date" :info="minDate" />
-      <inspectorField v-if="!sameDate" field="Last date" :info="maxDate" />
-      <inspectorField v-if="sameDate" field="Date" :info="minDate" />
-      <inspectorField field="Average sentiment" :info="avgSentiment" />
+  <div class="container-inspector">
+    <div v-if="nodeHasBeenClicked">
+      <Section title="Sender" first="true" />
+      <inspectorField field="Email" :info="sender['email']" />
+      <inspectorField field="Id" :info="sender['id']" />
+      <inspectorField field="Job" :info="sender['jobTitle']" />
+      <Section title="Recipient" />
+      <inspectorField field="Email" :info="recipient['email']" />
+      <inspectorField field="Id" :info="recipient['id']" />
+      <inspectorField field="Job" :info="recipient['jobTitle']" />
+      <Section title="Additional information" />
       <div class="nodeColor">
         <inspectorField field="Node color" :info="nodeColor" />
         <svg>
@@ -27,8 +19,17 @@
             height="100%"
             rx="2"
             ry="2"
-          ></rect>
+          />
         </svg>
+      </div>
+      <inspectorField field="Emails" :info="numEmails" />
+      <div v-if="emailsExist">
+        <inspectorField field="TO" tabbed="true" :info="messageTypeTO" />
+        <inspectorField field="CC" tabbed="true" :info="messageTypeCC" />
+        <inspectorField v-if="!sameDate" field="From" :info="minDate" />
+        <inspectorField v-if="!sameDate" field="Until" :info="maxDate" />
+        <inspectorField v-if="sameDate" field="Date" :info="minDate" />
+        <inspectorField field="Average sentiment" :info="avgSentiment" />
       </div>
     </div>
     <div v-else>Click on a node to dislay information about it!</div>
@@ -37,15 +38,17 @@
 
 <script>
 import InspectorField from "@/components/InspectorField.vue";
+import Section from "@/components/Section.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Inspector",
   components: {
     InspectorField,
+    Section,
   },
   computed: {
-    ...mapGetters(["getInspectorData"]),
+    ...mapGetters("dataset", ["getInspectorData", "emails", "persons"]),
   },
   watch: {
     // Watch for a new incoming {inspectorData}
@@ -59,71 +62,103 @@ export default {
   },
   data() {
     return {
+      nodeHasBeenClicked: false,
       emailsExist: false,
-      title: "Email correspondance",
+      numEmails: 0,
       newData: "none",
-      email: "none",
+      sender: "none",
+      recipient: "none",
       nodeColor: "#FFFFFF",
       dates: [],
       minDate: 0,
       maxDate: 0,
       sameDate: false,
-      avgSentiment: 0,
       sentiments: [],
-      messageTypes: [],
+      avgSentiment: 0,
+      messageTypeCC: 0,
+      messageTypeTO: 0,
     };
   },
   methods: {
     incomingNewData(newData) {
-      console.clear();
-      console.log(newData);
-      const dataset = this.$store.state.dataset.getRawData();
+      this.nodeHasBeenClicked = true;
+      var dataset = this.emails;
 
-      this.emailsExist = newData["weight"] > 0;
-      this.email = dataset[newData["dataIndex"][0]];
       this.newData = newData;
+      this.numEmails = newData["weight"];
+      this.emailsExist = newData["weight"] > 0;
       this.nodeColor = newData["fillColor"].toLowerCase();
+      // Get sender and recipient information
+      this.sender = this.returnPersonObject(this.persons[newData["from"] - 1]);
+      this.recipient = this.returnPersonObject(this.persons[newData["to"] - 1]);
 
       // If the two people have sent emails between eachother
       if (this.emailsExist) {
-        // Reset dates
-        this.dates = [];
+        // Reset data to original values
+        this.resetData();
+
+        // Set initial {minDate} and {maxDate}
         this.maxDate = new Date("1001-01-01");
         this.minDate = new Date("3001-01-01");
 
         newData["dataIndex"].forEach((index) => {
-          // Get all sentiments and messageTypes
+          // Get all sentiments
           this.sentiments.push(parseFloat(dataset[index]["sentiment"]));
-          this.messageTypes.push(dataset[index]["messageType"]);
+
+          // Count different {messageTypes}
+          this.messageTypesCount(dataset[index]["messageType"]);
 
           // Get all dates and calculate the first and last one
           var currentDate = new Date(dataset[index]["date"]);
           this.dates.push(currentDate.toDateString());
-
           if (currentDate < this.minDate) this.minDate = currentDate;
           if (currentDate > this.maxDate) this.maxDate = currentDate;
         });
-        // Check if same date
+        // Check if its the same date
         if (this.minDate === this.maxDate) this.sameDate = true;
         else this.sameDate = false;
 
         // Convert dates to correct format
-        this.minDate = this.minDate.toDateString();
-        this.maxDate = this.maxDate.toDateString();
+        this.minDate = this.formatDate(this.minDate);
+        this.maxDate = this.formatDate(this.maxDate);
 
         // Get average sentiment
-        const arrAvg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
-        this.avgSentiment = arrAvg(this.sentiments).toPrecision(3);
+        this.avgSentiment = this.getAvgValue(this.sentiments).toPrecision(3);
       }
+    },
+    resetData() {
+      this.dates = [];
+      this.sentiments = [];
+      this.messageTypeCC = 0;
+      this.messageTypeTO = 0;
+    },
+    returnPersonObject(_person) {
+      return {
+        email: _person["emailAddress"],
+        id: _person["id"],
+        jobTitle: _person["jobTitle"],
+        isSelectedInEmailFilter: _person["isSelectedInEmailFilter"],
+      };
+    },
+    messageTypesCount(messageType) {
+      if (messageType === "CC") this.messageTypeCC++;
+      else this.messageTypeTO++;
+    },
+    getAvgValue(array) {
+      const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+      return AvgVal(array);
+    },
+    formatDate(date) {
+      return date.toDateString().split(" ").slice(1).join(" ");
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
-.container {
+.container-inspector {
   padding-left: 15px;
-  padding-bottom: 25px;
+  margin: 1em 0;
   font-size: 10pt;
 
   overflow-y: auto;
@@ -144,24 +179,5 @@ export default {
 
 .nodeColor svg rect {
   fill: blue;
-}
-
-/* Style horizontal lines */
-hr {
-  margin-top: 3px;
-  margin-bottom: 1px;
-  margin-right: 5px;
-  border: none;
-  border-top: 1px solid var(--border-color);
-}
-
-/* Format sections */
-.section {
-  margin-top: 1em;
-
-  font-weight: bold;
-  font-size: 12pt;
-  text-transform: capitalize;
-  color: var(--accent-color);
 }
 </style>

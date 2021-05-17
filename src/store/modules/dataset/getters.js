@@ -1,10 +1,4 @@
 export default {
-<<<<<<< HEAD
-  getInspectorData(state) {
-    return state.inspectorData;
-  },
-};
-=======
   emails(state) {
     return state.emails;
   },
@@ -28,9 +22,11 @@ export default {
   thereAreAddressesSelectedInTheEmailFilter(state) {
     return state.filteredPersons.length > 0;
   },
+  getInspectorData(state) {
+    return state.inspectorData;
+  },
 };
 
 function makeUnique(array) {
   return [...new Set(array)];
 }
->>>>>>> main
