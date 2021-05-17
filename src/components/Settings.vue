@@ -71,6 +71,41 @@ export default {
       }
     },
   },
+  data() {
+    return {
+      lastSelected: 0,
+    };
+  },
+  methods: {
+    selectSettings(n) {
+      // Don't switch settings type if nothing changed
+      if (this.lastSelected != n) {
+        // Get the newly selected selection li
+        var selection = document.getElementsByClassName("select_mode")[0]
+          .children[0].children;
+
+        // Unselect previous selected settings type
+        selection[this.lastSelected].classList.remove("selected");
+
+        // Select current selected settings type
+        selection[n].classList.add("selected");
+
+        // Get the newly selected settingsType element
+        var selSettingsType = document.getElementsByClassName(
+          "selected_setting_type"
+        )[0].children;
+
+        // Unselect previous selected settings type
+        selSettingsType[this.lastSelected].classList.add("unselected");
+
+        // Select current selected settings type
+        selSettingsType[n].classList.remove("unselected");
+
+        // Update lastSelected
+        this.lastSelected = n;
+      }
+    },
+  },
 };
 </script>
 

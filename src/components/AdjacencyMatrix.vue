@@ -35,6 +35,7 @@ export default {
 
       var d = this.filteredEmails;
       var nodes = this.numberOfPersons;
+
       var edges = [];
 
       // Iterate through {d} to compute {nodes} and {edges}
