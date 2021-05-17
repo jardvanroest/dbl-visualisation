@@ -56,9 +56,6 @@ export default {
 
       return searchedPersons;
     },
-    searchBoxIsEmpty() {
-      return this.searchText === "";
-    },
     searchTextAsLowerCaseText() {
       return this.searchText.toLowerCase();
     },
