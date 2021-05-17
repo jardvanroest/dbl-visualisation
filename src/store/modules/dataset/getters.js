@@ -11,7 +11,7 @@ export default {
       person.sendEmails.concat(person.receivedEmails)
     );
 
-    return [...new Set(filteredEmails)];
+    return makeUnique(filteredEmails);
   },
   persons(state) {
     return Object.values(state.persons);
@@ -23,3 +23,7 @@ export default {
     return state.filteredInPersons.length > 0;
   },
 };
+
+function makeUnique(array) {
+  return [...new Set(array)];
+}
