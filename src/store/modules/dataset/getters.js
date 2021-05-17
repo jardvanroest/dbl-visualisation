@@ -5,7 +5,7 @@ export default {
   filteredEmails(state, getters) {
     if (!getters.thereAreSelectedEmailAddresses) return state.emails;
 
-    const persons = state.filteredInPersons;
+    const persons = state.filteredPersons;
 
     const filteredEmails = persons.flatMap((person) =>
       person.sendEmails.concat(person.receivedEmails)
@@ -20,7 +20,7 @@ export default {
     return getters.persons.length;
   },
   thereAreSelectedEmailAddresses(state) {
-    return state.filteredInPersons.length > 0;
+    return state.filteredPersons.length > 0;
   },
 };
 

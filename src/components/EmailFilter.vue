@@ -40,7 +40,7 @@ export default {
   },
   watch: {
     selectedPersons(currentlySelectedPersons) {
-      this.setFilteredInPersons(currentlySelectedPersons);
+      this.setFilteredPersons(currentlySelectedPersons);
     },
   },
   computed: {
@@ -66,7 +66,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("dataset", ["setFilteredInPersons"]),
+    ...mapActions("dataset", ["setFilteredPersons"]),
     increaseShownEmailAddresses() {
       this.numShownEmailAddresses += 10;
     },

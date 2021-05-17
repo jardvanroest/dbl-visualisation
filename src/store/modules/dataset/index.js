@@ -8,7 +8,7 @@ export default {
     return {
       persons: {},
       emails: [],
-      filteredInPersons: [],
+      filteredPersons: [],
     };
   },
   getters,
