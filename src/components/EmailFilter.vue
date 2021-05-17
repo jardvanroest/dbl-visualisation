@@ -51,13 +51,10 @@ export default {
     searchedPersons() {
       const persons = this.sortedPersons;
       const searchedPersons = persons.filter((person) =>
-        person.emailAddress.includes(this.searchTextAsLowerCaseText)
+        person.emailAddress.includes(this.searchText.toLowerCase())
       );
 
       return searchedPersons;
-    },
-    searchTextAsLowerCaseText() {
-      return this.searchText.toLowerCase();
     },
     selectedPersons() {
       return this.persons.filter((x) => x.isSelectedInEmailFilter);
