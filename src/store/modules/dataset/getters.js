@@ -3,7 +3,7 @@ export default {
     return state.emails;
   },
   filteredEmails(state, getters) {
-    if (!getters.thereAreSelectedEmailAddresses) return state.emails;
+    if (!getters.thereAreAddressesSelectedInTheEmailFilter) return state.emails;
 
     const persons = state.filteredPersons;
 
@@ -19,7 +19,7 @@ export default {
   numberOfPersons(state, getters) {
     return getters.persons.length;
   },
-  thereAreSelectedEmailAddresses(state) {
+  thereAreAddressesSelectedInTheEmailFilter(state) {
     return state.filteredPersons.length > 0;
   },
 };
