@@ -1,5 +1,5 @@
 <template>
-  <div class="container-inspector">
+  <div class="inspector-container">
     <div v-if="nodeHasBeenClicked">
       <Section title="Sender" first="true" />
       <inspectorField field="Email" :info="sender['email']" />
@@ -32,7 +32,10 @@
         <inspectorField field="Average sentiment" :info="avgSentiment" />
       </div>
     </div>
-    <div v-else>Click on a node to dislay information about it!</div>
+    <div v-else class="no-information">
+      Try clicking on a node to display information about it!
+      <img src="@/assets/icons/analysis.svg" alt="upload" />
+    </div>
   </div>
 </template>
 
@@ -156,9 +159,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container-inspector {
+.inspector-container {
+  display: table-cell;
+  padding: 1em 0;
   padding-left: 15px;
-  margin: 1em 0;
   font-size: 10pt;
 
   overflow-y: auto;
@@ -179,5 +183,16 @@ export default {
 
 .nodeColor svg rect {
   fill: blue;
+}
+
+/* Format text at the beginning */
+.no-information {
+  font-size: 12pt;
+}
+
+.no-information img {
+  margin-left: 50px;
+  margin-top: 10px;
+  width: 150px;
 }
 </style>

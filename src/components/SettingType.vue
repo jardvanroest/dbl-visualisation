@@ -12,13 +12,11 @@ export default {
 
 <style scoped>
 .container-settingType {
+  padding: 1em 0;
   padding-left: 15px;
-  margin: 1em 0;
   height: 100%;
 
   font-size: 10pt;
-  background-color: lemonchiffon;
-
   overflow-y: auto;
   overflow-x: hidden;
 }

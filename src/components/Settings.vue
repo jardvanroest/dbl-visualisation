@@ -14,8 +14,8 @@
             <EmailFilter />
           </Setting>
         </SettingType>
-        <SettingType text="Vis1" class="unselected" />
-        <SettingType text="Vis2" class="unselected" />
+        <SettingType class="unselected" />
+        <SettingType class="unselected" />
       </div>
     </div>
     <Inspector class="inspector" />
@@ -80,11 +80,13 @@ export default {
   display: flex;
   flex-direction: column;
   height: 65%;
+  background-color: var(--background-color-2);
 }
 
 /* Occupy remaining space */
 .selected_setting_type,
 .inspector {
+  background-color: var(--background-color);
   flex-grow: 1;
 }
 
@@ -104,7 +106,9 @@ export default {
 
 /* Settings type selection */
 .select_mode {
-  height: 40px;
+  z-index: 20;
+  height: 36px;
+  background-color: transparent;
 }
 
 .select_mode ul {
@@ -122,13 +126,14 @@ export default {
 }
 
 .select_mode li {
+  z-index: 16;
   display: table;
 
   width: 95px;
   height: 30px;
   margin-right: 5px;
 
-  background-color: rgba(0, 0, 0, 0.025);
+  background-color: rgb(250, 250, 250);
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;
   border: var(--settings-border);
@@ -144,7 +149,7 @@ export default {
 
 /* Line under settings type selection */
 .select_mode::after {
-  z-index: -1;
+  z-index: 18;
   content: "";
   display: block;
 
@@ -158,6 +163,7 @@ export default {
 
 /* Make open space for the selected settings type on bottom */
 .select_mode ul .selected {
+  z-index: 22;
   background-color: var(--background-color);
   font-weight: bold;
   color: var(--accent-color);
@@ -167,5 +173,17 @@ export default {
 /* Show only selected settings */
 .selected_setting_type .unselected {
   display: none;
+}
+
+/* Line above inspector menu */
+.settings::after {
+  content: "";
+  display: block;
+
+  position: relative;
+  height: 0;
+  width: 300px;
+
+  border-bottom: var(--settings-border);
 }
 </style>
