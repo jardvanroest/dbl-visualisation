@@ -50,7 +50,11 @@ export default {
   watch: {
     // Watch for a new incoming {inspectorData}
     getInspectorData(newData) {
-      this.incomingNewData(newData);
+      if (Number.isInteger(newData)) {
+        console.log(newData);
+      } else {
+        this.incomingNewData(newData);
+      }
     },
   },
   data() {
@@ -71,6 +75,8 @@ export default {
   },
   methods: {
     incomingNewData(newData) {
+      console.clear();
+      console.log(newData);
       const dataset = this.$store.state.dataset.getRawData();
 
       this.emailsExist = newData["weight"] > 0;

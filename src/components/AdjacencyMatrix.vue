@@ -18,9 +18,9 @@ export default {
   methods: {
     ...mapActions(["changeInspetorData"]),
     generateMatrix() {
-      // Colors and data object
+      // Colors
       const edgeCol = "#DF848F";
-      const normalCol = { fillColor: "#B8E0F6", dataIndex: [-1], weight: 0 }; // -1 for non-existing data points
+      const normalCol = "#B8E0F6";
 
       var d = this.$store.state.dataset.getRawData();
       var nodes = 0;
@@ -73,10 +73,19 @@ export default {
       var data = [];
       data.push(d3.range(0, nodes + 1)); // First row contains the nodes indices
       for (let i = 1; i <= nodes; i++) {
-        var temp = new Array(nodes + 1).fill(normalCol);
-        temp[0] = i; // First column contains the nodes indices
-
-        data.push(temp);
+        let temp = [i]; // First column contains the nodes indices
+        // Every other column contains the correct data
+        for (let j = 1; j <= nodes; j++) {
+          var obj = {
+            from: j, // Original column
+            to: i, // Original row
+            weight: 0, // Number of datapoints {dataIndex.length()}
+            dataIndex: [], // All data point indices in original dataset
+            fillColor: normalCol, // Color of node
+          };
+          temp.push(obj); // Push current data point
+        }
+        data.push(temp); // Push row
       }
 
       // Populate {data} matrix based on {edges} content
@@ -85,9 +94,11 @@ export default {
         let to = edges[i]["to"];
 
         data[to][from] = {
-          fillColor: edgeCol,
-          dataIndex: edges[i]["index"],
+          from: from,
+          to: to,
           weight: edges[i]["index"].length,
+          dataIndex: edges[i]["index"],
+          fillColor: edgeCol,
         };
       }
 
