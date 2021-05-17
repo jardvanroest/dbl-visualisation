@@ -33,7 +33,7 @@ const router = createRouter({
 // Redirect to landing if no dataset was loaded yet
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresDataset)) {
-    const thereIsNoDataset = store.getters.emails.length === 0;
+    const thereIsNoDataset = store.getters["dataset/emails"].length === 0;
 
     if (thereIsNoDataset) {
       next({ name: "Landing" });

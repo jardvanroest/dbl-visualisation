@@ -13,13 +13,13 @@ import { mapGetters } from "vuex";
 export default {
   name: "AdjacencyMatrix",
   computed: {
-    ...mapGetters(["filteredEmails", "numberOfPersons"]),
+    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
   },
   watch: {
     filteredEmails: {
       deep: true,
       handler() {
-        d3.select("svg").remove();
+        this.resetMatrix();
         this.generateMatrix();
       },
     },
@@ -129,6 +129,9 @@ export default {
             console.log(d[_data["dataIndex"]]);
           }
         });
+    },
+    resetMatrix() {
+      d3.select("svg").remove();
     },
   },
 };

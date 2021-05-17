@@ -17,7 +17,7 @@ export default {
     goToVisualisationPage() {
       this.$router.push({ path: "visualisation" });
     },
-    ...mapActions(["saveData"]),
+    ...mapActions("dataset", ["saveData"]),
   },
 };
 </script>

@@ -1,15 +1,15 @@
 <template>
   <div class="email-filter-container">
-    <input v-model="searchText" placeholder="Search emailaddress" />
+    <input v-model="searchText" placeholder="Search emailaddress..." />
 
-    <p v-if="filteredPersons.length === 0" class="no-email-addresses-found">
+    <p v-if="noEmailAddressesAreShown" class="error">
       No emailaddress matched your search
     </p>
 
     <div
-      v-for="(person, i) in filteredPersons"
+      v-for="(person, i) in searchedPersons"
       :key="person.id"
-      class="selectable-email"
+      class="list-entry"
     >
       <div v-if="i < numShownEmailAddresses">
         <input
@@ -24,7 +24,7 @@
     </div>
 
     <a
-      v-if="numShownEmailAddresses < filteredPersons.length"
+      v-if="numShownEmailAddresses < searchedPersons.length"
       @click="increaseShownEmailAddresses"
       >Show more</a
     >
@@ -40,42 +40,53 @@ export default {
   },
   watch: {
     selectedPersons(currentlySelectedPersons) {
-      console.log(currentlySelectedPersons);
       this.setFilteredInPersons(currentlySelectedPersons);
     },
   },
   computed: {
-    ...mapGetters(["persons"]),
-    filteredPersons() {
-      const persons = [...this.persons]
-        .sort((personA, personB) =>
-          personA.emailAddress < personB.emailAddress ? -1 : 1
-        )
-        .sort(
-          (personA, personB) =>
-            personB.isSelectedInEmailFilter - personA.isSelectedInEmailFilter
-        );
-
-      if (this.searchTextLowerCase === "") {
-        return persons;
-      } else {
-        return persons.filter((person) =>
-          person.emailAddress.includes(this.searchTextLowerCase)
-        );
-      }
+    noEmailAddressesAreShown() {
+      return this.searchedPersons.length === 0;
     },
-    searchTextLowerCase() {
+    ...mapGetters("dataset", ["persons"]),
+    searchedPersons() {
+      const persons = this.sortedPersons;
+      const searchedPersons = persons.filter((person) =>
+        person.emailAddress.includes(this.searchTextAsLowerCaseText)
+      );
+
+      return searchedPersons;
+    },
+    searchBoxIsEmpty() {
+      return this.searchText === "";
+    },
+    searchTextAsLowerCaseText() {
       return this.searchText.toLowerCase();
     },
     selectedPersons() {
       return this.persons.filter((x) => x.isSelectedInEmailFilter);
     },
+    sortedPersons() {
+      let persons = this.sortAlphabetically(this.persons);
+      persons = this.moveSelectedPersonsToTop(persons);
+      return persons;
+    },
   },
   methods: {
+    ...mapActions("dataset", ["setFilteredInPersons"]),
     increaseShownEmailAddresses() {
-      this.numShownEmailAddresses += 5;
+      this.numShownEmailAddresses += 10;
     },
-    ...mapActions(["setFilteredInPersons"]),
+    sortAlphabetically(persons) {
+      return [...persons].sort((personA, personB) =>
+        personA.emailAddress < personB.emailAddress ? -1 : 1
+      );
+    },
+    moveSelectedPersonsToTop(persons) {
+      return [...persons].sort(
+        (personA, personB) =>
+          personB.isSelectedInEmailFilter - personA.isSelectedInEmailFilter
+      );
+    },
   },
 };
 </script>
@@ -85,7 +96,7 @@ label {
   margin-left: 5px;
 }
 
-.selectable-email {
+.list-entry {
   margin-bottom: 3px;
 }
 
@@ -100,7 +111,7 @@ a {
   cursor: pointer;
 }
 
-.no-email-addresses-found {
+.error {
   color: var(--error-color);
 }
 </style>

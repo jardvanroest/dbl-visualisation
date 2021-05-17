@@ -41,7 +41,7 @@ export default {
     handleError(error) {
       console.error(error.message);
     },
-    ...mapActions(["saveData"]),
+    ...mapActions("dataset", ["saveData"]),
   },
 };
 </script>
