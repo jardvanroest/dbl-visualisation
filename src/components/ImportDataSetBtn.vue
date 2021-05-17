@@ -13,8 +13,8 @@
 
 <script>
 import { parseFile } from "@/logic/parsing.js";
-import { Dataset } from "@/logic/dataset.js";
 import Btn from "@/components/Btn.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "ImportDataSetBtn",
@@ -35,15 +35,13 @@ export default {
     getFile(src) {
       return src.files[0];
     },
-    saveData(data) {
-      this.$store.state.dataset = new Dataset(data);
-    },
     goToVisualisationPage() {
       this.$router.push({ path: "visualisation" });
     },
     handleError(error) {
       console.error(error.message);
     },
+    ...mapActions("dataset", ["saveData"]),
   },
 };
 </script>

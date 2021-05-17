@@ -9,7 +9,11 @@
         </ul>
       </div>
       <div class="selected_setting_type">
-        <SettingType text="Global" />
+        <SettingType text="Global">
+          <Setting name="Filter e-mail">
+            <EmailFilter />
+          </Setting>
+        </SettingType>
         <SettingType text="Vis1" class="unselected" />
         <SettingType text="Vis2" class="unselected" />
       </div>
@@ -21,12 +25,16 @@
 <script>
 import Inspector from "@/components/Inspector.vue";
 import SettingType from "@/components/SettingType.vue";
+import Setting from "@/components/Setting.vue";
+import EmailFilter from "@/components/EmailFilter.vue";
 
 export default {
   name: "Settings",
   components: {
     Inspector,
     SettingType,
+    Setting,
+    EmailFilter,
   },
   data() {
     return {
