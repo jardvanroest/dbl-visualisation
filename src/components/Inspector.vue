@@ -84,6 +84,8 @@ export default {
   },
   methods: {
     incomingNewData(newData) {
+      console.clear();
+      console.log(newData);
       this.nodeHasBeenClicked = true;
       var dataset = this.emails;
 

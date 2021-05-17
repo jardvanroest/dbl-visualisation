@@ -11,7 +11,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "AdjacencyMatrix",
   computed: {
-    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
+    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons", "persons"]),
   },
   watch: {
     filteredEmails: {
@@ -34,6 +34,7 @@ export default {
 
       var d = this.filteredEmails;
       var nodes = this.numberOfPersons;
+      var people = this.persons;
 
       var edges = [];
       let vm = this; // Create correct {this.} context for use in d3
@@ -81,22 +82,29 @@ export default {
        * data[i][j] is an integer - first row and column
        */
       var data = [];
-      data.push(d3.range(0, nodes + 1)); // First row contains the nodes indices
-      for (let i = 1; i <= nodes; i++) {
-        let temp = [i]; // First column contains the nodes indices
+      // First row contains the nodes indices
+      var firstRow = [0];
+      people.forEach((person) => {
+        firstRow.push(person["id"]);
+      });
+      data.push(firstRow);
+
+      people.forEach((personY) => {
+        // First column contains the nodes indices
+        let temp = [personY["id"]];
         // Every other column contains the correct data
-        for (let j = 1; j <= nodes; j++) {
+        people.forEach((personX) => {
           var obj = {
-            from: j, // Original column
-            to: i, // Original row
+            from: personX["id"], // Original column
+            to: personY["id"], // Original row
             weight: 0, // Number of datapoints {dataIndex.length()}
             dataIndex: [], // All data point indices in original dataset
             fillColor: normalCol, // Color of node
           };
           temp.push(obj); // Push current data point
-        }
+        });
         data.push(temp); // Push row
-      }
+      });
 
       // Populate {data} matrix based on {edges} content
       for (let i = 0; i < edges.length; i++) {
