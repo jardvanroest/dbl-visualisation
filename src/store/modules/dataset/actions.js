@@ -2,7 +2,7 @@ import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
   saveData(context, data) {
-    context.commit("reset");
+    context.commit("removeCurrentDataset"); // there might already be a dataset loaded, that needs to be cleared
 
     data.forEach((entry) => {
       const email = new Email(entry);

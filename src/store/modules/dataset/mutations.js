@@ -1,5 +1,5 @@
 export default {
-  reset(state) {
+  removeCurrentDataset(state) {
     state.emails = [];
     state.persons = {};
     state.filteredInPersons = [];
