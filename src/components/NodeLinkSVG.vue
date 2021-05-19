@@ -45,10 +45,10 @@ export default {
       const width = 500,
         height = 500; // TODO: hardcoded and no automatic resizing, but seems fine?
 
-      // Create the simulation of forces TODO: improve this to make the diagram more clear
+      // Create the simulation of forces
       const simulation = d3
         .forceSimulation(nodes)
-        .force("center", d3.forceCenter(width / 2, height / 2)) // Pulls nodes to center
+        .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01)) // Pulls nodes to center
         .force(
           "charge",
           d3
@@ -57,7 +57,7 @@ export default {
               return i == 0 ? -60 : -40;
             })
             .distanceMax([Math.max(width, height) * 0.8])
-        ) // Nodes repel eachother so they don't overlap
+        ) // Nodes repel each other so they don't overlap
         .force(
           "link",
           d3.forceLink(links).id((link) => link.id)
@@ -90,11 +90,11 @@ export default {
         .data(nodes)
         .join("circle")
         .attr("r", nodeRadius)
-        .attr("fill", nodeCol);
+        .attr("fill", nodeCol)
+        .call(drag(simulation)); // Append listener for drag events
+
       // TODO: color nodes differently somehow
       // TODO: change node radius based on emails sent
-
-      //TODO: add dragging
 
       node.append("id").text((d) => d.id); // Append id to each node
 
@@ -108,6 +108,32 @@ export default {
 
         node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
       });
+
+      // Drag function
+      function drag(simulation) {
+        function dragstarted(event, d) {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+          d.fx = event.x;
+          d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }
+
+        return d3
+          .drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended);
+      }
     },
     parseData(nodes, links) {
       var emails = this.filteredEmails;
