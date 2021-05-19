@@ -126,10 +126,10 @@ export class NodeLink {
       .join("circle")
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
-      .call(this.drag(simulation)); // Append listener for drag events
+      .call(this._drag(simulation)); // Append listener for drag events
   }
 
-  drag(simulation) {
+  _drag(simulation) {
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
