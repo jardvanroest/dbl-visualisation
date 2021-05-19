@@ -22,6 +22,11 @@ export default {
   thereAreAddressesSelectedInTheEmailFilter(state) {
     return state.filteredPersons.length > 0;
   },
+  getPersonById(state) {
+    return function (id) {
+      return state.persons[id];
+    };
+  },
 };
 
 function makeUnique(array) {

@@ -19,6 +19,7 @@
 import * as d3 from "d3";
 import { mapGetters } from "vuex";
 import Tooltip from "@/components/Tooltip";
+//import { tooltipInformationParser } from "@/logic/componentsLogic";
 export default {
   name: "AdjacencyMatrix",
   components: {
@@ -33,7 +34,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
+    ...mapGetters("dataset", [
+      "filteredEmails",
+      "numberOfPersons",
+      "getPersonById",
+    ]),
   },
   watch: {
     filteredEmails: {
@@ -147,11 +152,16 @@ export default {
         })
         // hoover event
         .on("mouseover", function (event, data) {
-          console.log(data);
+          //console.log(data);
           if (data["dataIndex"] !== undefined)
             if (data["dataIndex"] > -1) {
-              console.log(data);
-              vm.$data.tooltip_data = data; //d[data["dataIndex"][0]]; // for now it shows only the first row of data;
+              // emails
+              // sender
+              // reciver
+              console.log(vm.getPersonById);
+              vm.$data.tooltip_data = vm.tooltipInformationParser(
+                d[data["dataIndex"]]
+              ); // for now it shows only the first row of data;
               vm.$data.tooltip_posX = event.clientX;
               vm.$data.tooltip_posY = event.clientY;
               vm.$data.tooltip_visible = true;
@@ -163,6 +173,17 @@ export default {
     },
     resetMatrix() {
       d3.select("svg").remove();
+    },
+    tooltipInformationParser(pointerObj) {
+      let sender = this.getPersonById(pointerObj["fromId"]);
+      let receiver = this.getPersonById(pointerObj["toId"]);
+
+      return { sender: sender.Email, receiver: receiver.Email };
+      //let idReceiver = data[pointer["dataIndex"]]["toId"];
+      //return {
+      //  sender: data[idSender]["Email"],
+      //  receiver: data[idReceiver]["Email"],
+      //};
     },
   },
 };

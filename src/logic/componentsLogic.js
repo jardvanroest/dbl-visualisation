@@ -1,7 +1,11 @@
-export function convertIntoTooltipData_Aliases(obj, aliases) {
-  let returnObj = {};
-  for (let [key, val] of Object.entries(obj)) {
-    returnObj[aliases[key]] = val;
-  }
-  return returnObj;
+import { mapGetters } from "vuex";
+
+
+export function tooltipInformationParser(pointerObject) {
+  let sender = mapGetters.pointerObject["fromId"];
+  //let idReceiver = data[pointer["dataIndex"]]["toId"];
+  //return {
+  //  sender: data[idSender]["Email"],
+  //  receiver: data[idReceiver]["Email"],
+  //};
 }
