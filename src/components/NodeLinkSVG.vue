@@ -30,7 +30,9 @@ export default {
   methods: {
     generateVis() {
       // Colors and Design values
-      const edgeCol = "#DF848F",
+      const edgeColNeg = "#e498a1",
+        edgeColPos = "#b4ecb4",
+        edgeColNeutral = "#cfcfc4",
         nodeCol = "#B8E0F6",
         nodeOutline = "#fff";
       const nodeRadius = 5,
@@ -74,12 +76,16 @@ export default {
       // Draw edges
       const link = svg
         .append("g")
-        .attr("stroke", edgeCol)
         .attr("stroke-opacity", edgeOpacity)
         .selectAll("line")
         .data(links)
-        .join("line");
-      //TODO: add "stroke-width" based on number of emails
+        .join("line")
+        .attr("stroke", function (d) {
+          // Color edges based on average sentiment
+          if (d.avgSentiment < -0.01) return edgeColNeg;
+          if (d.avgSentiment > 0.01) return edgeColPos;
+          return edgeColNeutral;
+        });
 
       // Draw nodes
       const node = svg
@@ -92,9 +98,6 @@ export default {
         .attr("r", nodeRadius)
         .attr("fill", nodeCol)
         .call(drag(simulation)); // Append listener for drag events
-
-      // TODO: color nodes differently somehow
-      // TODO: change node radius based on emails sent
 
       node.append("id").text((d) => d.id); // Append id to each node
 
@@ -146,6 +149,7 @@ export default {
       for (let i = 0; i < emails.length; i++) {
         let u = parseInt(emails[i]["fromId"]);
         let v = parseInt(emails[i]["toId"]);
+        let sentiment = parseFloat(emails[i]["sentiment"]);
 
         nodesMap.set(u, { id: u });
         nodesMap.set(v, { id: v });
@@ -157,10 +161,16 @@ export default {
         // If edge does not exist
         if (indexOfEdge === -1) {
           // Push the edge
-          edgesCount.push({ source: u, target: v, index: [i] });
+          edgesCount.push({
+            source: u,
+            target: v,
+            index: [i],
+            sentiment: [sentiment],
+          });
         } else {
           // Else add new index
           edgesCount[indexOfEdge]["index"].push(i);
+          edgesCount[indexOfEdge]["sentiment"].push(sentiment);
         }
       }
 
@@ -170,6 +180,9 @@ export default {
           source: edgesCount[i]["source"],
           target: edgesCount[i]["target"],
           weight: edgesCount[i]["index"].length,
+          avgSentiment:
+            edgesCount[i]["sentiment"].reduce((a, b) => a + b, 0) /
+            edgesCount[i]["sentiment"].length,
         });
       }
 
