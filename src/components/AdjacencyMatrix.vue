@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: center">
-    <h1 @click="asad">Adjacency Matrix</h1>
+    <h1>Adjacency Matrix</h1>
 
     <br />
     <div id="area" ref="container" style="padding: 30px">
@@ -17,9 +17,8 @@
 
 <script>
 import * as d3 from "d3";
-import Tooltip from "./Tooltip";
-import { mapActions } from "vuex";
-
+import { mapGetters } from "vuex";
+import Tooltip from "@/components/Tooltip";
 export default {
   name: "AdjacencyMatrix",
   components: {
@@ -33,18 +32,29 @@ export default {
       tooltip_visible: false,
     };
   },
+  computed: {
+    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
+  },
+  watch: {
+    filteredEmails: {
+      deep: true,
+      handler() {
+        this.resetMatrix();
+        this.generateMatrix();
+      },
+    },
+  },
   mounted() {
     this.generateMatrix();
   },
   methods: {
-    ...mapActions(["changeInspetorData"]),
     generateMatrix() {
-      let outsideScope = this;
       const edgeCol = "#DF848F";
       const normalCol = { fillColor: "#B8E0F6", dataIndex: [-1], weight: 0 }; // -1 for non-existing data points
 
-      var d = this.$store.state.dataset.getRawData();
-      var nodes = 0;
+      var d = this.filteredEmails;
+      var nodes = this.numberOfPersons;
+
       var edges = [];
       let vm = this; // Create correct {this.} context for use in d3
 
@@ -58,23 +68,11 @@ export default {
           continue;
         }
 
-        nodes = d3.max([nodes, u, v]);
-        // Get index of edge in {edges}
-        let indexOfEdge = edges.findIndex(
-          (element) => element["from"] === u && element["to"] === v
-        );
-        // If edge does not exist
-        if (indexOfEdge === -1) {
-          // Push the edge
-          edges.push({ from: u, to: v, index: [i] });
-        } else {
-          // Else add new index
-          edges[indexOfEdge]["index"].push(i);
-        }
+        edges.push({ from: u, to: v, index: i });
       }
 
       // Append the svg object to the div
-      var svg = d3
+      const svg = d3
         .select("#area")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
@@ -151,15 +149,18 @@ export default {
         .on("mouseover", function (event, data) {
           if (data["dataIndex"][0] !== undefined)
             if (data["weight"] > 0) {
-              outsideScope.$data.tooltip_data = d[data["dataIndex"][0]]; // for now it shows only the first row of data;
-              outsideScope.$data.tooltip_posX = event.clientX;
-              outsideScope.$data.tooltip_posY = event.clientY;
-              outsideScope.$data.tooltip_visible = true;
+              vm.$data.tooltip_data = d[data["dataIndex"][0]]; // for now it shows only the first row of data;
+              vm.$data.tooltip_posX = event.clientX;
+              vm.$data.tooltip_posY = event.clientY;
+              vm.$data.tooltip_visible = true;
             }
         })
         .on("mouseleave", function () {
-          outsideScope.$data.tooltip_visible = false;
+          vm.$data.tooltip_visible = false;
         });
+    },
+    resetMatrix() {
+      d3.select("svg").remove();
     },
   },
 };
