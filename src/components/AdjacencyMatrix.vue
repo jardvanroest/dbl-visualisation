@@ -3,36 +3,15 @@
     <h1>Adjacency Matrix</h1>
 
     <br />
-    <div id="area" ref="container" style="padding: 30px">
-      <Tooltip
-        ref="tooltip"
-        :data="tooltip_data"
-        :posX="tooltip_posX"
-        :posY="tooltip_posY"
-        :visible="tooltip_visible"
-      />
-    </div>
+    <div id="area" ref="container" style="padding: 30px"></div>
   </div>
 </template>
 
 <script>
 import * as d3 from "d3";
-import { mapGetters } from "vuex";
-import Tooltip from "@/components/Tooltip";
-//import { tooltipInformationParser } from "@/logic/componentsLogic";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "AdjacencyMatrix",
-  components: {
-    Tooltip,
-  },
-  data() {
-    return {
-      tooltip_data: {},
-      tooltip_posX: 0,
-      tooltip_posY: 0,
-      tooltip_visible: false,
-    };
-  },
   computed: {
     ...mapGetters("dataset", [
       "filteredEmails",
@@ -53,6 +32,7 @@ export default {
     this.generateMatrix();
   },
   methods: {
+    ...mapActions("dataset", ["changeInspetorData"]),
     generateMatrix() {
       const edgeCol = "#DF848F";
       const normalCol = { fillColor: "#B8E0F6", dataIndex: [-1], weight: 0 }; // -1 for non-existing data points
@@ -89,14 +69,13 @@ export default {
         .append("div")
         .style("position", "absolute")
         .style("visibility", "hidden")
-        .style("background-color", "white")
+        .style("background-color", "rgba(0, 0, 0, 0.8)")
+        .style("color", "white")
         .style("border", "solid")
         .style("border-width", "1px")
         .style("border-radius", "5px")
-        .style("padding", "10px")
-        .html(
-          "<p>I'm a tooltip written in HTML</p><img src='https://github.com/holtzy/D3-graph-gallery/blob/master/img/section/ArcSmal.png?raw=true'></img><br>Fancy<br><span style='font-size: 40px;'>Isn't it?</span>"
-        );
+        .style("padding", "10px");
+      //.style("animation", "fadeIn", "1s");
 
       // Set size variables
       const width = 426, // TODO: resizing shouldn't be hard coded in (might be fine tho)
@@ -163,59 +142,42 @@ export default {
         })
         .on("mouseover", function (event, data) {
           return data["dataIndex"] > -1
-            ? tooltip.style("visibility", "visible")
-            : tooltip.style("visibility", "hidden");
+            ? tooltip.style("visibility", "visible").classed("tooltip", true)
+            : tooltip.style("visibility", "hidden").classed("tooltip", false);
         })
         .on("mousemove", function (event, data) {
-          return tooltip
-            .style("top", event.pageY - 80 + "px")
-            .style("left", event.pageX + 80 + "px")
-            .html("<p>" + data["dataIndex"] + "</p>");
+          return data["dataIndex"] > -1
+            ? tooltip
+                .style("top", event.pageY - 25 + "px")
+                .style("left", event.pageX + 40 + "px")
+                .html(
+                  "<p class='tooltip'>" +
+                    "from: " +
+                    vm.$store.state.dataset.persons[
+                      d[data["dataIndex"]]["fromId"]
+                    ].emailAddress +
+                    "<br/>" +
+                    "reciever: " +
+                    vm.$store.state.dataset.persons[
+                      d[data["dataIndex"]]["toId"]
+                    ].emailAddress +
+                    "</p>"
+                )
+            : tooltip
+                .style("top", event.pageY - 25 + "px")
+                .style("left", event.pageX + 40 + "px");
         })
         .on("mouseout", function () {
-          return tooltip.style("visibility", "hidden");
+          return tooltip
+            .style("visibility", "hidden")
+            .classed("tooltip", false);
+        })
+        .on("click", function (event, data) {
+          vm.changeInspetorData(data);
         });
-      // ADDED click event
-
-      //.on("click", function (event, data) {
-      //  vm.changeInspetorData(data);
-      //});
-      //d3.select("#asd")
-
-      // hoover event
-      //.on("mouseover", function (event, data) {
-      //console.log(data);
-      //if (data["dataIndex"] !== undefined)
-      //if (data["dataIndex"] > -1) {
-      // emails
-      // sender
-      // reciver
-      //console.log(vm.getPersonById);
-      //vm.$data.tooltip_data = vm.tooltipInformationParser(
-      //  d[data["dataIndex"]]
-      //); // for now it shows only the first row of data;
-      //vm.$data.tooltip_posX = event.clientX;
-      //vm.$data.tooltip_posY = event.clientY;
-      //vm.$data.tooltip_visible = true;
-      //}
-      //})
-      //.on("mouseleave", function () {
-      //vm.$data.tooltip_visible = false;
-      //});
     },
     resetMatrix() {
       d3.select("svg").remove();
-    },
-    tooltipInformationParser(pointerObj) {
-      let sender = this.getPersonById(pointerObj["fromId"]);
-      let receiver = this.getPersonById(pointerObj["toId"]);
-
-      return { sender: sender.Email, receiver: receiver.Email };
-      //let idReceiver = data[pointer["dataIndex"]]["toId"];
-      //return {
-      //  sender: data[idSender]["Email"],
-      //  receiver: data[idReceiver]["Email"],
-      //};
     },
   },
 };
@@ -226,14 +188,21 @@ export default {
   margin: 0;
   padding: 0;
 }
-
+.tooltip {
+  animation: fadeIn 1s;
+}
 .svg-content {
   display: inline-block;
   position: absolute;
   top: 0;
   left: 0;
 }
-.laina {
-  top: 100;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
