@@ -42,8 +42,6 @@ export default {
 
       this.parseData(nodes, links);
 
-      console.log(nodes, links);
-
       const width = 500,
         height = 500; // TODO: hardcoded and no automatic resizing, but seems fine?
 
@@ -51,13 +49,21 @@ export default {
       const simulation = d3
         .forceSimulation(nodes)
         .force("center", d3.forceCenter(width / 2, height / 2)) // Pulls nodes to center
-        .force("charge", d3.forceManyBody()) // Nodes repel eachother so they don't overlap
+        .force(
+          "charge",
+          d3
+            .forceManyBody()
+            .strength(function (d, i) {
+              return i == 0 ? -60 : -40;
+            })
+            .distanceMax([Math.max(width, height) * 0.8])
+        ) // Nodes repel eachother so they don't overlap
         .force(
           "link",
-          d3.forceLink(links).id((d) => d.id)
-        ) // Specify that id is the link variable TODO: (?)*/
-        .force("x", d3.forceX())
-        .force("y", d3.forceY());
+          d3.forceLink(links).id((link) => link.id)
+        ) // Push elements to be a fixed distance apart
+        .force("x", d3.forceX(width / 2).strength(0.1)) // Attracts elements to specified positions
+        .force("y", d3.forceY(height / 2).strength(0.1));
 
       // Create svg object inside div
       const svg = d3
@@ -84,7 +90,10 @@ export default {
         .data(nodes)
         .join("circle")
         .attr("r", nodeRadius)
-        .attr("fill", nodeCol); // TODO: color nodes differently somehow
+        .attr("fill", nodeCol);
+      // TODO: color nodes differently somehow
+      // TODO: change node radius based on emails sent
+
       //TODO: add dragging
 
       node.append("id").text((d) => d.id); // Append id to each node
