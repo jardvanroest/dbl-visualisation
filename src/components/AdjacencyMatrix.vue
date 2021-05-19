@@ -84,6 +84,20 @@ export default {
         .attr("viewBox", "0 0 450 450")
         .classed("svg-content", true);
 
+      var tooltip = d3
+        .select("#area")
+        .append("div")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "1px")
+        .style("border-radius", "5px")
+        .style("padding", "10px")
+        .html(
+          "<p>I'm a tooltip written in HTML</p><img src='https://github.com/holtzy/D3-graph-gallery/blob/master/img/section/ArcSmal.png?raw=true'></img><br>Fancy<br><span style='font-size: 40px;'>Isn't it?</span>"
+        );
+
       // Set size variables
       const width = 426, // TODO: resizing shouldn't be hard coded in (might be fine tho)
         rectLen = width / (nodes + 2),
@@ -117,6 +131,7 @@ export default {
 
       // Create a group for each row so it can be translated vertically
       var rowGrp = svg
+        .attr("id", "asd")
         .selectAll("g")
         .data(data)
         .enter()
@@ -141,35 +156,52 @@ export default {
         .attr("width", rectLen)
         .attr("height", rectLen)
         .attr("fill", function (d) {
+          vm;
           // Color based on {data} matrix
           if (Number.isInteger(d)) return "#d3d3d3";
-          // TODO: add node labels?
           else return d["fillColor"];
         })
-        // ADDED click event
-        .on("click", function (event, data) {
-          vm.changeInspetorData(data);
-        })
-        // hoover event
         .on("mouseover", function (event, data) {
-          //console.log(data);
-          if (data["dataIndex"] !== undefined)
-            if (data["dataIndex"] > -1) {
-              // emails
-              // sender
-              // reciver
-              console.log(vm.getPersonById);
-              vm.$data.tooltip_data = vm.tooltipInformationParser(
-                d[data["dataIndex"]]
-              ); // for now it shows only the first row of data;
-              vm.$data.tooltip_posX = event.clientX;
-              vm.$data.tooltip_posY = event.clientY;
-              vm.$data.tooltip_visible = true;
-            }
+          return data["dataIndex"] > -1
+            ? tooltip.style("visibility", "visible")
+            : tooltip.style("visibility", "hidden");
         })
-        .on("mouseleave", function () {
-          vm.$data.tooltip_visible = false;
+        .on("mousemove", function (event, data) {
+          return tooltip
+            .style("top", event.pageY - 80 + "px")
+            .style("left", event.pageX + 80 + "px")
+            .html("<p>" + data["dataIndex"] + "</p>");
+        })
+        .on("mouseout", function () {
+          return tooltip.style("visibility", "hidden");
         });
+      // ADDED click event
+
+      //.on("click", function (event, data) {
+      //  vm.changeInspetorData(data);
+      //});
+      //d3.select("#asd")
+
+      // hoover event
+      //.on("mouseover", function (event, data) {
+      //console.log(data);
+      //if (data["dataIndex"] !== undefined)
+      //if (data["dataIndex"] > -1) {
+      // emails
+      // sender
+      // reciver
+      //console.log(vm.getPersonById);
+      //vm.$data.tooltip_data = vm.tooltipInformationParser(
+      //  d[data["dataIndex"]]
+      //); // for now it shows only the first row of data;
+      //vm.$data.tooltip_posX = event.clientX;
+      //vm.$data.tooltip_posY = event.clientY;
+      //vm.$data.tooltip_visible = true;
+      //}
+      //})
+      //.on("mouseleave", function () {
+      //vm.$data.tooltip_visible = false;
+      //});
     },
     resetMatrix() {
       d3.select("svg").remove();
