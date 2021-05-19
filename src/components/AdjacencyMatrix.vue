@@ -147,9 +147,11 @@ export default {
         })
         // hoover event
         .on("mouseover", function (event, data) {
-          if (data["dataIndex"][0] !== undefined)
-            if (data["weight"] > 0) {
-              vm.$data.tooltip_data = d[data["dataIndex"][0]]; // for now it shows only the first row of data;
+          console.log(data);
+          if (data["dataIndex"] !== undefined)
+            if (data["dataIndex"] > -1) {
+              console.log(data);
+              vm.$data.tooltip_data = data; //d[data["dataIndex"][0]]; // for now it shows only the first row of data;
               vm.$data.tooltip_posX = event.clientX;
               vm.$data.tooltip_posY = event.clientY;
               vm.$data.tooltip_visible = true;
