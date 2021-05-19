@@ -13,6 +13,9 @@
           <Setting name="Filter e-mail">
             <EmailFilter />
           </Setting>
+          <Setting name="Filter date">
+            <DateFilter />
+          </Setting>
         </SettingType>
         <SettingType text="Vis1" class="unselected" />
         <SettingType text="Vis2" class="unselected" />
@@ -27,6 +30,7 @@ import Inspector from "@/components/Inspector.vue";
 import SettingType from "@/components/SettingType.vue";
 import Setting from "@/components/Setting.vue";
 import EmailFilter from "@/components/EmailFilter.vue";
+import DateFilter from "@/components/DateFilter.vue";
 
 export default {
   name: "Settings",
@@ -35,6 +39,7 @@ export default {
     SettingType,
     Setting,
     EmailFilter,
+    DateFilter,
   },
   data() {
     return {
