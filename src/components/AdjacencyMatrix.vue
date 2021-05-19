@@ -34,9 +34,7 @@ export default {
     };
   },
   mounted() {
-    //setTimeout(() => {
     this.generateMatrix();
-    //}, 100);
   },
   methods: {
     ...mapActions(["changeInspetorData"]),
@@ -153,7 +151,7 @@ export default {
         .on("mouseover", function (event, data) {
           if (data["dataIndex"][0] !== undefined)
             if (data["weight"] > 0) {
-              outsideScope.$data.tooltip_data = d[data["dataIndex"][0]]; // for now it shows only the first row of data;  
+              outsideScope.$data.tooltip_data = d[data["dataIndex"][0]]; // for now it shows only the first row of data;
               outsideScope.$data.tooltip_posX = event.clientX;
               outsideScope.$data.tooltip_posY = event.clientY;
               outsideScope.$data.tooltip_visible = true;
