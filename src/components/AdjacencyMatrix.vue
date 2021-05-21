@@ -16,6 +16,7 @@ export default {
     ...mapGetters("dataset", [
       "filteredEmails",
       "numberOfPersons",
+      "getInspectorData",
       "getPersonById",
     ]),
   },
@@ -141,6 +142,7 @@ export default {
           else return d["fillColor"];
         })
         .on("mouseover", function (event, data) {
+          //console.log(vm.getPersonById(123));
           return data["dataIndex"] > -1
             ? tooltip.style("visibility", "visible").classed("tooltip", true)
             : tooltip.style("visibility", "hidden").classed("tooltip", false);
@@ -157,7 +159,7 @@ export default {
                       d[data["dataIndex"]]["fromId"]
                     ].emailAddress +
                     "<br/>" +
-                    "reciever: " +
+                    "to : " +
                     vm.$store.state.dataset.persons[
                       d[data["dataIndex"]]["toId"]
                     ].emailAddress +

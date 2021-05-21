@@ -22,8 +22,11 @@ export default {
   thereAreAddressesSelectedInTheEmailFilter(state) {
     return state.filteredPersons.length > 0;
   },
+  getInspectorData(state) {
+    return state.inspectorData;
+  },
   getPersonById(state) {
-    return function (id) {
+    return (id) => {
       return state.persons[id];
     };
   },
