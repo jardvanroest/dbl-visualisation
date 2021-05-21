@@ -4,6 +4,12 @@ export default {
   changeInspetorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
+  changeSortedMatrixData(context, newData) {
+    context.commit("newSortedMatrixData", newData);
+  },
+  changeMatrixData(context, newData) {
+    context.commit("newMatrixData", newData);
+  },
   saveData(context, data) {
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
 

@@ -56,11 +56,7 @@ export default {
   watch: {
     // Watch for a new incoming {inspectorData}
     getInspectorData(newData) {
-      if (Number.isInteger(newData)) {
-        console.log(newData);
-      } else {
-        this.incomingNewData(newData);
-      }
+      this.incomingNewData(newData);
     },
   },
   data() {

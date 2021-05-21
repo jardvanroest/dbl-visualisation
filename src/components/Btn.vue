@@ -23,8 +23,7 @@ button {
   transition: 500ms;
 }
 
-button:hover,
-button:focus {
+button:hover {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
   color: white;

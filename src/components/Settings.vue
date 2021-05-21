@@ -10,9 +10,8 @@
       </div>
       <div class="selected_setting_type">
         <SettingType>
-          <Setting name="Filter e-mail">
-            <EmailFilter />
-          </Setting>
+          <Setting name="Filter e-mail"> <EmailFilter /> </Setting>
+          <Setting name="Sort the matrix"> <SortMatrix /> </Setting>
         </SettingType>
         <SettingType class="unselected" />
         <SettingType class="unselected" />
@@ -26,7 +25,8 @@
 import Inspector from "@/components/Inspector.vue";
 import SettingType from "@/components/SettingType.vue";
 import Setting from "@/components/Setting.vue";
-import EmailFilter from "@/components/EmailFilter.vue";
+import EmailFilter from "@/components/settings/EmailFilter.vue";
+import SortMatrix from "@/components/settings/SortMatrix.vue";
 
 export default {
   name: "Settings",
@@ -35,6 +35,7 @@ export default {
     SettingType,
     Setting,
     EmailFilter,
+    SortMatrix,
   },
   data() {
     return {

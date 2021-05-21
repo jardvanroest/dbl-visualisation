@@ -10,6 +10,8 @@ export default {
       emails: [],
       filteredPersons: [],
       inspectorData: -1,
+      sortedMatrixData: "unsorted",
+      matrixData: -1,
     };
   },
   getters,

@@ -26,7 +26,7 @@ export default {
     this.generateMatrix();
   },
   methods: {
-    ...mapActions("dataset", ["changeInspetorData"]),
+    ...mapActions("dataset", ["changeInspetorData", "changeMatrixData"]),
     generateMatrix() {
       // Colors
       const edgeCol = "#DF848F";
@@ -82,16 +82,9 @@ export default {
        * data[i][j] is an integer - first row and column
        */
       var data = [];
-      // First row contains the nodes indices
-      var firstRow = [0];
-      people.forEach((person) => {
-        firstRow.push(person["id"]);
-      });
-      data.push(firstRow);
 
       people.forEach((personY) => {
-        // First column contains the nodes indices
-        let temp = [personY["id"]];
+        let temp = [];
         // Every other column contains the correct data
         people.forEach((personX) => {
           var obj = {
@@ -111,7 +104,7 @@ export default {
         let from = edges[i]["from"];
         let to = edges[i]["to"];
 
-        data[to][from] = {
+        data[to - 1][from - 1] = {
           from: from,
           to: to,
           weight: edges[i]["index"].length,
@@ -119,6 +112,9 @@ export default {
           fillColor: edgeCol,
         };
       }
+
+      // Set {matrixData}
+      vm.changeMatrixData(data);
 
       // Create a group for each row so it can be translated vertically
       var rowGrp = svg
@@ -147,9 +143,7 @@ export default {
         .attr("height", rectLen)
         .attr("fill", function (d) {
           // Color based on {data} matrix
-          if (Number.isInteger(d)) return "#d3d3d3";
-          // TODO: add node labels?
-          else return d["fillColor"];
+          return d["fillColor"];
         })
         //On click change the inspector data by calling {changeInspectorData}
         .on("click", function (event, data) {
