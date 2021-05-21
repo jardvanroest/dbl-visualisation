@@ -1,8 +1,11 @@
 import * as d3 from "d3";
 import { DataParser } from "./DataParser.js";
+import { Visualisation } from "@/components/Visualisations/visualisation.js";
 
-export class NodeLink {
+export class NodeLink extends Visualisation {
   constructor() {
+    super("#areaNodeLinkSVG", 500, 500);
+
     this.colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
@@ -28,15 +31,8 @@ export class NodeLink {
 
   _generateVis(emails) {
     const { nodes, links } = new DataParser(emails).parseData();
-    const svg = this._createSVG();
+    const svg = this._getSVG();
     this._drawVisualisation(nodes, links, svg);
-  }
-
-  _createSVG() {
-    return d3
-      .select("#areaNodeLinkSVG")
-      .append("svg")
-      .attr("viewBox", [0, 0, this.options.width, this.options.height]);
   }
 
   _drawVisualisation(nodes, links, svg) {
