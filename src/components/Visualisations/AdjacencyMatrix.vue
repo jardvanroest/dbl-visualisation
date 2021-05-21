@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div id="area" style="padding: 30px"></div>
+  <div style="text-align: center">
+    <div id="areaAdjacencyMatrix" style="padding: 30px"></div>
   </div>
 </template>
 
@@ -65,7 +65,7 @@ export default {
 
       // Append the svg object to the div
       const svg = d3
-        .select("#area")
+        .select("#areaAdjacencyMatrix")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
         .attr("viewBox", "0 0 450 450")
@@ -157,7 +157,7 @@ export default {
         });
     },
     resetMatrix() {
-      d3.select("svg").remove();
+      d3.select("#areaAdjacencyMatrix").select("svg").remove();
     },
   },
 };
