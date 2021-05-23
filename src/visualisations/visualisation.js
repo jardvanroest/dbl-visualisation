@@ -9,6 +9,10 @@ export class Visualisation {
     // this.svg = this._makeZoomAndPannable(this.svg);
   }
 
+  redraw() {
+    throw new Error("Redraw method should be implemented in subclass");
+  }
+
   _getSVG() {
     const svg = this._createSVG();
     const zoomableSVG = this._makeZoomAndPannable(svg);
@@ -17,7 +21,7 @@ export class Visualisation {
 
   _createSVG() {
     return d3
-      .select("#areaNodeLinkSVG")
+      .select(this.HTMLSelector)
       .append("svg")
       .attr("viewBox", [0, 0, this.width, this.height]);
   }
