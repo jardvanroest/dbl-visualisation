@@ -1,10 +1,10 @@
-export class DataParser {
+export class Parser {
   constructor(emails) {
     this.emails = emails;
   }
 
-  parseData() {
-    const { edgesCount, nodesMap } = this._parseRawEmails();
+  parse() {
+    const { edgesCount, nodesMap } = this._parseRawEmails(this.emails);
 
     let links = this._computeUniqueLinks(edgesCount);
     let nodes = this._computeUniqueNodes(nodesMap);
@@ -13,9 +13,7 @@ export class DataParser {
   }
 
   // This method is overcomplicated, but not worth changing right now
-  _parseRawEmails() {
-    const emails = this.emails;
-
+  _parseRawEmails(emails) {
     // Maps for finding unique nodes and edges
     const nodesMap = new Map(),
       edgesCount = [];

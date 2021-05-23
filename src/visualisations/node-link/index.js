@@ -1,12 +1,11 @@
 import * as d3 from "d3";
-import { DataParser } from "./DataParser.js";
 import { Visualisation } from "@/visualisations/visualisation.js";
+import { Parser } from "@/visualisations/node-link/parser.js";
+import { Simulator } from "@/visualisations/node-link/simulator.js";
 
 export class NodeLink extends Visualisation {
   constructor() {
-    super("#areaNodeLinkSVG", 500, 500);
-
-    this.colors = {
+    const colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
       edgeNegative: "#e498a1",
@@ -14,7 +13,7 @@ export class NodeLink extends Visualisation {
       nodeOutline: "#fff",
     };
 
-    this.options = {
+    const options = {
       width: 500,
       height: 500,
       nodeRadius: 5,
@@ -22,6 +21,11 @@ export class NodeLink extends Visualisation {
       edgeOpacity: 0.6,
       sentimentThreshold: 0.01,
     };
+
+    super("#areaNodeLinkSVG", options.width, options.height);
+
+    this.colors = colors;
+    this.options = options;
   }
 
   redraw(emails) {
@@ -29,14 +33,24 @@ export class NodeLink extends Visualisation {
     this._generateVis(emails);
   }
 
+  _resetVis() {
+    d3.select("#areaNodeLinkSVG").select("svg").remove();
+  }
+
   _generateVis(emails) {
-    const { nodes, links } = new DataParser(emails).parseData();
+    const { nodes, links } = this._parseData(emails);
     const svg = this._getSVG();
     this._drawVisualisation(nodes, links, svg);
   }
 
+  _parseData(emails) {
+    const parser = new Parser(emails);
+    const graph = parser.parse();
+    return graph;
+  }
+
   _drawVisualisation(nodes, links, svg) {
-    const simulation = this._createForceSimulation(nodes, links);
+    const simulation = this._getSimulation(nodes, links);
 
     this.drawnLinks = this._drawLinks(svg, links);
     this.drawnNodes = this._drawNodes(svg, nodes, simulation);
@@ -44,53 +58,16 @@ export class NodeLink extends Visualisation {
     simulation.on("tick", this._handleSimulationTick.bind(this));
   }
 
-  _createForceSimulation(nodes, links) {
-    let simulation = d3.forceSimulation(nodes);
-
-    simulation = this._addCenteringForce(simulation);
-    simulation = this._addChargeForce(simulation);
-    simulation = this._addLinkForce(simulation, links);
-    simulation = this._addXYForces(simulation);
+  _getSimulation(nodes, links) {
+    const simulator = new Simulator(
+      nodes,
+      links,
+      this.options.width,
+      this.options.height
+    );
+    const simulation = simulator.createForceSimulation();
 
     return simulation;
-  }
-
-  // Add force that pulls nodes to center
-  _addCenteringForce(simulation) {
-    return simulation.force(
-      "center",
-      d3
-        .forceCenter(this.options.width / 2, this.options.height / 2)
-        .strength(0.01)
-    );
-  }
-
-  // Add force that makes nodes repel each other so they don't overlap
-  _addChargeForce(simulation) {
-    return simulation.force(
-      "charge",
-      d3
-        .forceManyBody()
-        .strength(function (d, i) {
-          return i == 0 ? -60 : -40;
-        })
-        .distanceMax([Math.max(this.options.width, this.options.height) * 0.8])
-    );
-  }
-
-  // Add force that pushes elements to be a fixed distance apart
-  _addLinkForce(simulation, links) {
-    return simulation.force(
-      "link",
-      d3.forceLink(links).id((link) => link.id)
-    );
-  }
-
-  // Add force that attracts elements to specified positions
-  _addXYForces(simulation) {
-    return simulation
-      .force("x", d3.forceX(this.options.width / 2).strength(0.1))
-      .force("y", d3.forceY(this.options.height / 2).strength(0.1));
   }
 
   _drawLinks(svg, links) {
@@ -122,10 +99,10 @@ export class NodeLink extends Visualisation {
       .join("circle")
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
-      .call(this._drag(simulation)); // Append listener for drag events
+      .call(this._handleMouseDragOnNode(simulation)); // Append listener for drag events
   }
 
-  _drag(simulation) {
+  _handleMouseDragOnNode(simulation) {
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
@@ -158,9 +135,5 @@ export class NodeLink extends Visualisation {
       .attr("y2", (d) => d.target.y);
 
     this.drawnNodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-  }
-
-  _resetVis() {
-    d3.select("#areaNodeLinkSVG").select("svg").remove();
   }
 }
