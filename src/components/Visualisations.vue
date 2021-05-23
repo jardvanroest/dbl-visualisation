@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <AdjacencyMatrix class="vis1" />
-    <NodeLinkSVG class="vis2" />
+    <AdjacencyMatrix class="visualisation" />
+    <NodeLinkSVG class="visualisation" />
   </div>
 </template>
 
 <script>
-import NodeLinkSVG from "@/visualisations/node-link/NodeLinkSVG.vue";
-import AdjacencyMatrix from "@/visualisations/AdjacencyMatrix.vue";
+import NodeLinkSVG from "@/components/NodeLinkSVG.vue";
+import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
 
 export default {
   name: "Visualisations",
@@ -20,16 +20,11 @@ export default {
 
 <style scoped>
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.vis1 {
-  grid-row: 1;
-  grid-column: 1;
+  display: flex;
 }
 
-.vis2 {
-  grid-row: 1;
-  grid-column: 2;
+.visualisation {
+  width: 0;
+  flex-grow: 1;
 }
 </style>
