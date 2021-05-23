@@ -8,7 +8,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { NodeLink } from "./NodeLink.js";
+import { NodeLink } from "../visualisations/node-link/NodeLink.js";
 
 export default {
   name: "NodeLinkSVG",

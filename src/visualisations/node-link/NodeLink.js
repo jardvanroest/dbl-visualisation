@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { DataParser } from "./DataParser.js";
-import { Visualisation } from "@/components/Visualisations/visualisation.js";
+import { Visualisation } from "@/visualisations/visualisation.js";
 
 export class NodeLink extends Visualisation {
   constructor() {
