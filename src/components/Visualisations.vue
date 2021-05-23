@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import NodeLinkSVG from "@/components/NodeLinkSVG.vue";
+import NodeLinkSVG from "@/components/NodeLink.vue";
 import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
 
 export default {
