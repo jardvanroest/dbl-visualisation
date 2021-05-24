@@ -26,7 +26,7 @@ export default {
     this.generateMatrix();
   },
   methods: {
-    ...mapActions("dataset", ["changeInspetorData"]),
+    ...mapActions("dataset", ["changeInspectorData"]),
     generateMatrix() {
       // Colors
       const edgeCol = "#DF848F";
@@ -153,7 +153,7 @@ export default {
         })
         //On click change the inspector data by calling {changeInspectorData}
         .on("click", function (event, data) {
-          vm.changeInspetorData(data);
+          vm.changeInspectorData(data);
         });
     },
     resetMatrix() {

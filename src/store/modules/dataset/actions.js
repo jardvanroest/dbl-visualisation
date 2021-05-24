@@ -1,7 +1,7 @@
 import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
-  changeInspetorData(context, newData) {
+  changeInspectorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
   saveData(context, data) {

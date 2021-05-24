@@ -57,7 +57,7 @@ export default {
     // Watch for a new incoming {inspectorData}
     getInspectorData(newData) {
       if (Number.isInteger(newData)) {
-        console.log(newData);
+        console.log(newData); // TODO: decide what to do with labels
       } else {
         this.incomingNewData(newData);
       }
@@ -84,58 +84,53 @@ export default {
   },
   methods: {
     incomingNewData(newData) {
-      console.clear();
-      console.log(newData);
       this.nodeHasBeenClicked = true;
-      var dataset = this.emails;
 
       this.newData = newData;
       this.numEmails = newData["weight"];
       this.emailsExist = newData["weight"] > 0;
       this.nodeColor = newData["fillColor"].toLowerCase();
+
       // Get sender and recipient information
       this.sender = this.returnPersonObject(this.persons[newData["from"] - 1]);
       this.recipient = this.returnPersonObject(this.persons[newData["to"] - 1]);
 
       // If the two people have sent emails between eachother
       if (this.emailsExist) {
-        // Reset data to original values
-        this.resetData();
-
-        // Set initial {minDate} and {maxDate}
-        this.maxDate = new Date("1001-01-01");
-        this.minDate = new Date("3001-01-01");
-
-        newData["dataIndex"].forEach((index) => {
-          // Get all sentiments
-          this.sentiments.push(parseFloat(dataset[index]["sentiment"]));
-
-          // Count different {messageTypes}
-          this.messageTypesCount(dataset[index]["messageType"]);
-
-          // Get all dates and calculate the first and last one
-          var currentDate = new Date(dataset[index]["date"]);
-          this.dates.push(currentDate.toDateString());
-          if (currentDate < this.minDate) this.minDate = currentDate;
-          if (currentDate > this.maxDate) this.maxDate = currentDate;
-        });
-        // Check if its the same date
-        if (this.minDate === this.maxDate) this.sameDate = true;
-        else this.sameDate = false;
-
-        // Convert dates to correct format
-        this.minDate = this.formatDate(this.minDate);
-        this.maxDate = this.formatDate(this.maxDate);
-
-        // Get average sentiment
-        this.avgSentiment = this.getAvgValue(this.sentiments).toPrecision(3);
+        this.computeEmailData(newData);
       }
+    },
+    computeEmailData(newData) {
+      var dataset = this.emails;
+
+      // Reset data to original values
+      this.resetData();
+
+      newData["dataIndex"].forEach((index) => {
+        // Get all sentiments
+        this.sentiments.push(parseFloat(dataset[index]["sentiment"]));
+
+        // Count different {messageTypes}
+        this.messageTypesCount(dataset[index]["messageType"]);
+
+        // Get the current elements date and sort it
+        this.sortDates(new Date(dataset[index]["date"]));
+      });
+      this.formatDates();
+
+      // Get average sentiment
+      this.avgSentiment = this.getAvgValue(this.sentiments).toPrecision(3);
     },
     resetData() {
       this.dates = [];
       this.sentiments = [];
+
       this.messageTypeCC = 0;
       this.messageTypeTO = 0;
+
+      // Set initial {minDate} and {maxDate}
+      this.maxDate = new Date("1001-01-01");
+      this.minDate = new Date("3001-01-01");
     },
     returnPersonObject(_person) {
       return {
@@ -147,9 +142,24 @@ export default {
     },
     messageTypesCount(messageType) {
       if (messageType === "CC") this.messageTypeCC++;
-      else this.messageTypeTO++;
+      if (messageType === "TO") this.messageTypeTO++;
+    },
+    sortDates(currentDate) {
+      this.dates.push(currentDate.toDateString());
+      if (currentDate < this.minDate) this.minDate = currentDate;
+      if (currentDate > this.maxDate) this.maxDate = currentDate;
+    },
+    formatDates() {
+      // Check if its the same date
+      if (this.minDate === this.maxDate) this.sameDate = true;
+      else this.sameDate = false;
+
+      // Convert dates to correct format
+      this.minDate = this.formatDate(this.minDate);
+      this.maxDate = this.formatDate(this.maxDate);
     },
     getAvgValue(array) {
+      // Gets avarage value in an array
       const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
       return AvgVal(array);
     },
