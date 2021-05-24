@@ -22,6 +22,7 @@ export default {
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  background-color: var(--background-color-2);
 }
 .vis1 {
   grid-row: 1;

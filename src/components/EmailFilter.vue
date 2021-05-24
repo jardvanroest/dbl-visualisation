@@ -1,9 +1,16 @@
 <template>
-  <div class="email-filter-container">
-    <input v-model="searchText" placeholder="Search emailaddress..." />
+  <div
+    class="email-filter-container"
+    :class="{ hideScroll: noEmailAddressesAreShown }"
+  >
+    <input
+      class="searchBox"
+      v-model="searchText"
+      placeholder="Search email address..."
+    />
 
     <p v-if="noEmailAddressesAreShown" class="error">
-      No emailaddress matched your search
+      No email address matched your search
     </p>
 
     <div
@@ -91,7 +98,14 @@ label {
 }
 
 .list-entry {
-  margin-bottom: 3px;
+  margin-bottom: 0.3em;
+  margin-left: 0.7em;
+}
+
+input[type="checkbox"] {
+  width: 0.9em;
+  height: 0.9em;
+  cursor: pointer;
 }
 
 .email-filter-container {
@@ -100,12 +114,29 @@ label {
 }
 
 a {
-  color: var(--link-color);
+  color: var(--accent-color-2);
   text-decoration: underline;
+  font-size: 9pt;
   cursor: pointer;
 }
 
 .error {
   color: var(--error-color);
+}
+
+.searchBox {
+  font-size: 10pt;
+  margin-bottom: 0.5em;
+  border: var(--settings-border);
+  border-radius: 4px;
+  background-image: url("../assets/icons/loupe.svg");
+  background-size: 1em;
+  background-position: 0.2em 0.1em;
+  background-repeat: no-repeat;
+  padding-left: 1.5em;
+}
+
+.hideScroll {
+  overflow-y: hidden;
 }
 </style>
