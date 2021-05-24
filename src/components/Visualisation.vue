@@ -7,10 +7,28 @@
 <script>
 import * as visualisations from "@/visualisations";
 import * as d3 from "d3";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Visualisations",
   props: ["type", "id"],
+  data: function () {
+    return {
+      visualisation: new visualisations[this.type][this.type]("#" + this.id),
+    };
+  },
+  computed: {
+    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
+  },
+  watch: {
+    filteredEmails: {
+      deep: true,
+      handler() {
+        this.resetVisualisation();
+        this.generateVisualisation();
+      },
+    },
+  },
   mounted() {
     var g = d3
       .select("#" + this.id)
@@ -26,10 +44,18 @@ export default {
       )
       .append("g");
 
-    visualisations[this.type].create(
-      "#" + this.id,
-      this.$store.state.dataset.getRawData()
-    );
+    this.generateVisualisation();
+  },
+  methods: {
+    generateVisualisation() {
+      this.visualisation.create({
+        filteredEmails: this.filteredEmails,
+        numberOfPersons: this.numberOfPersons,
+      });
+    },
+    resetVisualisation() {
+      this.visualisation.reset();
+    },
   },
 };
 </script>

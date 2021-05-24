@@ -4,8 +4,8 @@
 
 <script>
 import { parseString } from "@/logic/parsing.js";
-import { Dataset } from "@/logic/dataset.js";
 import exampleDataSet from "@/assets/datasets/exampleDataset.csv";
+import { mapActions } from "vuex";
 
 export default {
   name: "ViewExampleDataSetBtn",
@@ -14,12 +14,10 @@ export default {
       this.saveData(parseString(exampleDataSet));
       this.goToVisualisationPage();
     },
-    saveData(data) {
-      this.$store.state.dataset = new Dataset(data);
-    },
     goToVisualisationPage() {
       this.$router.push({ path: "visualisation" });
     },
+    ...mapActions("dataset", ["saveData"]),
   },
 };
 </script>

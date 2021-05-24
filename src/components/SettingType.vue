@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     {{ text }}
+    <slot></slot>
   </div>
 </template>
 
@@ -12,3 +13,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  height: 100%;
+  background-color: lemonchiffon;
+  padding-left: 4px;
+}
+</style>

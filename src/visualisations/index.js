@@ -1,2 +1,2 @@
-export * as adjacency_matrix from "@/visualisations/adjacency_matrix.js";
-export * as test_vis from "@/visualisations/test_vis.js";
+export * as AdjacencyMatrix from "@/visualisations/adjacency_matrix.js";
+export * as TestVis from "@/visualisations/test_vis.js";
