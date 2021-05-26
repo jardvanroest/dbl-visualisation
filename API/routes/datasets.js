@@ -26,7 +26,7 @@ function updateDatasetObject() {
   if (initialBoot == false) {
     return;
   }
-  console.log("In updateDatasetObject");
+  initialBoot = false;
   try {
     let data = fs.readFileSync(datasetsFilename);
     console.log(
@@ -40,10 +40,11 @@ function updateDatasetObject() {
       );
     }
   } catch {
-    return console.log(err);
+    return console.log(
+      "WARNING: Can not find datasets.js file, starting with empty object."
+    );
   }
   // the datasets object only needs to get information from the file when the server boots up
-  initialBoot = false;
 }
 
 // GET request to /datasets
