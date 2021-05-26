@@ -15,6 +15,7 @@ export default {
       "filteredEmails",
       "numberOfPersons",
       "persons",
+      "getMatrixData",
       "getSortedMatrixData",
     ]),
   },
@@ -47,7 +48,6 @@ export default {
     generateMatrix() {
       var d = this.filteredEmails;
       var nodes = this.numberOfPersons;
-
       var edges = [];
       let vm = this; // Create correct {this.} context for use in d3
 
@@ -92,12 +92,13 @@ export default {
       // Get data to populate the matrix
       if (this.getSortedMatrixData === "unsorted") {
         data = this.getCorrectData(edges);
+        // Sets the correct matrix data only the first time
+        if (this.getMatrixData === -1) {
+          this.changeMatrixData(data);
+        }
       } else {
         data = this.getSortedMatrixData;
       }
-
-      // Set {matrixData}
-      vm.changeMatrixData(data);
 
       // Create a group for each row so it can be translated vertically
       var rowGrp = svg

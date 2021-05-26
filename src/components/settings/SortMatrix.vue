@@ -14,11 +14,11 @@ export default {
     Btn,
   },
   computed: {
-    ...mapGetters("dataset", ["getMatrixData"]),
+    ...mapGetters("dataset", ["getMatrixData", "getSortedMatrixData"]),
   },
   data() {
     return {
-      test: "hello",
+      sortAlg: "transposed",
     };
   },
   methods: {
@@ -26,26 +26,43 @@ export default {
     sortMatrix() {
       let data = this.getMatrixData;
 
-      // Calculate matrix coefficients by taking the weights
-      let coeffs = [];
-      for (let i = 0; i < data.length; i++) {
-        let row = [];
-        for (let j = 0; j < data.length; j++) {
-          row.push(data[i][j]["weight"]);
-        }
-        coeffs.push(row);
-      }
-
-      // // CuthillMckee algorithm made by (c) 2015 Mikola Lysenko. MIT
-      // // https://github.com/mikolalysenko/cuthill-mckee
+      // NOT REALLY WORKING RIGHT NOW
+      // CuthillMckee algorithm made by (c) 2015 Mikola Lysenko. MIT
+      // https://github.com/mikolalysenko/cuthill-mckee
+      // let coeffs = this.getCoefficients();
       // let perm = this.cuthillMckee(coeffs, coeffs.length);
       // let permutedData = this.permuteMatrix(data, perm, perm);
 
-      // For now sorting only permutes the matrix
-      let permutedData = this.transposeMatrix(data);
+      // Do the selected sorting algorithm
+      switch (this.sortAlg) {
+        case "unsorted":
+          this.changeSortedMatrixData("unsorted");
+          break;
+        case "transposed":
+          this.changeSortedMatrixData(this.transposeMatrix(data));
+          break;
+        default:
+          console.log(this.sortAlg);
+      }
 
-      //console.log(permutedData);
-      this.changeSortedMatrixData(permutedData);
+      // For now switching between transpose and unsorted
+      if (this.sortAlg === "unsorted") this.sortAlg = "transposed";
+      else if (this.sortAlg === "transposed") this.sortAlg = "unsorted";
+    },
+    getCoefficients() {
+      let data = this.getMatrixData;
+
+      // Calculate matrix coefficients by taking the weights
+      let _coeffs = [];
+      for (let i = 0; i < data.length; i++) {
+        let _row = [];
+        for (let j = 0; j < data.length; j++) {
+          _row.push(data[i][j]["weight"]);
+        }
+        _coeffs.push(_row);
+      }
+
+      return _coeffs;
     },
     permuteMatrix(matrix, permRows, permColumns) {
       // Transpose matrix so it permutes the columns
