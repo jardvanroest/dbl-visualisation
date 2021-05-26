@@ -17,4 +17,7 @@ export default {
   setFilteredPersons(state, persons) {
     state.filteredPersons = persons;
   },
+  newInspectorData(state, newData) {
+    state.inspectorData = newData;
+  },
 };

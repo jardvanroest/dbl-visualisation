@@ -21,6 +21,7 @@ export default {
 <style scoped>
 .container {
   display: flex;
+  background-color: var(--background-color-2);
 }
 
 .visualisation {
