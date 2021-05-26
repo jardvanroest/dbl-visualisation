@@ -14,18 +14,7 @@ export default {
     Btn,
   },
   computed: {
-    ...mapGetters("dataset", [
-      "filteredEmails",
-      "getMatrixData",
-      "emails",
-      "persons",
-    ]),
-  },
-  watch: {
-    // Watch for a new incoming {sortedMatrixData}
-    getSortedMatrixData(newData) {
-      console.log(newData);
-    },
+    ...mapGetters("dataset", ["getMatrixData"]),
   },
   data() {
     return {
@@ -47,17 +36,22 @@ export default {
         coeffs.push(row);
       }
 
-      // CuthillMckee algorithm made by (c) 2015 Mikola Lysenko. MIT
-      // https://github.com/mikolalysenko/cuthill-mckee
-      let perm = this.cuthillMckee(coeffs, coeffs.length);
-      let permData = this.permuteMatrix(data, perm, perm);
+      // // CuthillMckee algorithm made by (c) 2015 Mikola Lysenko. MIT
+      // // https://github.com/mikolalysenko/cuthill-mckee
+      // let perm = this.cuthillMckee(coeffs, coeffs.length);
+      // let permutedData = this.permuteMatrix(data, perm, perm);
 
-      console.log(permData);
+      // For now sorting only permutes the matrix
+      let permutedData = this.transposeMatrix(data);
+
+      //console.log(permutedData);
+      this.changeSortedMatrixData(permutedData);
     },
     permuteMatrix(matrix, permRows, permColumns) {
       // Transpose matrix so it permutes the columns
       matrix = this.transposeMatrix(matrix);
       matrix = d3.permute(matrix, permColumns);
+
       // Transpose back to original and permute rows
       matrix = this.transposeMatrix(matrix);
       matrix = d3.permute(matrix, permRows);
@@ -76,6 +70,9 @@ export default {
       arr[el2] = temp;
 
       return arr;
+    },
+    compareNum(a, b) {
+      return a - b;
     },
     cuthillMckee(list, n) {
       var adj = new Array(n);
@@ -120,9 +117,6 @@ export default {
       }
 
       return result;
-    },
-    compareNum(a, b) {
-      return a - b;
     },
   },
 };

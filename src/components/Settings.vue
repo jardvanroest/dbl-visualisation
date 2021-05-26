@@ -10,14 +10,8 @@
       </div>
       <div class="selected_setting_type">
         <SettingType>
-<<<<<<< HEAD
           <Setting name="Filter e-mail"> <EmailFilter /> </Setting>
           <Setting name="Sort the matrix"> <SortMatrix /> </Setting>
-=======
-          <Setting name="Filter e-mail">
-            <EmailFilter />
-          </Setting>
->>>>>>> main
         </SettingType>
         <SettingType class="unselected" />
         <SettingType class="unselected" />

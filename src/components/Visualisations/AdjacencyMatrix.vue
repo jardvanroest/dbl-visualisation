@@ -1,11 +1,6 @@
 <template>
-<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
-  <div>
-    <div id="area" style="padding: 30px"></div>
-=======
   <div style="text-align: center">
     <div id="areaAdjacencyMatrix" style="padding: 30px"></div>
->>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
   </div>
 </template>
 
@@ -16,7 +11,18 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "AdjacencyMatrix",
   computed: {
-    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons", "persons"]),
+    ...mapGetters("dataset", [
+      "filteredEmails",
+      "numberOfPersons",
+      "persons",
+      "getSortedMatrixData",
+    ]),
+  },
+  data() {
+    return {
+      edgeColor: "#DF848F",
+      normalColor: "#B8E0F6",
+    };
   },
   watch: {
     filteredEmails: {
@@ -26,24 +32,21 @@ export default {
         this.generateMatrix();
       },
     },
+
+    // Watch for a new incoming {sortedMatrixData}
+    getSortedMatrixData(data) {
+      this.resetMatrix();
+      this.generateMatrix();
+    },
   },
   mounted() {
     this.generateMatrix();
   },
   methods: {
-<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
-    ...mapActions("dataset", ["changeInspetorData", "changeMatrixData"]),
-=======
-    ...mapActions("dataset", ["changeInspectorData"]),
->>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
+    ...mapActions("dataset", ["changeInspectorData", "changeMatrixData"]),
     generateMatrix() {
-      // Colors
-      const edgeCol = "#DF848F";
-      const normalCol = "#B8E0F6";
-
       var d = this.filteredEmails;
       var nodes = this.numberOfPersons;
-      var people = this.persons;
 
       var edges = [];
       let vm = this; // Create correct {this.} context for use in d3
@@ -85,58 +88,12 @@ export default {
         rectLen = width / (nodes + 2),
         rectMargin = rectLen * 0.06;
 
-      /* Create {data} matrix of size [nodes + 1][nodes + 1]
-       * data[i][j] = edgesCol - edge [i, j] exists
-       * data[i][j] = normalCol - edge [i, j] does not exist
-       * data[i][j] is an integer - first row and column
-       */
-      var data = [];
-<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
-
-      people.forEach((personY) => {
-        let temp = [];
-=======
-      // First row contains the nodes indices
-      var firstRow = [0];
-      people.forEach((person) => {
-        firstRow.push(person["id"]);
-      });
-      data.push(firstRow);
-
-      people.forEach((personY) => {
-        // First column contains the nodes indices
-        let temp = [personY["id"]];
->>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
-        // Every other column contains the correct data
-        people.forEach((personX) => {
-          var obj = {
-            from: personX["id"], // Original column
-            to: personY["id"], // Original row
-            weight: 0, // Number of datapoints {dataIndex.length()}
-            dataIndex: [], // All data point indices in original dataset
-            fillColor: normalCol, // Color of node
-          };
-          temp.push(obj); // Push current data point
-        });
-        data.push(temp); // Push row
-      });
-
-      // Populate {data} matrix based on {edges} content
-      for (let i = 0; i < edges.length; i++) {
-        let from = edges[i]["from"];
-        let to = edges[i]["to"];
-
-<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
-        data[to - 1][from - 1] = {
-=======
-        data[to][from] = {
->>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
-          from: from,
-          to: to,
-          weight: edges[i]["index"].length,
-          dataIndex: edges[i]["index"],
-          fillColor: edgeCol,
-        };
+      var data;
+      // Get data to populate the matrix
+      if (this.getSortedMatrixData === "unsorted") {
+        data = this.getCorrectData(edges);
+      } else {
+        data = this.getSortedMatrixData;
       }
 
       // Set {matrixData}
@@ -173,15 +130,55 @@ export default {
         })
         //On click change the inspector data by calling {changeInspectorData}
         .on("click", function (event, data) {
-<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
-          vm.changeInspetorData(data);
-=======
           vm.changeInspectorData(data);
->>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
         });
     },
     resetMatrix() {
       d3.select("#areaAdjacencyMatrix").select("svg").remove();
+    },
+    getCorrectData(edges) {
+      var people = this.persons;
+      var edgeCol = this.edgeColor;
+      var normalCol = this.normalColor;
+
+      /* Create {data} matrix of size [nodes + 1][nodes + 1]
+       * data[i][j] = edgesCol - edge [i, j] exists
+       * data[i][j] = normalCol - edge [i, j] does not exist
+       * data[i][j] is an integer - first row and column
+       */
+      var data = [];
+
+      people.forEach((personY) => {
+        let temp = [];
+        // Every other column contains the correct data
+        people.forEach((personX) => {
+          var obj = {
+            from: personX["id"], // Original column
+            to: personY["id"], // Original row
+            weight: 0, // Number of datapoints {dataIndex.length()}
+            dataIndex: [], // All data point indices in original dataset
+            fillColor: normalCol, // Color of node
+          };
+          temp.push(obj); // Push current data point
+        });
+        data.push(temp); // Push row
+      });
+
+      // Populate {data} matrix based on {edges} content
+      for (let i = 0; i < edges.length; i++) {
+        let from = edges[i]["from"];
+        let to = edges[i]["to"];
+
+        data[to - 1][from - 1] = {
+          from: from,
+          to: to,
+          weight: edges[i]["index"].length,
+          dataIndex: edges[i]["index"],
+          fillColor: edgeCol,
+        };
+      }
+
+      return data;
     },
   },
 };
