@@ -15,6 +15,8 @@ export default {
   data: function () {
     return {
       visualisation: new visualisations[this.type][this.type]("#" + this.id),
+      size: 450,
+      zoom_vals: { min: 3 / 4, max: 4, margin: 50 },
     };
   },
   computed: {
@@ -30,12 +32,14 @@ export default {
     },
   },
   mounted() {
-    this.zoom = d3.zoom().scaleExtent([1, 2]).on("zoom", this.zoomed);
+    this.zoom = d3
+      .zoom()
+      .scaleExtent([this.zoom_vals.min, this.zoom_vals.max])
+      .on("zoom", this.zoomed);
 
     this.g = d3
       .select("#" + this.id)
-      .attr("preserveAspectRatio", "xMinYMin meet")
-      .attr("viewBox", "0 0 450 450")
+      .attr("viewBox", "0 0 " + this.size + " " + this.size)
       .call(this.zoom)
       .append("g");
 
@@ -53,11 +57,13 @@ export default {
     },
     zoomed(event) {
       var box = this.g.node().getBBox();
-      const margin = 100;
-      const worldTopLeft = [box.x - margin, box.y - margin];
+      const worldTopLeft = [
+        box.x - this.zoom_vals.margin,
+        box.y - this.zoom_vals.margin,
+      ];
       const worldBottomRight = [
-        box.x + box.width + margin,
-        box.y + box.height + margin,
+        box.x + box.width + this.zoom_vals.margin,
+        box.y + box.height + this.zoom_vals.margin,
       ];
       this.zoom.translateExtent([worldTopLeft, worldBottomRight]);
       this.g.attr("transform", event.transform);

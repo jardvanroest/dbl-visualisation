@@ -7,7 +7,7 @@ export class TestVis {
   create() {
     var g = d3.select(this.selector).selectChild("g");
 
-    const width = 200;
+    const width = 450;
 
     g.append("rect")
       .attr("width", width)
