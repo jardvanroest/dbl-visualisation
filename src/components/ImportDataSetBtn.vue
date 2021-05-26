@@ -27,6 +27,7 @@ export default {
     },
     importFile(event) {
       const file = this.getFile(event.target);
+
       parseFile(file)
         .then(this.saveData)
         .then(this.goToVisualisationPage)
