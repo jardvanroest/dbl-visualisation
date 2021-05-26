@@ -30,22 +30,13 @@ export default {
     },
   },
   mounted() {
-    var g = d3
+    this.zoom = d3.zoom().scaleExtent([1, 2]).on("zoom", this.zoomed);
+
+    this.g = d3
       .select("#" + this.id)
       .attr("preserveAspectRatio", "xMinYMin meet")
       .attr("viewBox", "0 0 450 450")
-      .call(
-        d3
-          .zoom()
-          .scaleExtent([1, 2])
-          .translateExtent([
-            [-300, -300],
-            [600, 600],
-          ])
-          .on("zoom", function (event) {
-            g.attr("transform", event.transform);
-          })
-      )
+      .call(this.zoom)
       .append("g");
 
     this.generateVisualisation();
@@ -59,6 +50,17 @@ export default {
     },
     resetVisualisation() {
       this.visualisation.reset();
+    },
+    zoomed(event) {
+      var box = this.g.node().getBBox();
+      const margin = 100;
+      const worldTopLeft = [box.x - margin, box.y - margin];
+      const worldBottomRight = [
+        box.x + box.width + margin,
+        box.y + box.height + margin,
+      ];
+      this.zoom.translateExtent([worldTopLeft, worldBottomRight]);
+      this.g.attr("transform", event.transform);
     },
   },
 };
