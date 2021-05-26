@@ -39,9 +39,16 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 * {
   margin: 0;
   padding: 0;
+}
+node {
+  stroke: black;
+}
+
+node.selected {
+  stroke: red;
 }
 </style>
