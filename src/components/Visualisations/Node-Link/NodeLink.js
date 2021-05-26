@@ -9,6 +9,7 @@ export class NodeLink {
       edgeNegative: "#e498a1",
       nodeBody: "#B8E0F6",
       nodeOutline: "#fff",
+      nodeSelectedOutline: "#A585C1",
     };
 
     this.options = {
@@ -19,6 +20,8 @@ export class NodeLink {
       edgeOpacity: 0.6,
       sentimentThreshold: 0.01,
     };
+
+    this.brushedNodes = [];
   }
 
   redraw(emails) {
@@ -27,6 +30,7 @@ export class NodeLink {
   }
 
   _generateVis(emails) {
+    this.emails = emails;
     const { nodes, links } = new DataParser(emails).parseData();
     const svg = this._createSVG();
     this._drawVisualisation(nodes, links, svg);
@@ -46,6 +50,8 @@ export class NodeLink {
     this.drawnNodes = this._drawNodes(svg, nodes, simulation);
 
     simulation.on("tick", this._handleSimulationTick.bind(this));
+
+    this._addBrushing(svg, nodes);
   }
 
   _createForceSimulation(nodes, links) {
@@ -117,13 +123,16 @@ export class NodeLink {
   }
 
   _drawNodes(svg, nodes, simulation) {
+    const that = this;
+
     return svg
       .append("g")
-      .attr("stroke", this.colors.nodeOutline)
-      .attr("stroke-this.options.width", this.options.nodeOutlineSize)
+      .attr("class", "node")
       .selectAll("circle")
       .data(nodes)
       .join("circle")
+      .attr("stroke", that.colors.nodeOutline)
+      .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
       .call(this._drag(simulation)); // Append listener for drag events
@@ -162,6 +171,37 @@ export class NodeLink {
       .attr("y2", (d) => d.target.y);
 
     this.drawnNodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+  }
+
+  // TODO: this invalidates drag behaviour
+  _addBrushing(svg) {
+    const that = this;
+    const brush = d3
+      .brush()
+      .extent([
+        [0, 0],
+        [this.options.width, this.options.height],
+      ])
+      .on("brush end", (event) => this._onBrush(event));
+    // TODO: selection works, now how do you show it?
+
+    const brushArea = svg.append("g");
+    brushArea.call(brush);
+  }
+
+  _onBrush(event) {
+    if (event.selection === null) {
+      this.drawnNodes.classed("selected", false);
+      return;
+    }
+
+    const [[x0, y0], [x1, y1]] = event.selection;
+    const that = this;
+    this.drawnNodes.attr("stroke", function (d) {
+      const sel = x0 <= d.x && x1 >= d.x && y0 <= d.y && y1 >= d.y;
+      if (sel) return that.colors.nodeSelectedOutline;
+      else return that.colors.nodeOutline;
+    });
   }
 
   _resetVis() {
