@@ -2,31 +2,32 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import * as d3 from "d3";
 
 export class AdjacencyMatrix extends Visualisation {
-  constructor(emails, numPersons) {
+  constructor(changeInspectorData) {
     super();
-
-    this.emails = emails;
-    this.numPersons = numPersons;
+    this.changeInspectorData = changeInspectorData;
   }
 
-  redraw() {
+  redraw(emails, persons) {
+    console.log({ emails, persons });
     this.resetVisualisation();
-    this.generateVisualisation();
+    this.generateVisualisation(emails, persons);
   }
 
   resetVisualisation() {
     d3.select("#areaAdjacencyMatrix").select("svg").remove();
   }
 
-  generateVisualisation() {
-    // Colors and data object
+  generateVisualisation(emails, persons) {
+    // Colors
     const edgeCol = "#DF848F";
-    const normalCol = { fillColor: "#B8E0F6", dataIndex: -1 }; // -1 for non-existing data points
+    const normalCol = "#B8E0F6";
 
-    var d = this.emails;
-    var nodes = this.numberOfPersons;
+    var d = emails;
+    var nodes = persons.length;
+    var people = persons;
 
     var edges = [];
+    let vm = this; // Create correct {this.} context for use in d3
 
     // Iterate through {d} to compute {nodes} and {edges}
     for (let i = 0; i < d.length; i++) {
@@ -38,7 +39,18 @@ export class AdjacencyMatrix extends Visualisation {
         continue;
       }
 
-      edges.push({ from: u, to: v, index: i });
+      // Get index of edge in {edges}
+      let indexOfEdge = edges.findIndex(
+        (element) => element["from"] === u && element["to"] === v
+      );
+      // If edge does not exist
+      if (indexOfEdge === -1) {
+        // Push the edge
+        edges.push({ from: u, to: v, index: [i] });
+      } else {
+        // Else add new index
+        edges[indexOfEdge]["index"].push(i);
+      }
     }
 
     // Append the svg object to the div
@@ -60,20 +72,42 @@ export class AdjacencyMatrix extends Visualisation {
      * data[i][j] is an integer - first row and column
      */
     var data = [];
-    data.push(d3.range(0, nodes + 1)); // First row contains the nodes indices
-    for (let i = 1; i <= nodes; i++) {
-      var temp = new Array(nodes + 1).fill(normalCol);
-      temp[0] = i; // First column contains the nodes indices
+    // First row contains the nodes indices
+    var firstRow = [0];
+    people.forEach((person) => {
+      firstRow.push(person["id"]);
+    });
+    data.push(firstRow);
 
-      data.push(temp);
-    }
+    people.forEach((personY) => {
+      // First column contains the nodes indices
+      let temp = [personY["id"]];
+      // Every other column contains the correct data
+      people.forEach((personX) => {
+        var obj = {
+          from: personX["id"], // Original column
+          to: personY["id"], // Original row
+          weight: 0, // Number of datapoints {dataIndex.length()}
+          dataIndex: [], // All data point indices in original dataset
+          fillColor: normalCol, // Color of node
+        };
+        temp.push(obj); // Push current data point
+      });
+      data.push(temp); // Push row
+    });
 
     // Populate {data} matrix based on {edges} content
     for (let i = 0; i < edges.length; i++) {
       let from = edges[i]["from"];
       let to = edges[i]["to"];
 
-      data[to][from] = { fillColor: edgeCol, dataIndex: edges[i]["index"] };
+      data[to][from] = {
+        from: from,
+        to: to,
+        weight: edges[i]["index"].length,
+        dataIndex: edges[i]["index"],
+        fillColor: edgeCol,
+      };
     }
 
     // Create a group for each row so it can be translated vertically
@@ -107,18 +141,9 @@ export class AdjacencyMatrix extends Visualisation {
         // TODO: add node labels?
         else return d["fillColor"];
       })
-      // Add on click event
-      .on("click", function (event, _data) {
-        if (_data["dataIndex"] === -1) {
-          // In case edge doesn't exist
-          console.log("Edge does not exist in the adjacency matrix!");
-        } else if (_data["dataIndex"] === undefined) {
-          // If clicked on index row/column
-          console.log(_data);
-        } else {
-          // If it exists log the data
-          console.log(d[_data["dataIndex"]]);
-        }
+      //On click change the inspector data by calling {changeInspectorData}
+      .on("click", function (event, data) {
+        vm.changeInspectorData(data);
       });
   }
 }
