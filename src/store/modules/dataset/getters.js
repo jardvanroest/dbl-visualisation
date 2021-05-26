@@ -22,6 +22,9 @@ export default {
   thereAreAddressesSelectedInTheEmailFilter(state) {
     return state.filteredPersons.length > 0;
   },
+  getInspectorData(state) {
+    return state.inspectorData;
+  },
 };
 
 function makeUnique(array) {
