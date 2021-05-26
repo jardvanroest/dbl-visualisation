@@ -38,6 +38,10 @@ export default {
         d3
           .zoom()
           .scaleExtent([1, 2])
+          .translateExtent([
+            [-300, -300],
+            [600, 600],
+          ])
           .on("zoom", function (event) {
             g.attr("transform", event.transform);
           })
