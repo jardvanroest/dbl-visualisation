@@ -1,6 +1,11 @@
 <template>
+<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
   <div>
     <div id="area" style="padding: 30px"></div>
+=======
+  <div style="text-align: center">
+    <div id="areaAdjacencyMatrix" style="padding: 30px"></div>
+>>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
   </div>
 </template>
 
@@ -26,7 +31,11 @@ export default {
     this.generateMatrix();
   },
   methods: {
+<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
     ...mapActions("dataset", ["changeInspetorData", "changeMatrixData"]),
+=======
+    ...mapActions("dataset", ["changeInspectorData"]),
+>>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
     generateMatrix() {
       // Colors
       const edgeCol = "#DF848F";
@@ -65,7 +74,7 @@ export default {
 
       // Append the svg object to the div
       const svg = d3
-        .select("#area")
+        .select("#areaAdjacencyMatrix")
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
         .attr("viewBox", "0 0 450 450")
@@ -82,9 +91,22 @@ export default {
        * data[i][j] is an integer - first row and column
        */
       var data = [];
+<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
 
       people.forEach((personY) => {
         let temp = [];
+=======
+      // First row contains the nodes indices
+      var firstRow = [0];
+      people.forEach((person) => {
+        firstRow.push(person["id"]);
+      });
+      data.push(firstRow);
+
+      people.forEach((personY) => {
+        // First column contains the nodes indices
+        let temp = [personY["id"]];
+>>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
         // Every other column contains the correct data
         people.forEach((personX) => {
           var obj = {
@@ -104,7 +126,11 @@ export default {
         let from = edges[i]["from"];
         let to = edges[i]["to"];
 
+<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
         data[to - 1][from - 1] = {
+=======
+        data[to][from] = {
+>>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
           from: from,
           to: to,
           weight: edges[i]["index"].length,
@@ -147,11 +173,15 @@ export default {
         })
         //On click change the inspector data by calling {changeInspectorData}
         .on("click", function (event, data) {
+<<<<<<< HEAD:src/components/AdjacencyMatrix.vue
           vm.changeInspetorData(data);
+=======
+          vm.changeInspectorData(data);
+>>>>>>> main:src/components/Visualisations/AdjacencyMatrix.vue
         });
     },
     resetMatrix() {
-      d3.select("svg").remove();
+      d3.select("#areaAdjacencyMatrix").select("svg").remove();
     },
   },
 };

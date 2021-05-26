@@ -1,6 +1,7 @@
 import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
+<<<<<<< HEAD
   changeInspetorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
@@ -10,6 +11,11 @@ export default {
   changeMatrixData(context, newData) {
     context.commit("newMatrixData", newData);
   },
+=======
+  changeInspectorData(context, newData) {
+    context.commit("newInspectorData", newData);
+  },
+>>>>>>> main
   saveData(context, data) {
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
 

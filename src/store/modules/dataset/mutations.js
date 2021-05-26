@@ -20,10 +20,13 @@ export default {
   newInspectorData(state, newData) {
     state.inspectorData = newData;
   },
+<<<<<<< HEAD
   newSortedMatrixData(state, newData) {
     state.sortedMatrixData = newData;
   },
   newMatrixData(state, newData) {
     state.matrixData = newData;
   },
+=======
+>>>>>>> main
 };

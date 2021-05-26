@@ -25,12 +25,15 @@ export default {
   getInspectorData(state) {
     return state.inspectorData;
   },
+<<<<<<< HEAD
   getSortedMatrixData(state) {
     return state.sortedMatrixData;
   },
   getMatrixData(state) {
     return state.matrixData;
   },
+=======
+>>>>>>> main
 };
 
 function makeUnique(array) {

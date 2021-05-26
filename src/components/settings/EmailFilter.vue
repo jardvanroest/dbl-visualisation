@@ -129,7 +129,11 @@ a {
   margin-bottom: 0.5em;
   border: var(--settings-border);
   border-radius: 4px;
+<<<<<<< HEAD:src/components/settings/EmailFilter.vue
   background-image: url("/src/assets/icons/loupe.svg");
+=======
+  background-image: url("../assets/icons/loupe.svg");
+>>>>>>> main:src/components/EmailFilter.vue
   background-size: 1em;
   background-position: 0.2em 0.1em;
   background-repeat: no-repeat;
