@@ -1,10 +1,17 @@
+import axios from "axios";
+
 import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
   changeInspectorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
-  saveData(context, data) {
+  saveData(context, { data: data, isDefault: isDefault }) {
+    if (!isDefault) {
+      // upload dataset if it is not default
+      postDataToBackend(data);
+    }
+
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
 
     data.forEach((entry) => {
@@ -21,3 +28,19 @@ export default {
     context.commit("setFilteredPersons", persons);
   },
 };
+
+function postDataToBackend(data) {
+  console.log("Sending POST request to backend...");
+  axios({
+    method: "post",
+    url: "http://localhost:5000/datasets",
+    data: data,
+  }).then(
+    (response) => {
+      console.log(response);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}

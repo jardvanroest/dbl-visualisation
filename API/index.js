@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 import datasetsRoutes from "./routes/datasets.js";
 
@@ -8,8 +9,9 @@ import datasetsRoutes from "./routes/datasets.js";
 const app = express();
 const PORT = 5000;
 
-app.use(bodyParser.json());
-
+app.use(cors());
+app.options("*", cors());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use("/datasets", datasetsRoutes);
 
 // req = request, res = response
