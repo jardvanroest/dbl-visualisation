@@ -92,7 +92,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 label {
   margin-left: 5px;
 }
@@ -114,10 +114,14 @@ input[type="checkbox"] {
 }
 
 a {
-  color: var(--accent-color-2);
+  color: var(--accent-color);
   text-decoration: underline;
   font-size: 9pt;
   cursor: pointer;
+
+  &:hover {
+    color: var(--accent-color-2);
+  }
 }
 
 .error {
@@ -130,10 +134,15 @@ a {
   border: var(--settings-border);
   border-radius: 4px;
   background-image: url("../assets/icons/loupe.svg");
+  background-blend-mode: luminosity;
   background-size: 1em;
-  background-position: 0.2em 0.1em;
+  background-position: 0.2em 0.15em;
   background-repeat: no-repeat;
   padding-left: 1.5em;
+
+  &:focus {
+    background-image: url("../assets/icons/loupe_focus.svg");
+  }
 }
 
 .hideScroll {

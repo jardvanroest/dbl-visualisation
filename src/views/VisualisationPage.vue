@@ -2,7 +2,9 @@
   <Header class="header" @toggle-settings="toggleSettings" />
   <div class="grid-container">
     <Visualisations class="vis" />
-    <Settings v-if="showSettings" class="settings" />
+    <div :class="{ hide: !showSettings }" class="cont-sett">
+      <Settings :class="{ dontShow: !showSettings }" class="settings" />
+    </div>
   </div>
 </template>
 
@@ -31,23 +33,38 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .grid-container {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 3.125rem);
   display: flex;
+  overflow: hidden;
 }
 
 .vis {
   flex-grow: 1;
 }
 
-.settings {
-  width: 300px;
+.cont-sett {
+  width: 18.75rem;
   height: 100%;
+  transition: ease-in-out 150ms;
+}
+.settings {
+  width: 100%;
+  height: 100%;
+  transition: ease-in-out 150ms;
 }
 
 .header {
   position: relative;
   z-index: 50;
+}
+
+.dontShow {
+  display: none;
+}
+
+.hide {
+  width: 0;
 }
 </style>

@@ -27,7 +27,7 @@ export default {
 
 <style scoped lang="scss">
 .centered-container {
-  width: 280px;
+  width: 17.5rem;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -37,13 +37,13 @@ export default {
 
 .title {
   font-family: "Roboto", sans-serif;
-  font-size: 43px;
+  font-size: 3rem;
   margin-bottom: 1rem;
   letter-spacing: 0.05em;
 }
 
 .introduction {
   color: rgb(95, 95, 95);
-  margin: 16px 0 20px 0;
+  margin: 1rem 0 1.25rem 0;
 }
 </style>

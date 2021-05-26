@@ -74,25 +74,28 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 /* Settings occupies 60% of the space */
 .settings {
   display: flex;
   flex-direction: column;
   height: 65%;
-  background-color: var(--background-color-2);
+  background-color: var(--background-color);
 }
 
 /* Occupy remaining space */
-.selected_setting_type,
+.selected_setting_type {
+  background-color: var(--background-color);
+  height: 100%;
+}
+
 .inspector {
   background-color: var(--background-color);
-  flex-grow: 1;
+  height: 35%;
 }
 
 /* Line on the left of settings tab */
 .container .settings::before {
-  z-index: 1000;
   content: "";
   display: block;
 
@@ -108,7 +111,7 @@ export default {
 .select_mode {
   z-index: 20;
   height: 36px;
-  background-color: transparent;
+  background-color: var(--background-color-2);
 }
 
 .select_mode ul {
@@ -121,8 +124,9 @@ export default {
   list-style-type: none;
 }
 
-.select_mode ul :hover {
-  color: var(--accent-color-2);
+.select_mode ul li:not(.selected) :hover {
+  cursor: pointer;
+  color: var(--accent-color);
 }
 
 .select_mode li {
@@ -166,6 +170,7 @@ export default {
   z-index: 22;
   background-color: var(--background-color);
   font-weight: bold;
+
   color: var(--accent-color);
   transition: step-start 200ms;
 }

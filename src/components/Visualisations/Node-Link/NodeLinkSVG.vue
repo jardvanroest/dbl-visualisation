@@ -1,7 +1,5 @@
 <template>
   <div style="text-align: center">
-    <h1>Node-link Diagram</h1>
-    <br />
     <div id="areaNodeLinkSVG" style="padding: 30px"></div>
   </div>
 </template>

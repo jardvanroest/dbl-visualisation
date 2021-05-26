@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: center">
-    <div id="areaAdjacencyMatrix" style="padding: 30px"></div>
+    <div id="areaAdjacencyMatrix"></div>
   </div>
 </template>
 
@@ -167,6 +167,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+
+#areaAdjacencyMatrix {
+  padding: 0.5rem;
 }
 
 .svg-content {

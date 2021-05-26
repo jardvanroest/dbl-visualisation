@@ -173,8 +173,8 @@ export default {
 <style scoped lang="scss">
 .inspector-container {
   display: table-cell;
-  padding: 1em 0;
   padding-left: 15px;
+  margin: 1em 0;
   font-size: 10pt;
 
   overflow-y: auto;
@@ -203,8 +203,8 @@ export default {
 }
 
 .no-information img {
-  margin-left: 50px;
-  margin-top: 10px;
-  width: 150px;
+  margin-left: 3.125rem;
+  margin-top: 0.625rem;
+  width: 9.375rem;
 }
 </style>

@@ -14,9 +14,10 @@
 /* Global variables to be used troughout the whole site */
 :root {
   --accent-color: #38ada9;
+  --accent-color-light: #38ada993;
+  --accent-color-2: #067572;
   --link-color: #0000ff;
   --error-color: #ff0000;
-  --accent-color-2: #0f8c88;
   --background-color: white;
   --background-color-2: #eaf3f3;
   --border-color: rgba(221, 221, 221);
@@ -25,6 +26,20 @@
 
 #app {
   font-family: "Open Sans", Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* Scroll bar styling */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.164);
+  background-color: #00000008;
+}
+::-webkit-scrollbar {
+  width: 11px;
+  background-color: #00000008;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--background-color);
+  border: 4px solid var(--accent-color-light);
 }
 
 /* Prevent user-selection of elements listed below by giving them class of no_highlight*/
