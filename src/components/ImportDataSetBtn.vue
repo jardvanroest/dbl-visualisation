@@ -27,8 +27,10 @@ export default {
     },
     importFile(event) {
       const file = this.getFile(event.target);
+      const vm = this;
+
       parseFile(file)
-        .then(this.saveData)
+        .then((result) => vm.saveData({ data: result, isDefault: false }))
         .then(this.goToVisualisationPage)
         .catch(this.handleError);
     },

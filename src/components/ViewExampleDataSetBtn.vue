@@ -11,7 +11,7 @@ export default {
   name: "ViewExampleDataSetBtn",
   methods: {
     importExampleDataset() {
-      this.saveData(parseString(exampleDataSet));
+      this.saveData({ data: parseString(exampleDataSet), isDefault: true });
       this.goToVisualisationPage();
     },
     goToVisualisationPage() {
