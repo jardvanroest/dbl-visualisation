@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { DataParser } from "./DataParser.js";
+import { Simulation } from "./Simulation.js";
 import { Brush } from "./Brush.js";
 
 export class NodeLink {
@@ -44,7 +45,12 @@ export class NodeLink {
   }
 
   _drawVisualisation(nodes, links, svg) {
-    const simulation = this._createForceSimulation(nodes, links);
+    const simulation = new Simulation().createForceSimulation(
+      nodes,
+      links,
+      this.options.width,
+      this.options.height
+    );
 
     this.drawnLinks = this._drawLinks(svg, links);
     this.drawnNodes = this._drawNodes(svg, nodes, simulation);
@@ -52,63 +58,14 @@ export class NodeLink {
     simulation.on("tick", this._handleSimulationTick.bind(this));
 
     // TODO: adding the brush invalidates drag behaviour
-    new Brush(
-      svg,
-      this.drawnNodes,
-      this.options.width,
-      this.options.height,
-      this.colors.nodeOutline,
-      this.colors.nodeSelectedOutline
-    ).appendBrush();
-  }
-
-  _createForceSimulation(nodes, links) {
-    let simulation = d3.forceSimulation(nodes);
-
-    simulation = this._addCenteringForce(simulation);
-    simulation = this._addChargeForce(simulation);
-    simulation = this._addLinkForce(simulation, links);
-    simulation = this._addXYForces(simulation);
-
-    return simulation;
-  }
-
-  // Add force that pulls nodes to center
-  _addCenteringForce(simulation) {
-    return simulation.force(
-      "center",
-      d3
-        .forceCenter(this.options.width / 2, this.options.height / 2)
-        .strength(0.01)
-    );
-  }
-
-  // Add force that makes nodes repel each other so they don't overlap
-  _addChargeForce(simulation) {
-    return simulation.force(
-      "charge",
-      d3
-        .forceManyBody()
-        .strength(function (d, i) {
-          return i == 0 ? -60 : -40;
-        })
-        .distanceMax([Math.max(this.options.width, this.options.height) * 0.8])
-    );
-  }
-
-  // Add force that pushes elements to be a fixed distance apart
-  _addLinkForce(simulation, links) {
-    return simulation.force(
-      "link",
-      d3.forceLink(links).id((link) => link.id)
-    );
-  }
-
-  // Add force that attracts elements to specified positions
-  _addXYForces(simulation) {
-    return simulation
-      .force("x", d3.forceX(this.options.width / 2).strength(0.1))
-      .force("y", d3.forceY(this.options.height / 2).strength(0.1));
+    // new Brush(
+    //   svg,
+    //   this.drawnNodes,
+    //   this.options.width,
+    //   this.options.height,
+    //   this.colors.nodeOutline,
+    //   this.colors.nodeSelectedOutline
+    // ).appendBrush();
   }
 
   _drawLinks(svg, links) {
@@ -143,32 +100,7 @@ export class NodeLink {
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
-      .call(this._drag(simulation)); // Append listener for drag events
-  }
-
-  _drag(simulation) {
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    function dragged(event, d) {
-      d.fx = event.x;
-      d.fy = event.y;
-    }
-
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
-
-    return d3
-      .drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended);
+      .call(new Simulation().drag(simulation)); // Append listener for drag events
   }
 
   _handleSimulationTick() {
