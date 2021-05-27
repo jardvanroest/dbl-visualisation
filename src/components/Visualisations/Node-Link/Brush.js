@@ -6,6 +6,7 @@ export class Brush {
   constructor(brushArea, brushObjects, width, height, normalCol, selectedCol) {
     this.brushArea = brushArea;
     this.brushObjects = brushObjects;
+    this._selectedObjects = [];
 
     this.colors = {
       selected: selectedCol,
@@ -37,17 +38,24 @@ export class Brush {
   _onBrush(event) {
     if (event.selection === null) {
       this.brushObjects.attr("stroke", this.colors.normal);
+      this._selectedObjects = [];
       return;
     }
 
-    // TODO: change elements using CSS styles
     const that = this;
     const [[x0, y0], [x1, y1]] = event.selection; // Get boundaries of selection
+
+    this._selectedObjects = [];
+    // Set stroke based on whether or not the element is in selection
     this.brushObjects.attr("stroke", function (d) {
       // Check if data element is selected using its coordinates
       const selected = x0 <= d.x && x1 >= d.x && y0 <= d.y && y1 >= d.y;
 
-      if (selected) return that.colors.selected;
+      if (selected) {
+        that._selectedObjects.push({ id: d.id });
+        return that.colors.selected;
+      }
+
       return that.colors.normal;
     });
   }

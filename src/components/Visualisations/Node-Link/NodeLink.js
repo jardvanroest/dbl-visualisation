@@ -58,14 +58,14 @@ export class NodeLink {
     simulation.on("tick", this._handleSimulationTick.bind(this));
 
     // TODO: adding the brush invalidates drag behaviour
-    // new Brush(
-    //   svg,
-    //   this.drawnNodes,
-    //   this.options.width,
-    //   this.options.height,
-    //   this.colors.nodeOutline,
-    //   this.colors.nodeSelectedOutline
-    // ).appendBrush();
+    new Brush(
+      svg,
+      this.drawnNodes,
+      this.options.width,
+      this.options.height,
+      this.colors.nodeOutline,
+      this.colors.nodeSelectedOutline
+    ).appendBrush();
   }
 
   _drawLinks(svg, links) {
