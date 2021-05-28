@@ -30,7 +30,9 @@ export default {
       const vm = this;
 
       parseFile(file)
-        .then((result) => vm.saveData({ data: result, isDefault: false }))
+        .then((result) => {
+          vm.saveData({ data: result, isDefault: false });
+        })
         .then(this.goToVisualisationPage)
         .catch(this.handleError);
     },

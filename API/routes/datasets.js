@@ -66,7 +66,7 @@ router.post("/", (req, res) => {
   datasets.push(datasetWithId);
 
   res.send(
-    `Upload successful, dataset_id: ${datasetId}. You can use the id to fetch the dataset.`
+    `Upload successful, dataset_id:${datasetId}. You can use the id to fetch the dataset.`
   );
   updateDatasetFile();
 });
@@ -75,12 +75,12 @@ router.post("/", (req, res) => {
 // return the dataset with the specified id
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  const foundDataset = datasets.find((dataset) => dataset.id === id);
 
-  console.log(`GET request for id: ${id}`);
+  console.log(`GET request for id:${id}`);
   updateDatasetObject();
+  const foundDataset = datasets.find((dataset) => dataset.id === id);
   if (foundDataset === undefined) {
-    res.send(`Dataset with id: ${id} not found.`);
+    res.send(`Dataset with id:${id} not found.`);
   } else {
     res.send(foundDataset);
   }
@@ -90,7 +90,7 @@ router.get("/:id", (req, res) => {
 // delete the dataset with the specified id
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
-  console.log(`DELETE request for id: ${id}`);
+  console.log(`DELETE request for id:${id}`);
 
   updateDatasetObject();
   datasets = datasets.filter((dataset) => dataset.id !== id); // deletion happens on this line via filtering
