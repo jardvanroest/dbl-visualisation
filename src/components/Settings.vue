@@ -11,9 +11,12 @@
       <div class="selected_setting_type">
         <SettingType>
           <Setting name="Filter e-mail"> <EmailFilter /> </Setting>
-          <Setting name="Sort the matrix"> <SortMatrix /> </Setting>
         </SettingType>
-        <SettingType class="unselected" />
+        <SettingType class="unselected">
+          <Setting name="Sorting algorithm" flexRow="yes">
+            <SortMatrix />
+          </Setting>
+        </SettingType>
         <SettingType class="unselected" />
       </div>
     </div>

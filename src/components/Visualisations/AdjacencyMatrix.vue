@@ -118,7 +118,6 @@ export default {
           return d;
         })
         .enter()
-        .append("g")
         .append("rect")
         .attr("x", function (d, i) {
           return (rectLen + rectMargin) * i;

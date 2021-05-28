@@ -14,6 +14,7 @@
         <inspectorField field="Node color" :info="nodeColor" />
         <svg>
           <rect
+            class="nl_sel"
             v-bind:style="{ fill: nodeColor }"
             width="100%"
             height="100%"
