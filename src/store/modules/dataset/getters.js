@@ -1,3 +1,7 @@
+//import { range } from "d3-array";
+
+import { range } from "d3-array";
+
 export default {
   emails(state) {
     return state.emails;
@@ -12,6 +16,19 @@ export default {
     );
 
     return makeUnique(filteredEmails);
+  },
+  getRangeYears(state) {
+    // get the range of all years between the minimum and the maximum;
+    let min = state.emails[0].date.getFullYear();
+    let max = state.emails[0].date.getFullYear();
+
+    for (let i = 1; i < state.emails.length; i++) {
+      if (state.emails[i].date.getFullYear() > max)
+        max = state.emails[i].date.getFullYear();
+      if (state.emails[i].date.getFullYear() < min)
+        min = state.emails[i].date.getFullYear();
+    }
+    return range(min, max + 1);
   },
   persons(state) {
     return Object.values(state.persons);

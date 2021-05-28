@@ -1,19 +1,19 @@
 <template>
   <div class="container">
-    <AdjacencyMatrix class="vis1" />
+    <Calendar class="vis1" />
     <Visualisation class="vis2" />
   </div>
 </template>
 
 <script>
 import Visualisation from "@/components/Visualisation.vue";
-import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
+import Calendar from "@/components/Calendar.vue";
 
 export default {
   name: "Visualisations",
   components: {
     Visualisation,
-    AdjacencyMatrix,
+    Calendar,
   },
 };
 </script>
