@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <AdjacencyMatrix class="vis1" />
-    <NodeLinkSVG class="vis2" />
+  <div class="visualisations-cont">
+    <AdjacencyMatrix />
+    <NodeLinkSVG />
   </div>
 </template>
 
@@ -18,19 +18,33 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
+<style scoped lang="scss">
+.visualisations-cont {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  background-color: var(--background-color-2);
-}
-.vis1 {
-  grid-row: 1;
-  grid-column: 1;
+  grid-auto-flow: column;
 }
 
-.vis2 {
-  grid-row: 1;
-  grid-column: 2;
+.visualisations-cont * {
+  --margin-size: 0.75rem;
+  margin: var(--margin-size);
+  margin-left: 0;
+  padding: 0.25rem;
+  border-radius: var(--border-rad);
+  background-color: var(--background-color);
+}
+
+.visualisations-cont:first-child {
+  margin-left: var(--margin-size);
+}
+
+.visualisations-cont * {
+  box-shadow: 0 0 0 2px var(--background-color),
+    rgba(50, 50, 93, 0.25) 2px 4px 5px -1px, rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
+
+  &:hover {
+    box-shadow: 0 0 0 2px var(--accent-color),
+      rgba(50, 50, 93, 0.25) 2px 4px 5px -1px,
+      rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
+  }
 }
 </style>

@@ -1,40 +1,41 @@
 <template>
-  <div
-    class="email-filter-container"
-    :class="{ hideScroll: noEmailAddressesAreShown }"
-  >
-    <input
-      class="searchBox"
-      v-model="searchText"
-      placeholder="Search email address..."
-    />
-
-    <p v-if="noEmailAddressesAreShown" class="error">
-      No email address matched your search
-    </p>
-
-    <div
-      v-for="(person, i) in searchedPersons"
-      :key="person.id"
-      class="list-entry"
-    >
-      <div v-if="i < numShownEmailAddresses">
-        <input
-          type="checkbox"
-          name="checkbox-item"
-          v-model="person.isSelectedInEmailFilter"
-        />
-        <label class="email-adress" for="checkbox-item">{{
-          person.emailAddress
-        }}</label>
-      </div>
+  <div class="email-filter-container">
+    <div class="searchBox-container">
+      <input
+        class="searchBox"
+        v-model="searchText"
+        placeholder="Search email address..."
+      />
     </div>
 
-    <a
-      v-if="numShownEmailAddresses < searchedPersons.length"
-      @click="increaseShownEmailAddresses"
-      >Show more</a
-    >
+    <div class="entries-container">
+      <p v-if="noEmailAddressesAreShown" class="error">
+        No email address matched your search
+      </p>
+
+      <div
+        v-for="(person, i) in searchedPersons"
+        :key="person.id"
+        class="list-entry"
+      >
+        <div v-if="i < numShownEmailAddresses">
+          <input
+            type="checkbox"
+            name="checkbox-item"
+            v-model="person.isSelectedInEmailFilter"
+          />
+          <label class="email-adress" for="checkbox-item">{{
+            person.emailAddress
+          }}</label>
+        </div>
+      </div>
+
+      <a
+        v-if="numShownEmailAddresses < searchedPersons.length"
+        @click="increaseShownEmailAddresses"
+        >Show more</a
+      >
+    </div>
   </div>
 </template>
 
@@ -94,7 +95,7 @@ export default {
 
 <style lang="scss">
 label {
-  margin-left: 5px;
+  margin-left: 0.5em;
 }
 
 .list-entry {
@@ -109,8 +110,15 @@ input[type="checkbox"] {
 }
 
 .email-filter-container {
-  max-height: 200px;
-  overflow-y: scroll;
+  position: relative;
+  max-height: 15em;
+}
+
+.entries-container {
+  overflow-y: auto;
+  position: relative;
+  margin-top: 2em;
+  max-height: 13em;
 }
 
 a {
@@ -118,6 +126,7 @@ a {
   text-decoration: underline;
   font-size: 9pt;
   cursor: pointer;
+  margin-left: 1em;
 
   &:hover {
     color: var(--accent-color-2);
@@ -126,6 +135,15 @@ a {
 
 .error {
   color: var(--error-color);
+  margin: 0.25em;
+}
+
+.searchBox-container {
+  z-index: 1;
+  width: 30em;
+  height: 2em;
+  position: fixed;
+  background: var(--background-color);
 }
 
 .searchBox {
@@ -143,9 +161,5 @@ a {
   &:focus {
     background-image: url("../assets/icons/loupe_focus.svg");
   }
-}
-
-.hideScroll {
-  overflow-y: hidden;
 }
 </style>

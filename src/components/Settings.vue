@@ -77,6 +77,7 @@ export default {
 <style scoped lang="scss">
 /* Settings occupies 60% of the space */
 .settings {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 65%;
@@ -85,39 +86,33 @@ export default {
 
 /* Occupy remaining space */
 .selected_setting_type {
-  background-color: var(--background-color);
   height: 100%;
+  padding-top: 2rem;
 }
 
 .inspector {
-  background-color: var(--background-color);
   height: 35%;
 }
 
-/* Line on the left of settings tab */
-.container .settings::before {
-  content: "";
-  display: block;
-
-  position: absolute;
-  top: 70px;
-  height: calc(100vh - 71px);
-  width: 0;
-
-  border-left: var(--settings-border);
+/* Borders around settings*/
+.selected_setting_type,
+.inspector {
+  background-color: var(--background-color);
+  border: var(--settings-border);
+  border-right: none;
+  border-top: none;
 }
 
 /* Settings type selection */
 .select_mode {
-  z-index: 20;
-  height: 36px;
+  position: absolute;
+  z-index: 2;
   background-color: var(--background-color-2);
 }
 
 .select_mode ul {
   padding: 0;
   margin: 0;
-  margin-top: 5px;
   display: flex;
   justify-content: flex-start;
 
@@ -138,8 +133,8 @@ export default {
   margin-right: 5px;
 
   background-color: rgb(250, 250, 250);
-  border-top-right-radius: 7px;
-  border-top-left-radius: 7px;
+  border-top-right-radius: var(--border-rad);
+  border-top-left-radius: var(--border-rad);
   border: var(--settings-border);
   border-bottom: 0;
 }
@@ -157,9 +152,9 @@ export default {
   content: "";
   display: block;
 
-  position: relative;
-  top: -2px;
-  height: 0x;
+  position: absolute;
+  bottom: 0;
+  height: 0;
   width: 300px;
 
   border-bottom: var(--settings-border);
@@ -178,17 +173,5 @@ export default {
 /* Show only selected settings */
 .selected_setting_type .unselected {
   display: none;
-}
-
-/* Line above inspector menu */
-.settings::after {
-  content: "";
-  display: block;
-
-  position: relative;
-  height: 0;
-  width: 300px;
-
-  border-bottom: var(--settings-border);
 }
 </style>

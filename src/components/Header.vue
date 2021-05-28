@@ -3,7 +3,7 @@
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
         <img src="@/assets/icons/graph.svg" alt="logo" />
-        <span>WebVis</span>
+        <span>MailVis</span>
       </div>
       <div class="import_data">
         <div>
@@ -96,10 +96,11 @@ export default {
   display: flex;
   align-items: center;
   font-size: 22pt;
+  height: 100%;
 }
 
 .logo img {
-  padding-right: 10px;
+  padding-right: 0.25em;
   width: 2.75rem;
   height: 2.75rem;
 }
@@ -125,6 +126,8 @@ export default {
   list-style-type: none;
   display: table;
   position: relative;
+  padding: 0;
+  margin: 0;
 }
 
 .nav_icons li {

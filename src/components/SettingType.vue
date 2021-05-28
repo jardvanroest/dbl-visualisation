@@ -13,8 +13,8 @@ export default {
 <style scoped>
 .container-settingType {
   padding: 1em 0;
-  padding-left: 15px;
-  height: 100%;
+  padding-left: 5%;
+  height: calc(100% - 2em);
 
   font-size: 10pt;
   overflow-y: auto;

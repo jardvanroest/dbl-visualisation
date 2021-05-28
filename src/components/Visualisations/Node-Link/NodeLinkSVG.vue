@@ -1,6 +1,6 @@
 <template>
-  <div style="text-align: center">
-    <div id="areaNodeLinkSVG" style="padding: 30px"></div>
+  <div>
+    <div id="areaNodeLinkSVG"></div>
   </div>
 </template>
 

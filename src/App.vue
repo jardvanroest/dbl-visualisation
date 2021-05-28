@@ -22,6 +22,9 @@
   --background-color-2: #eaf3f3;
   --border-color: rgba(221, 221, 221);
   --settings-border: 2px solid var(--border-color);
+  --border-rad: 7px;
+  --box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 #app {
@@ -38,7 +41,7 @@
   background-color: #00000008;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--background-color);
+  background-color: var(--border-color);
   border: 4px solid var(--accent-color-light);
 }
 

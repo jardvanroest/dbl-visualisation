@@ -1,6 +1,6 @@
 <template>
-  <div class="inspector-container">
-    <div v-if="nodeHasBeenClicked">
+  <div class="inspector">
+    <div v-if="nodeHasBeenClicked" class="inspector-container">
       <Section title="Sender" first="true" />
       <inspectorField field="Email" :info="sender['email']" />
       <inspectorField field="Id" :info="sender['id']" />
@@ -32,8 +32,8 @@
         <inspectorField field="Average sentiment" :info="avgSentiment" />
       </div>
     </div>
-    <div v-else class="no-information">
-      Try clicking on a node to display information about it!
+    <div v-else class="no-information inspector-container">
+      Try clicking on a node or an edge to display information about it!
       <img src="@/assets/icons/analysis.svg" alt="upload" />
     </div>
   </div>
@@ -51,16 +51,25 @@ export default {
     Section,
   },
   computed: {
-    ...mapGetters("dataset", ["getInspectorData", "emails", "persons"]),
+    ...mapGetters("dataset", [
+      "getInspectorData",
+      "emails",
+      "persons",
+      "filteredEmails",
+    ]),
   },
   watch: {
     // Watch for a new incoming {inspectorData}
     getInspectorData(newData) {
-      if (Number.isInteger(newData)) {
-        console.log(newData); // TODO: decide what to do with labels
-      } else {
-        this.incomingNewData(newData);
-      }
+      this.incomingNewData(newData);
+    },
+
+    filteredEmails: {
+      deep: true,
+      handler() {
+        // Reset inspector on filtering
+        this.nodeHasBeenClicked = false;
+      },
     },
   },
   data() {
@@ -172,10 +181,10 @@ export default {
 
 <style scoped lang="scss">
 .inspector-container {
-  display: table-cell;
-  padding-left: 15px;
   margin: 1em 0;
+  padding-left: 5%;
   font-size: 10pt;
+  height: calc(100% - 2em);
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -200,11 +209,12 @@ export default {
 /* Format text at the beginning */
 .no-information {
   font-size: 12pt;
+  overflow: hidden;
 }
 
 .no-information img {
   margin-left: 3.125rem;
   margin-top: 0.625rem;
-  width: 9.375rem;
+  width: 60%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center">
+  <div>
     <div id="areaAdjacencyMatrix"></div>
   </div>
 </template>
@@ -82,17 +82,9 @@ export default {
        * data[i][j] is an integer - first row and column
        */
       var data = [];
-      // First row contains the nodes indices
-      var firstRow = [0];
-      people.forEach((person) => {
-        firstRow.push(person["id"]);
-      });
-      data.push(firstRow);
 
       people.forEach((personY) => {
-        // First column contains the nodes indices
-        let temp = [personY["id"]];
-        // Every other column contains the correct data
+        let temp = [];
         people.forEach((personX) => {
           var obj = {
             from: personX["id"], // Original column
@@ -111,7 +103,7 @@ export default {
         let from = edges[i]["from"];
         let to = edges[i]["to"];
 
-        data[to][from] = {
+        data[to - 1][from - 1] = {
           from: from,
           to: to,
           weight: edges[i]["index"].length,
@@ -138,7 +130,6 @@ export default {
           return d;
         })
         .enter()
-        .append("g")
         .append("rect")
         .attr("x", function (d, i) {
           return (rectLen + rectMargin) * i;
@@ -164,18 +155,10 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-}
-
-#areaAdjacencyMatrix {
-  padding: 0.5rem;
-}
-
 .svg-content {
   display: inline-block;
   position: absolute;
+  width: 100%;
   top: 0;
   left: 0;
 }
