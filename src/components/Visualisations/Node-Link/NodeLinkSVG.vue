@@ -7,13 +7,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { NodeLink } from "./NodeLink.js";
 
 export default {
   name: "NodeLinkSVG",
   computed: {
     ...mapGetters("dataset", ["filteredEmails"]),
+    ...mapGetters("brush_and_link", ["selectedNodes"]),
   },
   data() {
     return {
@@ -32,6 +33,8 @@ export default {
     this.redraw();
   },
   methods: {
+    ...mapActions("brush_and_link", ["changeSelectedNodes"]),
+
     redraw() {
       this.nodeLink.redraw(this.filteredEmails);
     },
