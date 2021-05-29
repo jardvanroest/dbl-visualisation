@@ -5,7 +5,9 @@ import { Simulator } from "@/visualisations/node-link/simulator.js";
 
 export class NodeLink extends Visualisation {
   constructor() {
-    const colors = {
+    super("#areaNodeLinkSVG");
+
+    this.colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
       edgeNegative: "#e498a1",
@@ -13,7 +15,7 @@ export class NodeLink extends Visualisation {
       nodeOutline: "#fff",
     };
 
-    const options = {
+    this.options = {
       width: 500,
       height: 500,
       nodeRadius: 5,
@@ -21,20 +23,11 @@ export class NodeLink extends Visualisation {
       edgeOpacity: 0.6,
       sentimentThreshold: 0.01,
     };
-
-    super("#areaNodeLinkSVG", options.width, options.height);
-
-    this.colors = colors;
-    this.options = options;
   }
 
   redraw(emails) {
-    this._resetVis();
+    this._resetVisualisation();
     this._generateVis(emails);
-  }
-
-  _resetVis() {
-    d3.select("#areaNodeLinkSVG").select("svg").remove();
   }
 
   _generateVis(emails) {

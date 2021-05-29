@@ -92,8 +92,8 @@ export default {
       this.nodeColor = newData["fillColor"].toLowerCase();
 
       // Get sender and recipient information
-      this.sender = this.returnPersonObject(this.persons[newData["from"] - 1]);
-      this.recipient = this.returnPersonObject(this.persons[newData["to"] - 1]);
+      this.sender = newData.sender;
+      this.recipient = newData.receiver;
 
       // If the two people have sent emails between eachother
       if (this.emailsExist) {
@@ -101,20 +101,18 @@ export default {
       }
     },
     computeEmailData(newData) {
-      var dataset = this.emails;
-
       // Reset data to original values
       this.resetData();
 
-      newData["dataIndex"].forEach((index) => {
+      newData.emails.forEach((email) => {
         // Get all sentiments
-        this.sentiments.push(parseFloat(dataset[index]["sentiment"]));
+        this.sentiments.push(email.sentiment);
 
         // Count different {messageTypes}
-        this.messageTypesCount(dataset[index]["messageType"]);
+        this.messageTypesCount(email.messageType);
 
         // Get the current elements date and sort it
-        this.sortDates(new Date(dataset[index]["date"]));
+        this.sortDates(new Date(email.date));
       });
       this.formatDates();
 

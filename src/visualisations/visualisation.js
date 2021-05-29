@@ -1,16 +1,20 @@
 import * as d3 from "d3";
 
 export class Visualisation {
-  constructor(HTMLSelector, width, height) {
+  constructor(HTMLSelector) {
     this.HTMLSelector = HTMLSelector;
-    this.width = width;
-    this.height = height;
+    this.width = 500;
+    this.height = 500;
     this.svg = this._createSVG();
     // this.svg = this._makeZoomAndPannable(this.svg);
   }
 
   redraw() {
     throw new Error("Redraw method should be implemented in subclass");
+  }
+
+  _resetVisualisation() {
+    d3.select(this.HTMLSelector).select("svg").remove();
   }
 
   _getSVG() {
@@ -31,7 +35,7 @@ export class Visualisation {
       .call(
         d3
           .zoom()
-          .scaleExtent([1, 3])
+          .scaleExtent([1, 5])
           .on("zoom", function (event) {
             g.attr("transform", event.transform);
           })
