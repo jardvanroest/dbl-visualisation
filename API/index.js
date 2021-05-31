@@ -13,8 +13,6 @@ app.use(cors());
 app.use(bodyParser.json({ limit: "50mb" })); // maximum size of uploads
 app.use("/datasets", datasetsRoutes);
 
-// req = request, res = response
-// use AXIOS on the front-end to make the http requests
 app.get("/", (req, res) => {
   res.send("Hello, you just accessed the homepage of the API");
 });

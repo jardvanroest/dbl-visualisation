@@ -6,7 +6,7 @@ uuidv4();
 // all routes that start with /datasets are processed here
 const datasetsFilename = "./datasets.json";
 const router = express.Router();
-let datasets = []; // list of dataset objects
+let datasets = [];
 let initialBoot = true;
 
 function updateDatasetFile() {
@@ -44,18 +44,17 @@ function updateDatasetObject() {
       "WARNING: Can not find datasets.js file, starting with empty object."
     );
   }
-  // the datasets object only needs to get information from the file when the server boots up
+  // the datasets object only needs to get information from the file when the server first boots up
 }
 
-// GET request to /datasets
-// returns all datasets
+// returns all datasets, used for testing purposes
 router.get("/", (req, res) => {
   updateDatasetObject();
   console.log("GET request for all datasets.");
-  res.send(datasets); // return all datasets
+  res.send(datasets);
 });
 
-// POST request made to /datasets, this is the dataset upload
+// POST request made to /datasets, this is the dataset upload function
 router.post("/", (req, res) => {
   const dataset = req.body;
   const datasetId = uuidv4();
@@ -65,13 +64,10 @@ router.post("/", (req, res) => {
   const datasetWithId = { ...dataset, id: datasetId };
   datasets.push(datasetWithId);
 
-  res.send(
-    `Upload successful, dataset_id:${datasetId}. You can use the id to fetch the dataset.`
-  );
+  res.send(`${datasetId}`);
   updateDatasetFile();
 });
 
-// GET request to /'id', where 'id' is any string
 // return the dataset with the specified id
 router.get("/:id", (req, res) => {
   const { id } = req.params;
@@ -86,7 +82,6 @@ router.get("/:id", (req, res) => {
   }
 });
 
-// DELETE request to /'id', where 'id' is any string
 // delete the dataset with the specified id
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
