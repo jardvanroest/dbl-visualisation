@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <select v-model="selected_type">
-      <option selected disabled>Choose visualisation</option>
-      <option value="AdjacencyMatrix">Adjacency Matrix</option>
-      <option value="NodeLink">Node Link</option>
-      <option value="TestVis">Test Visualisation</option>
-    </select>
+  <div class="sort-container">
+    <div class="sort-select">
+      <select id="sorting-selector" v-model="selected_type">
+        <option selected disabled>Choose visualisation</option>
+        <option value="AdjacencyMatrix">Adjacency Matrix</option>
+        <option value="NodeLink">Node Link</option>
+        <option value="TestVis">Test Visualisation</option>
+      </select>
+      <span class="custom-arrow" />
+    </div>
   </div>
 </template>
 
@@ -28,4 +31,75 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.sort-container {
+  display: flex;
+}
+.sort-select {
+  font: inherit;
+  position: relative;
+}
+
+#sorting-selector {
+  border-radius: 0.32em;
+  padding: 0.3em 1.5em 0.3em 0.3em;
+  background-color: var(--background-color);
+  border: var(--settings-border);
+
+  &:focus {
+    border: 2px solid black;
+  }
+  &:focus * {
+    color: var(--accent-color);
+  }
+  &:focus + .custom-arrow {
+    border: 2px solid black;
+    border-left: 0;
+  }
+}
+
+/* Make custom arrow for drop-down menu */
+.custom-arrow {
+  display: block;
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  height: calc(100% - 4px);
+  width: 2em;
+
+  border: var(--settings-border);
+  border-left: 0;
+  border-top-right-radius: 0.32em;
+  border-bottom-right-radius: 0.32em;
+  background: var(--accent-color);
+  pointer-events: none;
+}
+
+.custom-arrow::before,
+.custom-arrow::after {
+  --size: 0.45em;
+
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+}
+
+.custom-arrow::before {
+  border-bottom: var(--size) solid var(--background-color);
+  top: 35%;
+}
+
+.custom-arrow::after {
+  border-top: var(--size) solid var(--background-color);
+  top: 65%;
+}
+</style>
