@@ -66,17 +66,11 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("height", this.rectLength)
       .attr("fill", function (d) {
         return d.fillColor;
-      })
-      .on("click", this.updateInspectorData.bind(this));
+      });
   }
 
   _getPositionFromIndex(d, i) {
     const position = (this.rectLength + this.rectMargin) * i;
-    console.log(position);
     return position;
-  }
-
-  updateInspectorData(_, clickedCell) {
-    this.changeInspectorData(clickedCell);
   }
 }
