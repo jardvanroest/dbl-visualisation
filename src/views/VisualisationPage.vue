@@ -48,14 +48,14 @@ export default {
 .wrapper-settings {
   width: 18.75rem;
   height: calc(100% - 0.25rem);
-  transition: ease-in-out 150ms;
+  transition: ease 150ms;
   margin-top: 0.25rem;
 }
 
 .settings {
   width: 100%;
   height: 100%;
-  transition: ease-in-out 300ms;
+  transition: ease 300ms;
 }
 
 .header {
