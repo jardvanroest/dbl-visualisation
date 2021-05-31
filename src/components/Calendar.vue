@@ -15,14 +15,13 @@ export default {
     ...mapGetters("dataset", [
       "filteredEmails",
       "numberOfPersons",
-      "getInspectorData",
       "getPersonById",
       "getRangeYears",
     ]),
   },
   data() {
     return {
-      weekdat: "monday",
+      weekday: "monday",
     };
   },
   watch: {
@@ -82,7 +81,7 @@ export default {
         .append("g")
         .attr("text-anchor", "end")
         .selectAll("text")
-        .data(this.weekday === "weekday" ? d3.range(1, 6) : d3.range(7))
+        .data(d3.range(7))
         .join("text")
         .attr("x", -5)
         .attr("y", (i) => (countDay(i) + 0.5) * cellSize)
@@ -92,27 +91,22 @@ export default {
       year
         .append("g")
         .selectAll("rect")
-        .data(
-          this.weekday === "weekday"
-            ? ([, values]) =>
-                values.filter((d) => ![0, 6].includes(d.date.getUTCDay()))
-            : ([, values]) => values
-        )
+        .data(([, values]) => values)
         .join("rect")
         .attr("width", cellSize - 1)
         .attr("height", cellSize - 1)
         .attr(
           "x",
-
           (d) => d3.utcMonday.count(d3.utcYear(d.date), d.date) * cellSize + 0.5
         )
         .attr("y", (d) => countDay(d.date.getUTCDay()) * cellSize + 0.5)
-        .attr("fill", (d) => this.color(d.emails))
-        .attr("opacity", (d) => d.emails / 1)
-        .append("title")
-        .on("mouseover", function (e, d) {
-          console.log(d);
-        });
+        .attr("fill", (d) => this.color(d.numberEmails))
+        .attr("opacity", (d) => d.numberEmails / 5)
+        //.append("title")
+        .on("click", (e, d) => {
+          return console.log(d);
+        })
+        .text((d) => d.numberEmails);
       //   .text(
       //     (d) => `${this.formatDate(d.date)}
       // ${formatValue(d.sentiment)}${
@@ -126,24 +120,24 @@ export default {
     resetCalendar() {
       d3.select("svg").remove();
     },
-    numberWithCommas(x) {
-      x = x.toString();
-      var pattern = /(-?\d+)(\d{3})/;
-      while (pattern.test(x)) x = x.replace(pattern, "$1,$2");
-      return x;
-    },
-    pathMonth(t, timeWeek, cellSize, countDay) {
-      const n = this.weekday === "weekday" ? 5 : 7;
-      const d = Math.max(0, Math.min(n, countDay(t.getUTCDay())));
-      const w = timeWeek.count(d3.utcYear(t), t);
-      return `${
-        d === 0
-          ? `M${w * cellSize},0`
-          : d === n
-          ? `M${(w + 1) * cellSize},0`
-          : `M${(w + 1) * cellSize},0V${d * cellSize}H${w * cellSize}`
-      }V${n * cellSize}`;
-    },
+    // numberWithCommas(x) {
+    //   x = x.toString();
+    //   var pattern = /(-?\d+)(\d{3})/;
+    //   while (pattern.test(x)) x = x.replace(pattern, "$1,$2");
+    //   return x;
+    // },
+    // pathMonth(t, timeWeek, cellSize, countDay) {
+    //   const n = this.weekday === "weekday" ? 5 : 7;
+    //   const d = Math.max(0, Math.min(n, countDay(t.getUTCDay())));
+    //   const w = timeWeek.count(d3.utcYear(t), t);
+    //   return `${
+    //     d === 0
+    //       ? `M${w * cellSize},0`
+    //       : d === n
+    //       ? `M${(w + 1) * cellSize},0`
+    //       : `M${(w + 1) * cellSize},0V${d * cellSize}H${w * cellSize}`
+    //   }V${n * cellSize}`;
+    // },
     groupData(set) {
       let group = d3.groups(set, (d) => d.date.getUTCFullYear()).sort();
       for (let i = 0; i < group.length; i++) {
@@ -156,26 +150,46 @@ export default {
       let returnObj = [];
       for (let i = 0; i < arrDates.length; i++) {
         let exist = returnObj.some(
-          (e) =>
-            e.date.getDate() + 1 + e.date.getMonth() ===
-            arrDates[i].date.getDate() + 1 + arrDates[i].date.getMonth()
+          (e) => e.date.getTime() == arrDates[i].date.getTime()
         );
         //console.log(exist);
         if (exist) {
-          returnObj.find(
-            (e) =>
-              e.date.getDate() + 1 + e.date.getMonth() ===
-              arrDates[i].date.getDate() + 1 + arrDates[i].date.getMonth()
-          ).emails++;
+          try {
+            let found = returnObj.find(
+              (e) => e.date.getTime() == arrDates[i].date.getTime()
+            );
+            found.numberEmails++;
+            found.emails.push(arrDates[i]);
+          } catch (e) {
+            console.log(arrDates[i].date.getDay());
+          }
         } else {
-          returnObj.push({ date: arrDates[i].date, emails: 1 });
+          returnObj.push({
+            date: arrDates[i].date,
+            numberEmails: 1,
+            emails: [arrDates[i]],
+          });
         }
       }
       return returnObj;
     },
+    getAvgValue(array) {
+      // Gets avarage value in an array
+      const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+      return AvgVal(array);
+    },
     color(number) {
+      // return (
+      //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
+      // );
       return (
-        "rgb(" + number / 1.8 + ", " + number / 8 + "," + number / 10 + ")"
+        "rgb(" +
+        number / 0.5 +
+        ", " +
+        /*number / 1.4 */ 98 +
+        "," +
+        /*number / 5 */ 98 +
+        ")"
       );
     },
   },
