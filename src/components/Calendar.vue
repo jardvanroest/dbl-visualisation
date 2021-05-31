@@ -19,11 +19,6 @@ export default {
       "getRangeYears",
     ]),
   },
-  data() {
-    return {
-      weekday: "monday",
-    };
-  },
   watch: {
     filteredEmails: {
       deep: true,
@@ -39,27 +34,25 @@ export default {
   methods: {
     ...mapActions("dataset", ["changeInspetorData"]),
     generateCalendar() {
-      let parsedData = this.groupData(this.filteredEmails);
-      console.log(parsedData);
-      let cellSize = 17;
-      let width = 954;
-      let height = cellSize * (this.weekday === "weekday" ? 7 : 9);
-      let countDay = this.weekday === "sunday" ? (i) => i : (i) => (i + 6) % 7;
-      //let timeWeek = this.weekday === "sunday" ? d3.utcSunday : d3.utcMonday;
+      const parsedData = this.groupData(this.filteredEmails);
+      //console.log(parsedData);
+      const cellSize = 17;
+      const width = 954;
+      const height = cellSize * (this.weekday === "weekday" ? 7 : 9);
+      const countDay = (i) => (i + 6) % 7;
+      const timeWeek = d3.utcMonday;
       //let formatValue = d3.format("+.2%");
       //let formatClose = d3.format("$,.2f");
-      let formatDay = (i) => "SMTWTFS"[i];
-      //let formatMonth = d3.utcFormat("%b");
-      // let color = (d) => {
-      //   const max = d3.quantile(parsedData, 0.9975, d.emails);
-      //   return d3.scaleSequential(d3.interpolatePiYG).domain([-max, +max]);
-      // };
+      const formatDay = (i) => "SMTWTFS"[i];
+      const formatMonth = d3.utcFormat("%b");
+
       const svg = d3
         .select("#area_cal")
         .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet") // TODO: sizing is weird because of this ?
+        .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", [0, 0, width, height * parsedData.length])
         .attr("font-family", "sans-serif")
+        //.attr("display", "flexbox")
         .attr("font-size", 10)
         .classed("svg-content", true);
       const year = svg
@@ -100,22 +93,51 @@ export default {
           (d) => d3.utcMonday.count(d3.utcYear(d.date), d.date) * cellSize + 0.5
         )
         .attr("y", (d) => countDay(d.date.getUTCDay()) * cellSize + 0.5)
-        .attr("fill", (d) => this.color(d.numberEmails))
-        .attr("opacity", (d) => d.numberEmails / 5)
+        .attr("fill", (d) => this.color(d.emails.length))
+        .attr("opacity", (d) => d.emails.length / 5)
         //.append("title")
         .on("click", (e, d) => {
           return console.log(d);
         })
-        .text((d) => d.numberEmails);
-      //   .text(
-      //     (d) => `${this.formatDate(d.date)}
-      // ${formatValue(d.sentiment)}${
-      //       d.sentiment === undefined
-      //         ? ""
-      //         : `
-      // ${formatClose(d.sentiment)}`
-      //     }`
-      //   );
+        .text((d) => d.emails.length);
+
+      const month = year
+        .append("g")
+        .selectAll("g")
+        .data(() => d3.utcMonths(new Date("1-1-2000"), new Date("12-12-2000")))
+        .join("g");
+
+      month
+        .filter((d, i) => i)
+        .append("path")
+        .attr("fill", "none")
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 3)
+        .attr("d", (t) => {
+          //console.log(t);
+          const n = 7;
+          const d = Math.max(0, Math.min(n, countDay(t.getUTCDay())));
+          const w = timeWeek.count(d3.utcYear(t), t);
+          return `${
+            d === 0
+              ? `M${w * cellSize},0`
+              : d === n
+              ? `M${(w + 1) * cellSize},0`
+              : `M${(w + 1) * cellSize},0V${d * cellSize}H${w * cellSize}`
+          }V${n * cellSize}`;
+        });
+
+      month
+        .append("text")
+        .attr(
+          "x",
+          (d) => timeWeek.count(d3.utcYear(d), timeWeek.ceil(d)) * cellSize + 2
+        )
+        .attr("y", -5)
+        // .on("click", (e, d) => {
+        //   console.log(d);
+        // })
+        .text(formatMonth);
     },
     resetCalendar() {
       d3.select("svg").remove();
@@ -141,7 +163,6 @@ export default {
     groupData(set) {
       let group = d3.groups(set, (d) => d.date.getUTCFullYear()).sort();
       for (let i = 0; i < group.length; i++) {
-        //console.log(this.parseDates(group[i][1]));
         group[i][1] = this.parseDates(group[i][1]);
       }
       return group;
@@ -155,18 +176,15 @@ export default {
         //console.log(exist);
         if (exist) {
           try {
-            let found = returnObj.find(
-              (e) => e.date.getTime() == arrDates[i].date.getTime()
-            );
-            found.numberEmails++;
-            found.emails.push(arrDates[i]);
+            returnObj
+              .find((e) => e.date.getTime() == arrDates[i].date.getTime())
+              .emails.push(arrDates[i]);
           } catch (e) {
             console.log(arrDates[i].date.getDay());
           }
         } else {
           returnObj.push({
             date: arrDates[i].date,
-            numberEmails: 1,
             emails: [arrDates[i]],
           });
         }
@@ -175,7 +193,8 @@ export default {
     },
     getAvgValue(array) {
       // Gets avarage value in an array
-      const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+      const AvgVal = (arr) =>
+        arr.reduce((a, b) => a.sentiment + b.sentiment, 0) / arr.length;
       return AvgVal(array);
     },
     color(number) {
@@ -191,6 +210,17 @@ export default {
         /*number / 5 */ 98 +
         ")"
       );
+    },
+    pathMonth(t, cellSize, timeWeek, countDay) {
+      const d = Math.max(0, Math.min(7, countDay(t.getUTCDay())));
+      const w = timeWeek.count(d3.utcYear(t), t);
+      return `${
+        d === 0
+          ? `M${w * cellSize},0`
+          : d === 7
+          ? `M${(w + 1) * cellSize},0`
+          : `M${(w + 1) * cellSize},0V${d * cellSize}H${w * cellSize}`
+      }V${7 * cellSize}`;
     },
   },
 };
