@@ -15,6 +15,6 @@ export class TestVis {
       .attr("fill", "#d3d3d3");
   }
   reset() {
-    d3.select(this.selector).remove();
+    d3.select(this.selector).selectChild("g").selectAll().remove();
   }
 }

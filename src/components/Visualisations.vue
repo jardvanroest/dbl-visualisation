@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Visualisation id="vis1" type="AdjacencyMatrix" />
-    <Visualisation id="vis2" type="TestVis" />
+    <Visualisation id="vis1" />
+    <Visualisation id="vis2" />
   </div>
 </template>
 

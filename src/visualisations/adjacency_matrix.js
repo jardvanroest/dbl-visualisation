@@ -101,6 +101,6 @@ export class AdjacencyMatrix {
       });
   }
   reset() {
-    d3.select(this.selector).remove();
+    d3.select(this.selector).selectChild("g").selectAll().remove();
   }
 }

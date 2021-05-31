@@ -1,20 +1,25 @@
 <template>
   <div id="area" style="padding: 30px">
+    <DropDown ref="dropdown" @changed="changeVisualisation" />
     <svg :id="id"></svg>
   </div>
 </template>
 
 <script>
 import * as visualisations from "@/visualisations";
+import DropDown from "@/components/DropDown.vue";
 import * as d3 from "d3";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Visualisations",
-  props: ["type", "id"],
+  props: ["id"],
+  components: {
+    DropDown,
+  },
   data: function () {
     return {
-      visualisation: new visualisations[this.type][this.type]("#" + this.id),
+      type: "AdjacencyMatrix",
       size: 450,
       zoom_vals: { min: 3 / 4, max: 4, margin: 50 },
     };
@@ -43,17 +48,28 @@ export default {
       .call(this.zoom)
       .append("g");
 
+    this.createVisualisation(this.type);
     this.generateVisualisation();
   },
   methods: {
+    changeVisualisation(type) {
+      this.type = type;
+      this.resetVisualisation();
+      this.createVisualisation(type);
+      this.generateVisualisation();
+    },
+    resetVisualisation() {
+      console.log("reset vis");
+      this.visualisation.reset();
+    },
+    createVisualisation(type) {
+      this.visualisation = new visualisations[type][type]("#" + this.id);
+    },
     generateVisualisation() {
       this.visualisation.create({
         filteredEmails: this.filteredEmails,
         numberOfPersons: this.numberOfPersons,
       });
-    },
-    resetVisualisation() {
-      this.visualisation.reset();
     },
     zoomed(event) {
       var box = this.g.node().getBBox();
