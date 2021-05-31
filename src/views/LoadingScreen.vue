@@ -1,10 +1,11 @@
 <template>
-  <h3>Loading Page Placeholder</h3>
-  <Btn @click="goToVisualisationPage" text="Go to visualisation" />
+  <div class="centered-container">
+    <img src="../assets/icons/loading.gif" />
+    <h3 class="title">Loading your dataset...</h3>
+  </div>
 </template>
 
 <script>
-import Btn from "@/components/Btn.vue";
 import { mapActions } from "vuex";
 import axios from "axios";
 
@@ -12,8 +13,8 @@ let dataset_id = new URL(location.href).searchParams.get("id");
 
 export default {
   name: "LoadingScreen",
-  components: {
-    Btn,
+  mounted: function () {
+    this.goToVisualisationPage();
   },
   methods: {
     goToVisualisationPage() {
@@ -34,7 +35,6 @@ export default {
             dataset.push(result.data[i]);
           }
           dataset.pop();
-          console.log(dataset);
           saveAndVisualise(dataset);
         })
         .catch(this.handleError);
@@ -46,3 +46,20 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.centered-container {
+  width: 50rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.title {
+  font-family: "Roboto", sans-serif;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05rem;
+}
+</style>
