@@ -72,7 +72,6 @@ export class AdjacencyMatrix extends Visualisation {
 
   _getPositionFromIndex(d, i) {
     const position = (this.rectLength + this.rectMargin) * i;
-    console.log(position);
     return position;
   }
 
