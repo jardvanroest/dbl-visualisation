@@ -12,6 +12,7 @@ export default {
   name: "AdjacencyMatrix",
   computed: {
     ...mapGetters("dataset", ["filteredEmails", "numberOfPersons", "persons"]),
+    ...mapGetters("brush_and_link", ["selectedNodes"]),
   },
   watch: {
     filteredEmails: {
@@ -19,6 +20,12 @@ export default {
       handler() {
         this.resetMatrix();
         this.generateMatrix();
+      },
+    },
+    selectedNodes: {
+      deep: true,
+      handler() {
+        this.showSelection(this.selectedNodes);
       },
     },
   },
@@ -117,6 +124,7 @@ export default {
           weight: edges[i]["index"].length,
           dataIndex: edges[i]["index"],
           fillColor: edgeCol,
+          selected: false,
         };
       }
 
@@ -138,8 +146,8 @@ export default {
           return d;
         })
         .enter()
-        .append("g")
         .append("rect")
+        .attr("class", "edge")
         .attr("x", function (d, i) {
           return (rectLen + rectMargin) * i;
         })
@@ -148,7 +156,6 @@ export default {
         .attr("fill", function (d) {
           // Color based on {data} matrix
           if (Number.isInteger(d)) return "#d3d3d3";
-          // TODO: add node labels?
           else return d["fillColor"];
         })
         //On click change the inspector data by calling {changeInspectorData}
@@ -158,6 +165,22 @@ export default {
     },
     resetMatrix() {
       d3.select("#areaAdjacencyMatrix").select("svg").remove();
+    },
+    showSelection(selectedNodes) {
+      const selectColor = "#A585C1";
+
+      console.log(selectedNodes);
+      selectedNodes.forEach((node) => {
+        for (let i = 1; i < 149; i++) {
+          data[i][node].selected = true;
+          data[node][i].selected = true;
+        }
+      });
+
+      console.log(data);
+
+      // TODO: idea - added "selected" attribute to data matrix
+      // before drawing selected nodes iterate through matrix and mark them as selected
     },
   },
 };
