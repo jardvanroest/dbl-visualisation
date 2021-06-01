@@ -1,7 +1,3 @@
-//import { range } from "d3-array";
-
-import { range } from "d3-array";
-
 export default {
   emails(state) {
     return state.emails;
@@ -17,18 +13,10 @@ export default {
 
     return makeUnique(filteredEmails);
   },
-  getRangeYears(state) {
-    // get the range of all years between the minimum and the maximum;
-    let min = state.emails[0].date.getFullYear();
-    let max = state.emails[0].date.getFullYear();
-
-    for (let i = 1; i < state.emails.length; i++) {
-      if (state.emails[i].date.getFullYear() > max)
-        max = state.emails[i].date.getFullYear();
-      if (state.emails[i].date.getFullYear() < min)
-        min = state.emails[i].date.getFullYear();
-    }
-    return range(min, max + 1);
+  getEmailsByDates() {
+    return (d3, set) => {
+      return groupData(set, d3);
+    };
   },
   persons(state) {
     return Object.values(state.persons);
@@ -48,7 +36,36 @@ export default {
     };
   },
 };
-
+function groupData(set, d3) {
+  let group = d3.groups(set, (d) => d.date.getUTCFullYear()).sort();
+  for (let i = 0; i < group.length; i++) {
+    group[i][1] = parseDates(group[i][1]);
+  }
+  return group;
+}
+function parseDates(arrDates) {
+  let returnObj = [];
+  for (let i = 0; i < arrDates.length; i++) {
+    let exist = returnObj.some(
+      (e) => e.date.getTime() == arrDates[i].date.getTime()
+    );
+    if (exist) {
+      try {
+        returnObj
+          .find((e) => e.date.getTime() == arrDates[i].date.getTime())
+          .emails.push(arrDates[i]);
+      } catch (e) {
+        console.log(arrDates[i].date.getDay());
+      }
+    } else {
+      returnObj.push({
+        date: arrDates[i].date,
+        emails: [arrDates[i]],
+      });
+    }
+  }
+  return returnObj;
+}
 function makeUnique(array) {
   return [...new Set(array)];
 }
