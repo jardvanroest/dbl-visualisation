@@ -168,17 +168,6 @@ export default {
     },
     showSelection(selectedNodes) {
       const selectColor = "#A585C1";
-
-      console.log(selectedNodes);
-      selectedNodes.forEach((node) => {
-        for (let i = 1; i < 149; i++) {
-          data[i][node].selected = true;
-          data[node][i].selected = true;
-        }
-      });
-
-      console.log(data);
-
       // TODO: idea - added "selected" attribute to data matrix
       // before drawing selected nodes iterate through matrix and mark them as selected
     },
