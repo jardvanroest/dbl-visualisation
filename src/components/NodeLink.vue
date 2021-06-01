@@ -1,14 +1,10 @@
 <template>
-  <div style="text-align: center">
-    <h1>Node-link Diagram</h1>
-    <br />
-    <div id="areaNodeLinkSVG" style="padding: 30px"></div>
-  </div>
+  <div id="areaNodeLinkSVG"></div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { NodeLink } from "./NodeLink.js";
+import { NodeLinkVisualisation } from "../visualisations/node-link";
 
 export default {
   name: "NodeLinkSVG",
@@ -17,7 +13,7 @@ export default {
   },
   data() {
     return {
-      nodeLink: new NodeLink(),
+      nodeLink: new NodeLinkVisualisation(),
     };
   },
   watch: {
