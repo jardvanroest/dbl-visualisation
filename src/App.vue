@@ -33,16 +33,17 @@
 
 /* Scroll bar styling */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.164);
-  background-color: #00000008;
+  border-radius: 10px;
+  background-color: #00000015;
 }
+
 ::-webkit-scrollbar {
-  width: 11px;
-  background-color: #00000008;
+  width: 8px;
 }
+
 ::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
-  border: 4px solid var(--accent-color-light);
+  border-radius: 10px;
+  background-color: var(--accent-color-light);
 }
 
 /* Prevent user-selection of elements listed below by giving them class of no_highlight*/
