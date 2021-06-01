@@ -1,21 +1,19 @@
 <template>
-  <div :class="{ smallerText: tabbed }">
+  <div :class="{ smallerText: tabbed, color: field === 'Node Color' }">
     <span class="field" :class="{ tabbed: tabbed }">{{ field }}: </span>
-    <span>{{ info }}</span>
-    <br />
+    <span>{{ info }} </span>
+    <span
+      v-if="field === 'Node Color'"
+      class="color"
+      :style="{ background: info }"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: "InspectorField",
-  props: {
-    field: null,
-    info: null,
-    tabbed: {
-      required: false,
-    },
-  },
+  props: ["field", "info", "tabbed"],
 };
 </script>
 
@@ -31,5 +29,20 @@ export default {
 
 .smallerText {
   font-size: 9pt;
+}
+
+/* Make color rectangle */
+div.color {
+  display: flex;
+  flex-direction: row;
+}
+span.color {
+  display: block;
+  content: "";
+  width: 0.85em;
+  height: 0.85em;
+  margin: auto 0;
+  margin-left: 0.5em;
+  border-radius: 25%;
 }
 </style>

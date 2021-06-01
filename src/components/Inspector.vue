@@ -1,36 +1,13 @@
 <template>
   <div class="inspector">
     <div v-if="nodeHasBeenClicked" class="inspector-container">
-      <Section title="Sender" first="true" />
-      <inspectorField field="Email" :info="sender['email']" />
-      <inspectorField field="Id" :info="sender['id']" />
-      <inspectorField field="Title" :info="sender['jobTitle']" />
-      <Section title="Recipient" />
-      <inspectorField field="Email" :info="recipient['email']" />
-      <inspectorField field="Id" :info="recipient['id']" />
-      <inspectorField field="Title" :info="recipient['jobTitle']" />
-      <Section title="Additional information" />
-      <div class="nodeColor">
-        <inspectorField field="Node color" :info="nodeColor" />
-        <svg>
-          <rect
-            v-bind:style="{ fill: nodeColor }"
-            width="100%"
-            height="100%"
-            rx="2"
-            ry="2"
-          />
-        </svg>
-      </div>
-      <inspectorField field="Emails" :info="numEmails" />
-      <div v-if="emailsExist">
-        <inspectorField field="TO" tabbed="true" :info="messageTypeTO" />
-        <inspectorField field="CC" tabbed="true" :info="messageTypeCC" />
-        <inspectorField v-if="!sameDate" field="From" :info="minDate" />
-        <inspectorField v-if="!sameDate" field="Until" :info="maxDate" />
-        <inspectorField v-if="sameDate" field="Date" :info="minDate" />
-        <inspectorField field="Average sentiment" :info="avgSentiment" />
-      </div>
+      <Section
+        v-for="(s, i) in data"
+        :key="s"
+        :title="s.section"
+        :fields="s.fields"
+        :index="i"
+      />
     </div>
     <div v-else class="no-information inspector-container">
       Try clicking on a node or an edge to display information about it!
@@ -40,14 +17,12 @@
 </template>
 
 <script>
-import InspectorField from "@/components/InspectorField.vue";
 import Section from "@/components/Section.vue";
 import { mapGetters } from "vuex";
 
 export default {
   name: "Inspector",
   components: {
-    InspectorField,
     Section,
   },
   computed: {
@@ -76,104 +51,60 @@ export default {
     return {
       nodeHasBeenClicked: false,
       emailsExist: false,
-      numEmails: 0,
-      newData: "none",
-      sender: "none",
-      recipient: "none",
-      nodeColor: "#FFFFFF",
-      dates: [],
-      minDate: 0,
-      maxDate: 0,
-      sameDate: false,
-      sentiments: [],
-      avgSentiment: 0,
-      messageTypeCC: 0,
-      messageTypeTO: 0,
+      data: [{ section: "none", field: "none" }],
     };
   },
   methods: {
     incomingNewData(newData) {
       this.nodeHasBeenClicked = true;
-
-      this.newData = newData;
-      this.numEmails = newData["weight"];
-      this.emailsExist = newData["weight"] > 0;
-      this.nodeColor = newData["fillColor"].toLowerCase();
-
-      // Get sender and recipient information
-      this.sender = this.returnPersonObject(this.persons[newData["from"] - 1]);
-      this.recipient = this.returnPersonObject(this.persons[newData["to"] - 1]);
-
-      // If the two people have sent emails between eachother
-      if (this.emailsExist) {
-        this.computeEmailData(newData);
-      }
-    },
-    computeEmailData(newData) {
-      var dataset = this.emails;
-
-      // Reset data to original values
       this.resetData();
 
-      newData["dataIndex"].forEach((index) => {
-        // Get all sentiments
-        this.sentiments.push(parseFloat(dataset[index]["sentiment"]));
+      // Get all section names correctly formatted
+      let _sections = Object.keys(newData);
 
-        // Count different {messageTypes}
-        this.messageTypesCount(dataset[index]["messageType"]);
+      // Get all fields
+      for (let i = 0; i < _sections.length; i++) {
+        // Make an object for each section
+        this.data.push({ section: this.formatValue(_sections[i]), fields: [] });
 
-        // Get the current elements date and sort it
-        this.sortDates(new Date(dataset[index]["date"]));
-      });
-      this.formatDates();
-
-      // Get average sentiment
-      this.avgSentiment = this.getAvgValue(this.sentiments).toPrecision(3);
+        let _fields = Object.keys(newData[_sections[i]]);
+        for (let j = 0; j < _fields.length; j++) {
+          if (_fields[j] === "tabbed") {
+            let _tabbed = Object.keys(newData[_sections[i]].tabbed);
+            for (let k = 0; k < _tabbed.length; k++) {
+              this.data[i].fields.push({
+                field: _tabbed[k],
+                info: newData[_sections[i]][_fields[j]][_tabbed[k]],
+                tabbed: true,
+              });
+            }
+          } else {
+            this.data[i].fields.push({
+              field: this.formatValue(_fields[j]),
+              info: newData[_sections[i]][_fields[j]],
+              tabbed: false,
+            });
+          }
+        }
+      }
     },
     resetData() {
-      this.dates = [];
-      this.sentiments = [];
-
-      this.messageTypeCC = 0;
-      this.messageTypeTO = 0;
-
-      // Set initial {minDate} and {maxDate}
-      this.maxDate = new Date("1001-01-01");
-      this.minDate = new Date("3001-01-01");
+      this.data = [];
     },
-    returnPersonObject(_person) {
-      return {
-        email: _person["emailAddress"],
-        id: _person["id"],
-        jobTitle: _person["jobTitle"],
-        isSelectedInEmailFilter: _person["isSelectedInEmailFilter"],
-      };
+    formatValue(val) {
+      // Replaces underscores with spaces
+      return this.titleCase(val.replaceAll("_", " "));
     },
-    messageTypesCount(messageType) {
-      if (messageType === "CC") this.messageTypeCC++;
-      if (messageType === "TO") this.messageTypeTO++;
-    },
-    sortDates(currentDate) {
-      this.dates.push(currentDate.toDateString());
-      if (currentDate < this.minDate) this.minDate = currentDate;
-      if (currentDate > this.maxDate) this.maxDate = currentDate;
-    },
-    formatDates() {
-      // Check if its the same date
-      if (this.minDate === this.maxDate) this.sameDate = true;
-      else this.sameDate = false;
-
-      // Convert dates to correct format
-      this.minDate = this.formatDate(this.minDate);
-      this.maxDate = this.formatDate(this.maxDate);
-    },
-    getAvgValue(array) {
-      // Gets avarage value in an array
-      const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
-      return AvgVal(array);
-    },
-    formatDate(date) {
-      return date.toDateString().split(" ").slice(1).join(" ");
+    titleCase(str) {
+      var splitStr = str.toLowerCase().split(" ");
+      for (var i = 0; i < splitStr.length; i++) {
+        if (splitStr[i] !== "and") {
+          splitStr[i] =
+            splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+        }
+      }
+      // Directly return the joined string
+      return splitStr.join(" ");
     },
   },
 };
@@ -188,22 +119,6 @@ export default {
 
   overflow-y: auto;
   overflow-x: hidden;
-}
-
-/* Make color rectangle */
-.nodeColor {
-  display: flex;
-}
-
-.nodeColor svg {
-  width: 0.9em;
-  height: 0.9em;
-  margin: auto 0;
-  margin-left: 0.5em;
-}
-
-.nodeColor svg rect {
-  fill: blue;
 }
 
 /* Format text at the beginning */

@@ -1,19 +1,19 @@
 <template>
   <div class="visualisations-cont">
     <AdjacencyMatrix />
-    <NodeLinkSVG />
+    <NodeLink />
   </div>
 </template>
 
 <script>
-import NodeLinkSVG from "@/components/Visualisations/Node-Link/NodeLinkSVG.vue";
+import NodeLink from "@/components/Visualisations/NodeLink.vue";
 import AdjacencyMatrix from "@/components/Visualisations/AdjacencyMatrix.vue";
 
 export default {
   name: "Visualisations",
   components: {
     AdjacencyMatrix,
-    NodeLinkSVG,
+    NodeLink,
   },
 };
 </script>

@@ -1,13 +1,10 @@
 <template>
-  <div>
-    <div id="areaNodeLinkSVG"></div>
-  </div>
+  <div id="areaNodeLinkSVG"></div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { NodeLink } from "./NodeLink.js";
-
+import { NodeLink } from "../../visualisations/node-link";
 export default {
   name: "NodeLinkSVG",
   computed: {
