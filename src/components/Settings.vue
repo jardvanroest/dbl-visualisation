@@ -18,12 +18,10 @@
         <SettingType class="unselected" />
       </div>
     </div>
-    <Inspector class="inspector" />
   </div>
 </template>
 
 <script>
-import Inspector from "@/components/Inspector.vue";
 import SettingType from "@/components/SettingType.vue";
 import Setting from "@/components/Setting.vue";
 import EmailFilter from "@/components/EmailFilter.vue";
@@ -31,7 +29,6 @@ import EmailFilter from "@/components/EmailFilter.vue";
 export default {
   name: "Settings",
   components: {
-    Inspector,
     SettingType,
     Setting,
     EmailFilter,
