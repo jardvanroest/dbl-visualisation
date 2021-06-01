@@ -6,13 +6,15 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { AdjacencyMatrix } from "@/visualisations/adjacency-matrix";
+import { AdjacencyMatrixVisualisation } from "@/visualisations/adjacency-matrix";
 
 export default {
   name: "AdjacencyMatrix",
   data() {
     return {
-      adjacencyMatrix: new AdjacencyMatrix(this.changeInspectorData),
+      adjacencyMatrix: new AdjacencyMatrixVisualisation(
+        this.changeInspectorData
+      ),
     };
   },
   computed: {

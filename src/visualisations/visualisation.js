@@ -6,7 +6,6 @@ export class Visualisation {
     this.width = 500;
     this.height = 500;
     this.svg = this._createSVG();
-    // this.svg = this._makeZoomAndPannable(this.svg);
   }
 
   redraw() {

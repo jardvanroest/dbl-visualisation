@@ -1,4 +1,4 @@
-export class Parser {
+export class Graph {
   constructor(emails) {
     this.emails = emails;
   }
