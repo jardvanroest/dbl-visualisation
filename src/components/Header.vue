@@ -66,7 +66,7 @@ export default {
 
 <style scoped>
 * {
-  transition: all ease-in-out 300ms;
+  transition: all ease-in-out 150ms;
 }
 
 /* Format header */
@@ -86,7 +86,7 @@ export default {
   height: 24px;
 }
 
-.container div {
+.container > div {
   cursor: pointer;
 }
 

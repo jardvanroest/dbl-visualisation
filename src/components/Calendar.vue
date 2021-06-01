@@ -1,6 +1,5 @@
 <template>
   <div style="text-align: center">
-    <br />
     <div id="area_cal" ref="container" style="padding: 30px"></div>
   </div>
 </template>
