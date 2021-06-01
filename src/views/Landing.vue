@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import ImportDataSetBtn from "@/components/ImportDataSetBtn.vue";
-import ViewExampleDataSetBtn from "@/components/ViewExampleDataSetBtn.vue";
+import ImportDataSetBtn from "@/components/buttons/ImportDataSetBtn.vue";
+import ViewExampleDataSetBtn from "@/components/buttons/ViewExampleDataSetBtn.vue";
 
 export default {
   name: "Landing",

@@ -4,7 +4,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { NodeLink } from "../../visualisations/node-link";
+import { NodeLinkVisualisation } from "../../visualisations/node-link";
+
 export default {
   name: "NodeLinkSVG",
   computed: {
@@ -12,7 +13,7 @@ export default {
   },
   data() {
     return {
-      nodeLink: new NodeLink(),
+      nodeLink: new NodeLinkVisualisation(),
     };
   },
   watch: {

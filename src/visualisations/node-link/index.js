@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
-import { Parser } from "@/visualisations/node-link/parser.js";
+import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
 
-export class NodeLink extends Visualisation {
+export class NodeLinkVisualisation extends Visualisation {
   constructor() {
     super("#areaNodeLinkSVG");
 
@@ -37,9 +37,9 @@ export class NodeLink extends Visualisation {
   }
 
   _parseData(emails) {
-    const parser = new Parser(emails);
-    const graph = parser.parse();
-    return graph;
+    const graph = new Graph(emails);
+    const { nodes, links } = graph.parse();
+    return { nodes, links };
   }
 
   _drawVisualisation(nodes, links, svg) {
@@ -87,7 +87,7 @@ export class NodeLink extends Visualisation {
     return svg
       .append("g")
       .attr("stroke", this.colors.nodeOutline)
-      .attr("stroke-this.options.width", this.options.nodeOutlineSize)
+      .attr("stroke-width", this.options.nodeOutlineSize)
       .selectAll("circle")
       .data(nodes)
       .join("circle")

@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import Inspector from "@/components/Inspector.vue";
-import SettingType from "@/components/SettingType.vue";
-import Setting from "@/components/Setting.vue";
-import EmailFilter from "@/components/EmailFilter.vue";
+import Inspector from "@/components/inspector/Inspector.vue";
+import SettingType from "@/components/settings/SettingType.vue";
+import Setting from "@/components/settings/Setting.vue";
+import EmailFilter from "@/components/settings/EmailFilter.vue";
 
 export default {
   name: "Settings",

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Section from "@/components/Section.vue";
+import Section from "@/components/inspector/Section.vue";
 import { mapGetters } from "vuex";
 
 export default {

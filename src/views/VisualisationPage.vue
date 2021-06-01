@@ -10,8 +10,8 @@
 
 <script>
 import Header from "@/components/Header.vue";
-import Visualisations from "@/components/Visualisations.vue";
-import Settings from "@/components/Settings.vue";
+import Visualisations from "@/components/visualisations/Visualisations.vue";
+import Settings from "@/components/settings/Settings.vue";
 
 export default {
   name: "VisualisationPage",

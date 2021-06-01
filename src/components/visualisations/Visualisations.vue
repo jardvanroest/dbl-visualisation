@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import NodeLink from "@/components/Visualisations/NodeLink.vue";
-import AdjacencyMatrix from "@/components/Visualisations/AdjacencyMatrix.vue";
+import NodeLink from "@/components/visualisations/NodeLink.vue";
+import AdjacencyMatrix from "@/components/visualisations/AdjacencyMatrix.vue";
 
 export default {
   name: "Visualisations",

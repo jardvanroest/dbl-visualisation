@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import InspectorField from "@/components/InspectorField.vue";
+import InspectorField from "@/components/inspector/InspectorField.vue";
 
 export default {
   name: "Section",

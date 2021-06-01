@@ -13,7 +13,7 @@
 
 <script>
 import { parseFile } from "@/logic/parsing.js";
-import Btn from "@/components/Btn.vue";
+import Btn from "@/components/buttons/Btn.vue";
 import { mapActions } from "vuex";
 
 export default {

@@ -151,7 +151,7 @@ a {
   margin-bottom: 0.5em;
   border: var(--settings-border);
   border-radius: 4px;
-  background-image: url("../assets/icons/loupe.svg");
+  background-image: url("../../assets/icons/loupe.svg");
   background-blend-mode: luminosity;
   background-size: 1em;
   background-position: 0.2em 0.15em;
@@ -159,7 +159,7 @@ a {
   padding-left: 1.5em;
 
   &:focus {
-    background-image: url("../assets/icons/loupe_focus.svg");
+    background-image: url("../../assets/icons/loupe_focus.svg");
   }
 }
 </style>
