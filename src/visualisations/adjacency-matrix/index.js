@@ -15,7 +15,7 @@ export class AdjacencyMatrix extends Visualisation {
   redraw(emails, persons) {
     this.emails = emails;
     this.persons = persons;
-    this._resetVisualisation();
+    this.resetVisualisation();
     this._generateVisualisation();
   }
 

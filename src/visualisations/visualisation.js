@@ -12,7 +12,7 @@ export class Visualisation {
     throw new Error("Redraw method should be implemented in subclass");
   }
 
-  _resetVisualisation() {
+  resetVisualisation() {
     d3.select(this.HTMLSelector).selectChild("g").selectAll().remove();
   }
 

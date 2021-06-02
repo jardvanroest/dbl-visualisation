@@ -26,7 +26,7 @@ export class NodeLink extends Visualisation {
   }
 
   redraw(emails) {
-    this._resetVisualisation();
+    this.resetVisualisation();
     this._generateVis(emails);
   }
 

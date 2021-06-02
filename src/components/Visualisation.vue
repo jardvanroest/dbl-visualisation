@@ -1,6 +1,6 @@
 <template>
   <div id="area" style="padding: 30px">
-    <DropDown ref="dropdown" @changed="redraw" />
+    <DropDown ref="dropdown" @changed="changeVisualisation" />
     <svg :id="id"></svg>
   </div>
 </template>
@@ -56,6 +56,11 @@ export default {
         "#" + this.id,
         this.changeInspectorData
       );
+    },
+    changeVisualisation(type) {
+      this.visualisation.resetVisualisation();
+      this.createVisualisation(type);
+      this.redraw();
     },
     ...mapActions("dataset", ["changeInspectorData"]),
     redraw() {
