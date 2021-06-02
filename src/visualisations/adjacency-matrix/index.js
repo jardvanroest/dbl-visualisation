@@ -6,10 +6,6 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
     super("#areaAdjacencyMatrix");
 
     this.changeInspectorData = changeInspectorData;
-
-    this.options = {
-      width: 426,
-    };
   }
 
   redraw(emails, persons) {
@@ -31,8 +27,11 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
   }
 
   _drawVisualisation(svg, matrix) {
-    this.rectLength = this.options.width / (this.persons.length + 2);
-    this.rectMargin = this.rectLength * 0.06;
+    let margin = 0.1;
+    let nodeLength = this.width / this.persons.length;
+
+    this.rectLength = (1 - margin) * nodeLength;
+    this.rectMargin = margin * nodeLength;
 
     const drawnRows = this._drawRows(svg, matrix);
     const drawnCells = this._drawCells(drawnRows);

@@ -26,7 +26,8 @@ export class Visualisation {
     return d3
       .select(this.HTMLSelector)
       .append("svg")
-      .attr("viewBox", [0, 0, this.width, this.height]);
+      .attr("viewBox", [0, 0, this.width, this.height])
+      .attr("preserveAspectRatio", "xMinYMin meet");
   }
 
   _makeZoomAndPannable(svg) {
