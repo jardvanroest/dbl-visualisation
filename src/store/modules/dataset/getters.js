@@ -25,8 +25,8 @@ export default {
   getInspectorData(state) {
     return state.inspectorData;
   },
-  getDatasetLink(state) {
-    return state.datasetLink;
+  getDatasetID(state) {
+    return state.datasetID;
   },
 };
 

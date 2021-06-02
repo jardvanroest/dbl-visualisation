@@ -2,18 +2,24 @@
   <div class="popup">
     <div class="popup-inner">
       <slot />
+      <h3>http://localhost:8080/get?id={{ getDatasetID }}</h3>
       <button @click="togglePopup()">Close Popup</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Popup",
   methods: {
     togglePopup() {
       this.$emit("toggle-popup");
     },
+  },
+  computed: {
+    ...mapGetters("dataset", ["getDatasetID"]),
   },
 };
 </script>

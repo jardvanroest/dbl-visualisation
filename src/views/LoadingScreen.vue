@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 import axios from "axios";
 
 let dataset_id = new URL(location.href).searchParams.get("id");
@@ -23,6 +23,7 @@ export default {
       function saveAndVisualise(dataset) {
         // is default so the data is not re-uploaded
         vm.saveData({ data: dataset, isDefault: true });
+        vm.updateDatasetID(dataset_id);
         vm.$router.push({ path: "/visualisation" });
       }
 
@@ -43,6 +44,7 @@ export default {
       console.error(error.message);
     },
     ...mapActions("dataset", ["saveData"]),
+    ...mapMutations("dataset", ["updateDatasetID"]),
   },
 };
 </script>

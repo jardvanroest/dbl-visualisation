@@ -1,5 +1,9 @@
 <template>
-  <Header class="header" @toggle-settings="toggleSettings" />
+  <Header
+    class="header"
+    @toggle-settings="toggleSettings"
+    @toggle-popup="toggleLinkPopup"
+  />
   <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
   <div class="grid-container">
     <Visualisations class="vis" />
@@ -25,7 +29,7 @@ export default {
   data() {
     return {
       showSettings: true,
-      showPopup: true,
+      showPopup: false,
     };
   },
   methods: {

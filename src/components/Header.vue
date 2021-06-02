@@ -16,7 +16,7 @@
           <li @click="rotateSettings($event)">
             <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
-          <li @click="screenshot()">
+          <li @click="showLinkPopup()">
             <img src="@/assets/icons/import.svg" alt="shareable link" />
           </li>
           <li @click="redirectToInfo()">
@@ -46,7 +46,7 @@ export default {
       this.$router.push({ path: "/info" });
     },
     showLinkPopup() {
-      console.log("Clicked on: share link");
+      this.$emit("toggle-popup");
     },
     rotateSettings(e) {
       // Add/remove rotatable class

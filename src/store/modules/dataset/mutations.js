@@ -20,7 +20,7 @@ export default {
   newInspectorData(state, newData) {
     state.inspectorData = newData;
   },
-  addDatasetID(state, id) {
-    state.datasetLink = id;
+  updateDatasetID(state, id) {
+    state.datasetID = id;
   },
 };

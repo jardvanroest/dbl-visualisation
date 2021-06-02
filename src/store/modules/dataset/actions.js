@@ -6,6 +6,7 @@ export default {
   changeInspectorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
+
   saveData(context, { data: data, isDefault: isDefault }) {
     if (!isDefault) {
       // upload dataset if it is not default
@@ -38,7 +39,7 @@ function postDataToBackend(data, context) {
   }).then(
     (response) => {
       console.log("response.data: " + response.data);
-      context.commit("addDatasetID", response.data);
+      context.commit("updateDatasetID", response.data);
     },
     (error) => {
       console.log(error);
