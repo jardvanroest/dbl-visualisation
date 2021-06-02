@@ -9,6 +9,7 @@ export default {
       persons: {},
       emails: [],
       filteredPersons: [],
+      inspectorData: -1,
     };
   },
   getters,

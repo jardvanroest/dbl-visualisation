@@ -1,6 +1,6 @@
 <template>
   <div id="area" style="padding: 30px">
-    <DropDown ref="dropdown" @changed="changeVisualisation" />
+    <DropDown ref="dropdown" @changed="redraw" />
     <svg :id="id"></svg>
   </div>
 </template>
@@ -9,7 +9,7 @@
 import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
 import * as d3 from "d3";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Visualisations",
@@ -25,14 +25,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("dataset", ["filteredEmails", "numberOfPersons"]),
+    ...mapGetters("dataset", ["filteredEmails", "persons"]),
   },
   watch: {
     filteredEmails: {
       deep: true,
       handler() {
-        this.resetVisualisation();
-        this.generateVisualisation();
+        this.redraw();
       },
     },
   },
@@ -49,27 +48,18 @@ export default {
       .append("g");
 
     this.createVisualisation(this.type);
-    this.generateVisualisation();
+    this.redraw();
   },
   methods: {
-    changeVisualisation(type) {
-      this.type = type;
-      this.resetVisualisation();
-      this.createVisualisation(type);
-      this.generateVisualisation();
-    },
-    resetVisualisation() {
-      console.log("reset vis");
-      this.visualisation.reset();
-    },
     createVisualisation(type) {
-      this.visualisation = new visualisations[type][type]("#" + this.id);
+      this.visualisation = new visualisations[type][type](
+        "#" + this.id,
+        this.changeInspectorData
+      );
     },
-    generateVisualisation() {
-      this.visualisation.create({
-        filteredEmails: this.filteredEmails,
-        numberOfPersons: this.numberOfPersons,
-      });
+    ...mapActions("dataset", ["changeInspectorData"]),
+    redraw() {
+      this.visualisation.redraw(this.filteredEmails, this.persons);
     },
     zoomed(event) {
       var box = this.g.node().getBBox();

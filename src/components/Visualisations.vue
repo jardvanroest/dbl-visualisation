@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <Visualisation id="vis1" />
-    <Visualisation id="vis2" />
+    <Visualisation class="visualisation" id="vis1" />
+    <Visualisation class="visualisation" id="vis2" />
   </div>
 </template>
 
@@ -18,17 +18,12 @@ export default {
 
 <style scoped>
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  background-color: var(--background-color-2);
 }
 
-#vis1 {
-  grid-row: 1;
-  grid-column: 1;
-}
-
-#vis2 {
-  grid-row: 1;
-  grid-column: 2;
+.visualisation {
+  width: 0;
+  flex-grow: 1;
 }
 </style>

@@ -1,9 +1,9 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 
-export class AdjacencyMatrixVisualisation extends Visualisation {
-  constructor(changeInspectorData) {
-    super("#areaAdjacencyMatrix");
+export class AdjacencyMatrix extends Visualisation {
+  constructor(HTMLSelector, changeInspectorData) {
+    super(HTMLSelector);
 
     this.changeInspectorData = changeInspectorData;
 
