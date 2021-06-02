@@ -31,13 +31,7 @@ export default {
   padding: 0.25rem;
   border-radius: var(--border-rad);
   background-color: var(--background-color);
-}
 
-.visualisations-cont:first-child {
-  margin-left: var(--margin-size);
-}
-
-.visualisations-cont * {
   box-shadow: 0 0 0 2px var(--background-color),
     rgba(50, 50, 93, 0.25) 2px 4px 5px -1px, rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
 
@@ -46,5 +40,9 @@ export default {
       rgba(50, 50, 93, 0.25) 2px 4px 5px -1px,
       rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
   }
+}
+
+.visualisations-cont *:first-child {
+  margin-left: var(--margin-size);
 }
 </style>

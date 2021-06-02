@@ -29,6 +29,10 @@
 
 #app {
   font-family: "Open Sans", Avenir, Helvetica, Arial, sans-serif;
+
+  /* Mozilla Firefox scrollbar */
+  scrollbar-color: var(--accent-color-light) #ebebeb;
+  scrollbar-width: thin;
 }
 
 /* Scroll bar styling */

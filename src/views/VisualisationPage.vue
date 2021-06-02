@@ -35,10 +35,11 @@ export default {
 
 <style scoped lang="scss">
 .grid-container {
-  margin-top: 3.125rem;
-  height: calc(100vh - 3.125rem);
   display: flex;
+  margin-top: 3.125rem;
+  min-height: calc(100vh - 3.125rem);
   background-color: var(--background-color-2);
+  overflow-x: hidden;
 }
 
 .vis {
@@ -47,9 +48,9 @@ export default {
 
 .wrapper-settings {
   width: 18.75rem;
-  height: calc(100% - 0.25rem);
   transition: ease 150ms;
   margin-top: 0.25rem;
+  flex-shrink: 0;
 }
 
 .settings {

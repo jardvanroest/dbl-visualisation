@@ -106,6 +106,8 @@ export default {
 /* Settings type selection */
 .select_mode {
   position: absolute;
+  width: 100%;
+  left: 0;
   z-index: 2;
   background-color: var(--background-color-2);
 }
@@ -114,7 +116,6 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: flex-start;
 
   list-style-type: none;
 }
@@ -128,9 +129,10 @@ export default {
   z-index: 16;
   display: table;
 
-  width: 95px;
+  padding: 0 1.6em;
+  width: 100%;
   height: 30px;
-  margin-right: 5px;
+  margin-right: 0.4em;
 
   background-color: rgb(250, 250, 250);
   border-top-right-radius: var(--border-rad);
