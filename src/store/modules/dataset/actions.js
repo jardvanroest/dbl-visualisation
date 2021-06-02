@@ -9,7 +9,7 @@ export default {
   saveData(context, { data: data, isDefault: isDefault }) {
     if (!isDefault) {
       // upload dataset if it is not default
-      postDataToBackend(data);
+      postDataToBackend(data, context);
     }
 
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
@@ -29,7 +29,7 @@ export default {
   },
 };
 
-function postDataToBackend(data) {
+function postDataToBackend(data, context) {
   console.log("Sending POST request to backend...");
   axios({
     method: "post",
@@ -37,7 +37,8 @@ function postDataToBackend(data) {
     data: data,
   }).then(
     (response) => {
-      console.log(response);
+      console.log("response.data: " + response.data);
+      context.commit("addDatasetID", response.data);
     },
     (error) => {
       console.log(error);

@@ -10,6 +10,7 @@ export default {
       emails: [],
       filteredPersons: [],
       inspectorData: -1,
+      datasetID: "Default",
     };
   },
   getters,
