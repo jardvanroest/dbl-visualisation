@@ -24,7 +24,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
   }
 
   _getMatrix() {
-    const matrix = new Matrix(this.personsRows, this.personsCols, this.emails);
+    const matrix = new Matrix(this.personsRows, this.personsCols);
     // Set {MatrixData} the first time when loading the matrix
     if (store.getters.getMatrixDataForSorting === -1) {
       store.dispatch("changeMatrixData", matrix.getMatrixData());
@@ -81,8 +81,6 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
   }
 
   updateInspectorData(event, data) {
-    console.log(data);
-
     let sender = data.sender;
     let recipient = data.recipient;
     let emails = data._emails;

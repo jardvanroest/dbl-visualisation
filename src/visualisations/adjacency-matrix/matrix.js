@@ -1,6 +1,5 @@
 export class Matrix {
-  constructor(personsRows, personsCols, emails) {
-    this.emails = emails;
+  constructor(personsRows, personsCols) {
     this.matrixData = this._createMatrixData(personsRows, personsCols);
   }
 
