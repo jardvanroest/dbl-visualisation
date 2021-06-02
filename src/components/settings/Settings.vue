@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import Inspector from "@/components/Inspector.vue";
-import SettingType from "@/components/SettingType.vue";
-import Setting from "@/components/Setting.vue";
+import Inspector from "@/components/inspector/Inspector.vue";
+import SettingType from "@/components/settings/SettingType.vue";
+import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import SortMatrix from "@/components/settings/SortMatrix.vue";
 
@@ -78,68 +78,69 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 /* Settings occupies 60% of the space */
 .settings {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 65%;
-  background-color: var(--background-color-2);
+  background-color: var(--background-color);
 }
 
 /* Occupy remaining space */
+.selected_setting_type {
+  height: 100%;
+  padding-top: 2rem;
+}
+
+.inspector {
+  height: 35%;
+}
+
+/* Borders around settings*/
 .selected_setting_type,
 .inspector {
   background-color: var(--background-color);
-  flex-grow: 1;
-}
-
-/* Line on the left of settings tab */
-.container .settings::before {
-  z-index: 1000;
-  content: "";
-  display: block;
-
-  position: absolute;
-  top: 70px;
-  height: calc(100vh - 71px);
-  width: 0;
-
-  border-left: var(--settings-border);
+  border: var(--settings-border);
+  border-right: none;
+  border-top: none;
 }
 
 /* Settings type selection */
 .select_mode {
-  z-index: 20;
-  height: 36px;
-  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  z-index: 2;
+  background-color: var(--background-color-2);
 }
 
 .select_mode ul {
   padding: 0;
   margin: 0;
-  margin-top: 5px;
   display: flex;
-  justify-content: flex-start;
 
   list-style-type: none;
 }
 
-.select_mode ul :hover {
-  color: var(--accent-color-2);
+.select_mode ul li:not(.selected) :hover {
+  cursor: pointer;
+  color: var(--accent-color);
 }
 
 .select_mode li {
   z-index: 16;
   display: table;
 
-  width: 95px;
+  padding: 0 1.6em;
+  width: 100%;
   height: 30px;
-  margin-right: 5px;
+  margin-right: 0.4em;
 
   background-color: rgb(250, 250, 250);
-  border-top-right-radius: 7px;
-  border-top-left-radius: 7px;
+  border-top-right-radius: var(--border-rad);
+  border-top-left-radius: var(--border-rad);
   border: var(--settings-border);
   border-bottom: 0;
 }
@@ -157,9 +158,9 @@ export default {
   content: "";
   display: block;
 
-  position: relative;
-  top: -2px;
-  height: 0x;
+  position: absolute;
+  bottom: 0;
+  height: 0;
   width: 300px;
 
   border-bottom: var(--settings-border);
@@ -170,6 +171,7 @@ export default {
   z-index: 22;
   background-color: var(--background-color);
   font-weight: bold;
+
   color: var(--accent-color);
   transition: step-start 200ms;
 }
@@ -177,17 +179,5 @@ export default {
 /* Show only selected settings */
 .selected_setting_type .unselected {
   display: none;
-}
-
-/* Line above inspector menu */
-.settings::after {
-  content: "";
-  display: block;
-
-  position: relative;
-  height: 0;
-  width: 300px;
-
-  border-bottom: var(--settings-border);
 }
 </style>

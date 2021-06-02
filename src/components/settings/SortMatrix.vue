@@ -3,7 +3,7 @@
     <div class="sort-select">
       <select id="sorting-selector" @change="sortMatrix">
         <option value="unsorted">Unsorted</option>
-        <option value="transposed">Transposed</option>
+        <option value="rotate180">Rotate 180°</option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -17,7 +17,11 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "SortMatrix",
   computed: {
-    ...mapGetters("dataset", ["getMatrixData", "getSortedMatrixData"]),
+    ...mapGetters("dataset", [
+      "getMatrixData",
+      "persons",
+      "getSortedMatrixData",
+    ]),
   },
   data() {
     return {
@@ -33,19 +37,28 @@ export default {
     ...mapActions("dataset", ["changeSortedMatrixData"]),
     sortMatrix(event) {
       // TODO: make loading bar
-      let data = this.getMatrixData;
+      //let data = this.getMatrixData;
       // let coeffs = this.getCoefficients();
+      //this.changeSortedMatrixData(this.transposeMatrix(this.people));
 
       // Do the selected sorting algorithm
       this.sortAlg["type"] = event.target.value;
       this.sortAlg["index"] = event.target.options.selectedIndex;
 
+      let reversePeople = this.persons.reverse();
+
       switch (this.sortAlg["type"]) {
         case "unsorted":
-          this.changeSortedMatrixData("unsorted");
+          this.changeSortedMatrixData({
+            personsRows: this.persons,
+            personsCols: this.persons,
+          });
           break;
-        case "transposed":
-          this.changeSortedMatrixData(this.transposeMatrix(data));
+        case "rotate180":
+          this.changeSortedMatrixData({
+            personsRows: reversePeople,
+            personsCols: reversePeople,
+          });
           break;
         default:
           console.log(this.sortAlg["type"]);

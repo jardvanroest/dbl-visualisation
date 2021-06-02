@@ -1,17 +1,26 @@
 <template>
-  <div class="section" :class="{ first: first }">{{ title }}</div>
+  <div class="section" :class="{ first: index === 0 }">{{ title }}</div>
   <hr />
+  <div>
+    <InspectorField
+      v-for="f in fields"
+      :key="f"
+      :field="f.field"
+      :tabbed="f.tabbed"
+      :info="f.info"
+    />
+  </div>
 </template>
 
 <script>
+import InspectorField from "@/components/inspector/InspectorField.vue";
+
 export default {
   name: "Section",
-  props: {
-    title: null,
-    first: {
-      required: false,
-    },
+  components: {
+    InspectorField,
   },
+  props: ["title", "fields", "index"],
 };
 </script>
 
@@ -22,7 +31,6 @@ export default {
 
   font-weight: bold;
   font-size: 12pt;
-  text-transform: capitalize;
   color: var(--accent-color);
 }
 

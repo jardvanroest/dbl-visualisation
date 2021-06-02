@@ -1,9 +1,9 @@
 <template>
   <header>
-    <div class="container">
+    <div class="container-header">
       <div class="logo" @click="redirectToHome()">
         <img src="@/assets/icons/graph.svg" alt="logo" />
-        <span>WebVis</span>
+        <span>MailVis</span>
       </div>
       <div class="import_data">
         <div>
@@ -66,13 +66,13 @@ export default {
 
 <style scoped>
 * {
-  transition: all ease-in-out 150ms;
+  transition: all ease-in-out 200ms;
 }
 
 /* Format header */
-.container {
+.container-header {
   width: 100%;
-  height: 50px;
+  height: 3.125rem;
   display: flex;
   margin: 0 auto;
   justify-content: space-between;
@@ -81,12 +81,12 @@ export default {
     rgba(61, 61, 61, 0.15) 0px 1px 3px 1px;
 }
 
-.container img {
-  width: 24px;
-  height: 24px;
+.container-header img {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
-.container > div {
+.container-header > div {
   cursor: pointer;
 }
 
@@ -96,28 +96,29 @@ export default {
   display: flex;
   align-items: center;
   font-size: 22pt;
+  height: 100%;
 }
 
 .logo img {
-  padding-right: 10px;
-  width: 44px;
-  height: 44px;
+  padding-right: 0.25em;
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
 /* Format upload div*/
 .import_data div {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 3.125rem;
 }
 
 .import_data img {
-  padding: 1em;
+  padding: 1rem;
 }
 
 .import_data span {
   transition: none;
-  padding-right: 1em;
+  padding-right: 1rem;
 }
 
 /* Format icons to the right*/
@@ -125,6 +126,8 @@ export default {
   list-style-type: none;
   display: table;
   position: relative;
+  padding: 0;
+  margin: 0;
 }
 
 .nav_icons li {
@@ -133,8 +136,8 @@ export default {
   text-align: center;
   color: transparent;
 
-  height: 50px;
-  width: 50px;
+  height: 3.125rem;
+  width: 3.125rem;
 }
 
 /* Rotate settings icon on click */

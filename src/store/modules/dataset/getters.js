@@ -28,7 +28,7 @@ export default {
   getSortedMatrixData(state) {
     return state.sortedMatrixData;
   },
-  getMatrixData(state) {
+  getMatrixDataForSorting(state) {
     return state.matrixData;
   },
 };
