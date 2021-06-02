@@ -1,11 +1,10 @@
 <template>
-  <div class="sort-container">
-    <div class="sort-select">
-      <select id="sorting-selector" v-model="selected_type">
-        <option selected disabled>Choose visualisation</option>
-        <option value="AdjacencyMatrix">Adjacency Matrix</option>
+  <div class="container">
+    <div class="select">
+      <select id="selector" v-model="selected_type">
+        <option disabled value="">Please select one</option>
         <option value="NodeLink">Node Link</option>
-        <option value="TestVis">Test Visualisation</option>
+        <option value="AdjacencyMatrix">Adjacency Matrix</option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -32,15 +31,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.sort-container {
+.container {
   display: flex;
 }
-.sort-select {
+.select {
   font: inherit;
   position: relative;
 }
 
-#sorting-selector {
+#selector {
   border-radius: 0.32em;
   padding: 0.3em 1.5em 0.3em 0.3em;
   background-color: var(--background-color);
