@@ -13,7 +13,7 @@ export class Visualisation {
   }
 
   resetVisualisation() {
-    d3.select(this.HTMLSelector).selectChild("g").selectAll().remove();
+    d3.select(this.HTMLSelector).selectChild("g").selectAll("*").remove();
   }
 
   _getSVG() {
