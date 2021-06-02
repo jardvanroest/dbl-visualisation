@@ -19,7 +19,7 @@ export default {
   },
   data: function () {
     return {
-      type: "AdjacencyMatrix",
+      type: "NodeLink",
       size: 450,
       zoom_vals: { min: 3 / 4, max: 4, margin: 50 },
     };

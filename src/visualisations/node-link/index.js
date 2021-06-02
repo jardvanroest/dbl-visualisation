@@ -3,9 +3,9 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
 
-export class NodeLinkVisualisation extends Visualisation {
-  constructor() {
-    super("#areaNodeLinkSVG");
+export class NodeLink extends Visualisation {
+  constructor(HTMLselector) {
+    super(HTMLselector);
 
     this.colors = {
       edgePositive: "#b4ecb4",
