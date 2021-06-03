@@ -2,9 +2,9 @@
   <div class="container">
     <div class="select">
       <select id="selector" v-model="selected_type">
-        <option disabled value="">Please select one</option>
-        <option value="NodeLink">Node Link</option>
-        <option value="AdjacencyMatrix">Adjacency Matrix</option>
+        <option v-for="item in items" :key="item.value" :value="item.value">
+          {{ item.name }}
+        </option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -14,6 +14,7 @@
 <script>
 export default {
   name: "DropDown",
+  props: ["items"],
   data: function () {
     return {
       selected_type: undefined,
@@ -24,8 +25,14 @@ export default {
       deep: true,
       handler(value) {
         this.$emit("changed", value);
+        console.log("set to: " + value);
       },
     },
+  },
+  mounted() {
+    console.log("this.items");
+
+    console.log(this.items);
   },
 };
 </script>

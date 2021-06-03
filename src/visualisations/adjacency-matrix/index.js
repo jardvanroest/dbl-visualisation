@@ -3,7 +3,7 @@ import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 
 export class AdjacencyMatrix extends Visualisation {
   constructor(HTMLSelector, changeInspectorData) {
-    super(HTMLSelector);
+    super(HTMLSelector, "Adjacency Matrix");
 
     this.changeInspectorData = changeInspectorData;
 

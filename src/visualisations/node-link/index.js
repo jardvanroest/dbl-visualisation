@@ -5,7 +5,7 @@ import { Simulator } from "@/visualisations/node-link/simulator.js";
 
 export class NodeLink extends Visualisation {
   constructor(HTMLselector) {
-    super(HTMLselector);
+    super(HTMLselector, "Node Link");
 
     this.colors = {
       edgePositive: "#b4ecb4",

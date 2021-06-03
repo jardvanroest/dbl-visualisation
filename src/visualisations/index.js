@@ -1,2 +1,2 @@
-export * as AdjacencyMatrix from "@/visualisations/adjacency-matrix/index.js";
-export * as NodeLink from "@/visualisations/node-link/index.js";
+export { AdjacencyMatrix } from "@/visualisations/adjacency-matrix/index.js";
+export { NodeLink } from "@/visualisations/node-link/index.js";

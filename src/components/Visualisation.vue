@@ -1,6 +1,6 @@
 <template>
   <div id="area" style="padding: 30px">
-    <DropDown ref="dropdown" @changed="changeVisualisation" />
+    <DropDown :items="dropdown_items" @changed="changeVisualisation" />
     <svg :id="id"></svg>
   </div>
 </template>
@@ -22,6 +22,7 @@ export default {
       type: "NodeLink",
       size: 450,
       zoom_vals: { min: 3 / 4, max: 4, margin: 50 },
+      dropdown_items: this.createDropDownItemsList(),
     };
   },
   computed: {
@@ -49,10 +50,13 @@ export default {
 
     this.createVisualisation(this.type);
     this.redraw();
+
+    console.log(Object.keys(visualisations));
+    console.log(visualisations[this.type]);
   },
   methods: {
     createVisualisation(type) {
-      this.visualisation = new visualisations[type][type](
+      this.visualisation = new visualisations[type](
         "#" + this.id,
         this.changeInspectorData
       );
@@ -78,6 +82,14 @@ export default {
       ];
       this.zoom.translateExtent([worldTopLeft, worldBottomRight]);
       this.g.attr("transform", event.transform);
+    },
+    createDropDownItemsList() {
+      var list = [];
+      for (const key of Object.keys(visualisations)) {
+        // list.push({value: key, name: visualisations[key].name});
+        list.push({ value: key, name: key });
+      }
+      return list;
     },
   },
 };
