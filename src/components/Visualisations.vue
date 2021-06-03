@@ -1,19 +1,19 @@
 <template>
   <div class="container">
     <AdjacencyMatrix class="visualisation" />
-    <NodeLinkSVG class="visualisation" />
+    <Calendar class="visualisation" />
   </div>
 </template>
 
 <script>
-import NodeLinkSVG from "@/components/Cal.vue";
+import Calendar from "@/components/Calendar.vue";
 import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
 
 export default {
   name: "Visualisations",
   components: {
     AdjacencyMatrix,
-    NodeLinkSVG,
+    Calendar,
   },
 };
 </script>
