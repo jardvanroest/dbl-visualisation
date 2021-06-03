@@ -67,6 +67,9 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
       .attr("height", this.rectLength)
       .attr("fill", function (d) {
         return d.fillColor;
+      })
+      .on("click", (e, d) => {
+        console.log(d);
       });
   }
 

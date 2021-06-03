@@ -1,17 +1,18 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
-//import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
+import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
 import * as d3 from "d3";
 
 export class CalendarVisualisation extends Visualisation {
   constructor(changeInspectorData) {
     super("#area_calendar");
-
     this.changeInspectorData = changeInspectorData;
+
     this.width = 1200;
     this.widthYear = 1000;
     this.cellSize = 17;
     this.heightYear = this.cellSize * 9;
-    this.height = 1000;
+    this.height = 1300;
+
     this.timeWeek = d3.utcMonday;
     this.countDay = (i) => (i + 6) % 7;
     this.formatDay = (i) => "SMTWTFS"[i];
@@ -19,10 +20,12 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   redraw(data) {
-    this.parsedData = this._groupData(data); // grouped
-    this.height = 1500; //this.heightYear * this.parsedData.length;
+    //this.parsedData = this._groupData(data); // grouped
     this._resetVisualisation();
-    this._generateVisualisation(this.parsedData);
+    const cal = new CalendarYear(this._getSVG(), data);
+    cal._generateVisualisation();
+    //cal._generateVisualisation();
+    //this._generateVisualisation(this.parsedData);
   }
 
   _generateVisualisation(parsedData) {
@@ -36,6 +39,7 @@ export class CalendarVisualisation extends Visualisation {
         "transform",
         (d, i) => `translate(40.5,${this.heightYear * i + this.cellSize * 1.5})`
       );
+    // years text
     year
       .append("text")
       .attr("x", -5)
@@ -43,6 +47,7 @@ export class CalendarVisualisation extends Visualisation {
       .attr("font-weight", "bold")
       .attr("text-anchor", "end")
       .text(([key]) => key);
+    // days text
     year
       .append("g")
       .attr("text-anchor", "end")
@@ -53,7 +58,7 @@ export class CalendarVisualisation extends Visualisation {
       .attr("y", (i) => (this.countDay(i) + 0.5) * this.cellSize)
       .attr("dy", "0.31em")
       .text(this.formatDay);
-
+    // data
     year
       .append("g")
       .selectAll("rect")
@@ -74,7 +79,7 @@ export class CalendarVisualisation extends Visualisation {
         vm.changeInspetorData(d);
       })
       .text((d) => d.emails.length);
-
+    // moth text
     const month = year
       .append("g")
       .selectAll("g")
