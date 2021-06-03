@@ -27,6 +27,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
     const matrix = new Matrix(this.personsRows, this.personsCols);
     // Set {MatrixData} the first time when loading the matrix
     if (store.getters.getMatrixDataForSorting === -1) {
+      console.log("changing");
       store.dispatch("changeMatrixData", matrix.getMatrixData());
     }
     return matrix.getMatrixData();
@@ -64,7 +65,6 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
         return d;
       })
       .enter()
-      .append("g")
       .append("rect")
       .attr("x", this._getPositionFromIndex.bind(this))
       .attr("width", this.rectLength)
@@ -92,17 +92,20 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
+        filtered: sender.isSelectedInEmailFilter,
       };
     } else {
       inspectorData.sender = {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
+        filtered: sender.isSelectedInEmailFilter,
       };
       inspectorData.recipient = {
         email: recipient.emailAddress,
         id: recipient.id,
         title: recipient.jobTitle,
+        filtered: recipient.isSelectedInEmailFilter,
       };
     }
     inspectorData.additional_information = {

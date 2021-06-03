@@ -1,7 +1,9 @@
 <template>
   <div :class="{ smallerText: tabbed, color: field === 'Node Color' }">
     <span class="field" :class="{ tabbed: tabbed }">{{ field }}: </span>
-    <span>{{ info }} </span>
+    <span :class="{ false: info === false, true: info === true }"
+      >{{ info }}
+    </span>
     <span
       v-if="field === 'Node Color'"
       class="color"
@@ -29,6 +31,14 @@ export default {
 
 .smallerText {
   font-size: 9pt;
+}
+
+.false {
+  color: #ff3838;
+}
+
+.true {
+  color: #3ae374;
 }
 
 /* Make color rectangle */

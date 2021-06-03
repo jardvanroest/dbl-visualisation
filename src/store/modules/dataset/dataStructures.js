@@ -12,7 +12,7 @@ class Person {
   constructor() {
     this.sendEmails = [];
     this.receivedEmails = [];
-    this.isSelectedInEmailFilter = false;
+    this.isSelectedInEmailFilter = true;
   }
 }
 

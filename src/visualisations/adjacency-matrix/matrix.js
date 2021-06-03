@@ -61,11 +61,16 @@ class Cell {
   }
 
   get fillColor() {
-    if (this._emails.length === 0) {
-      return "#b8e0f6";
-    } else {
-      return "#df848f";
+    if (
+      this.sender.isSelectedInEmailFilter ||
+      this.recipient.isSelectedInEmailFilter
+    ) {
+      if (this._emails.length !== 0) {
+        return "#df848f";
+      }
     }
+
+    return "#b8e0f6";
   }
 
   get weight() {
