@@ -76,7 +76,7 @@ router.get("/:id", (req, res) => {
   updateDatasetObject();
   const foundDataset = datasets.find((dataset) => dataset.id === id);
   if (foundDataset === undefined) {
-    res.send(`Dataset with id:${id} not found.`);
+    res.status(400).send(`Dataset not found.`);
   } else {
     res.send(foundDataset);
   }

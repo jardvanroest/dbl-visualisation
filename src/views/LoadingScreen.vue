@@ -1,7 +1,17 @@
 <template>
   <div class="centered-container">
-    <img src="../assets/icons/loading.gif" />
-    <h3 class="title">Loading your dataset...</h3>
+    <img
+      v-if="!showError"
+      class="loading-img"
+      src="../assets/icons/loading.gif"
+    />
+    <img v-if="showError" class="error-img" src="../assets/icons/error.svg" />
+    <h3 v-if="!showError" class="title">Loading your dataset...</h3>
+    <h1 v-if="showError" class="title">404. That's an error.</h1>
+    <h3 v-if="showError" class="title">
+      There is no dataset linked to the provided id.
+    </h3>
+    <h3></h3>
   </div>
 </template>
 
@@ -38,7 +48,7 @@ export default {
       const vm = this;
 
       function saveAndVisualise(dataset) {
-        // is default so the data is not re-uploaded
+        // set as default so the data is not re-uploaded
         vm.saveData({ data: dataset, isDefault: true });
         vm.updateDatasetID(dataset_id);
         vm.$router.push({ path: "/visualisation" });
@@ -59,9 +69,15 @@ export default {
     },
     handleError(error) {
       console.error(error.message);
+      this.showError = true;
     },
     ...mapActions("dataset", ["saveData"]),
     ...mapMutations("dataset", ["updateDatasetID"]),
+  },
+  data() {
+    return {
+      showError: false,
+    };
   },
 };
 </script>
@@ -80,5 +96,19 @@ export default {
   font-family: "Roboto", sans-serif;
   margin-bottom: 1rem;
   letter-spacing: 0.05rem;
+}
+
+.error-img {
+  width: 27.5rem;
+  height: 27.5rem;
+  margin: 0.2rem;
+  padding: 0.2rem;
+}
+
+.loading-img {
+  width: 5rem;
+  height: 5rem;
+  margin: 0.2rem;
+  padding: 0.2rem;
 }
 </style>
