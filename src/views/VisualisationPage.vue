@@ -1,13 +1,13 @@
 <template>
+  <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
   <Header
     class="header"
     @toggle-settings="toggleSettings"
     @toggle-popup="toggleLinkPopup"
   />
-  <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
   <div class="grid-container">
     <Visualisations class="vis" />
-    <Settings v-if="showSettings" class="settings" />
+    <Settings v-if="showSettings" class="settings-containter" />
   </div>
 </template>
 
@@ -53,7 +53,7 @@ export default {
   flex-grow: 1;
 }
 
-.settings {
+.settings-containter {
   width: 300px;
   height: 100%;
 }

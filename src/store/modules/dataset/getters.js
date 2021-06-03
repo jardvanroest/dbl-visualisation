@@ -28,6 +28,10 @@ export default {
   getDatasetID(state) {
     return state.datasetID;
   },
+  // this function is a workaround needed for Popup.vue
+  getDatasetLink(state) {
+    return "http://localhost:8080/get?id=" + state.datasetID;
+  },
 };
 
 function makeUnique(array) {

@@ -88,8 +88,9 @@ export default {
 }
 
 /* Line on the left of settings tab */
+
 .container .settings::before {
-  z-index: 1000;
+  z-index: 50;
   content: "";
   display: block;
 
@@ -97,7 +98,6 @@ export default {
   top: 70px;
   height: calc(100vh - 71px);
   width: 0;
-
   border-left: var(--settings-border);
 }
 
