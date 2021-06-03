@@ -8,16 +8,33 @@
 <script>
 import { mapActions, mapMutations } from "vuex";
 import axios from "axios";
+import { parseString } from "@/logic/parsing.js";
+import exampleDataSet from "@/assets/datasets/exampleDataset.csv";
 
 let dataset_id = new URL(location.href).searchParams.get("id");
 
 export default {
   name: "LoadingScreen",
   mounted: function () {
-    this.goToVisualisationPage();
+    this.loadVisualisation();
   },
   methods: {
+    importExampleDataset() {
+      this.saveData({ data: parseString(exampleDataSet), isDefault: true });
+      this.goToVisualisationPage();
+    },
     goToVisualisationPage() {
+      this.$router.push({ path: "visualisation" });
+    },
+    ...mapActions("dataset", ["saveData"]),
+    loadVisualisation() {
+      if (dataset_id !== "default") {
+        this.downloadVisualisation();
+      } else {
+        this.importExampleDataset();
+      }
+    },
+    downloadVisualisation() {
       const vm = this;
 
       function saveAndVisualise(dataset) {

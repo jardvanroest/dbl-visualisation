@@ -11,6 +11,8 @@ export default {
     if (!isDefault) {
       // upload dataset if it is not default
       postDataToBackend(data, context);
+    } else {
+      context.commit("updateDatasetID", "default");
     }
 
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
