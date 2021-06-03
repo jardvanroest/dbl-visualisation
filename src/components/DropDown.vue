@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="select">
-      <select id="selector" v-model="selected_type">
+      <select id="selector" v-model="selectedType">
         <option v-for="item in items" :key="item.value" :value="item.value">
           {{ item.name }}
         </option>
@@ -17,22 +17,16 @@ export default {
   props: ["items"],
   data: function () {
     return {
-      selected_type: undefined,
+      selectedType: undefined,
     };
   },
   watch: {
-    selected_type: {
+    selectedType: {
       deep: true,
       handler(value) {
         this.$emit("changed", value);
-        console.log("set to: " + value);
       },
     },
-  },
-  mounted() {
-    console.log("this.items");
-
-    console.log(this.items);
   },
 };
 </script>

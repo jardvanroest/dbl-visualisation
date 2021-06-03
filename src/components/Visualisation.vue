@@ -1,6 +1,6 @@
 <template>
   <div id="area" style="padding: 30px">
-    <DropDown :items="dropdown_items" @changed="changeVisualisation" />
+    <DropDown :items="dropdownItems" @changed="changeVisualisation" />
     <svg :id="id"></svg>
   </div>
 </template>
@@ -21,8 +21,8 @@ export default {
     return {
       type: "NodeLink",
       size: 450,
-      zoom_vals: { min: 3 / 4, max: 4, margin: 50 },
-      dropdown_items: this.createDropDownItemsList(),
+      zoomVals: { min: 3 / 4, max: 4, margin: 50 },
+      dropdownItems: this.createDropDownItemsList(),
     };
   },
   computed: {
@@ -39,7 +39,7 @@ export default {
   mounted() {
     this.zoom = d3
       .zoom()
-      .scaleExtent([this.zoom_vals.min, this.zoom_vals.max])
+      .scaleExtent([this.zoomVals.min, this.zoomVals.max])
       .on("zoom", this.zoomed);
 
     this.g = d3
@@ -50,9 +50,6 @@ export default {
 
     this.createVisualisation(this.type);
     this.redraw();
-
-    console.log(Object.keys(visualisations));
-    console.log(visualisations[this.type]);
   },
   methods: {
     createVisualisation(type) {
@@ -72,22 +69,21 @@ export default {
     },
     zoomed(event) {
       var box = this.g.node().getBBox();
-      const worldTopLeft = [
-        box.x - this.zoom_vals.margin,
-        box.y - this.zoom_vals.margin,
+      const topLeft = [
+        box.x - this.zoomVals.margin,
+        box.y - this.zoomVals.margin,
       ];
-      const worldBottomRight = [
-        box.x + box.width + this.zoom_vals.margin,
-        box.y + box.height + this.zoom_vals.margin,
+      const bottomRight = [
+        box.x + box.width + this.zoomVals.margin,
+        box.y + box.height + this.zoomVals.margin,
       ];
-      this.zoom.translateExtent([worldTopLeft, worldBottomRight]);
+      this.zoom.translateExtent([topLeft, bottomRight]);
       this.g.attr("transform", event.transform);
     },
     createDropDownItemsList() {
       var list = [];
       for (const key of Object.keys(visualisations)) {
-        // list.push({value: key, name: visualisations[key].name});
-        list.push({ value: key, name: key });
+        list.push({ value: key, name: visualisations[key].name });
       }
       return list;
     },
