@@ -20,11 +20,8 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   redraw(data) {
-    //this.parsedData = this._groupData(data); // grouped
     this._resetVisualisation();
     const calendarData = new CalendarYear(data);
-    //console.log(calendarData);
-    //cal._generateVisualisation();
     this._generateVisualisation(calendarData._getData());
   }
 
