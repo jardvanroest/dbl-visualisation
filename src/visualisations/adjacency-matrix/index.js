@@ -58,7 +58,6 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
         return d;
       })
       .enter()
-      .append("g")
       .append("rect")
       .attr("x", this._getPositionFromIndex.bind(this))
       .attr("width", this.rectLength)
