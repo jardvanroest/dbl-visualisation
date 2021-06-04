@@ -134,16 +134,47 @@ export class NodeLinkVisualisation extends Visualisation {
   }
 
   edgeClick(event, data) {
-    console.log("Line!");
-    console.log(data);
+    const persons = store.getters["dataset/persons"];
+    const personA = persons.find((p) => p.id === data.target.id);
+    const personB = persons.find((p) => p.id === data.source.id);
+    const emails = store.getters["dataset/filteredEmails"];
+
+    let sent_by_a = 0;
+    let sent_by_b = 0;
+    emails.forEach((email) => {
+      if (email.fromId === personA.id && email.toId === personB.id) sent_by_a++;
+      if (email.fromId === personB.id && email.toId === personA.id) sent_by_b++;
+    });
+
+    let inspectorData = {
+      person_1: {
+        email: personA.emailAddress,
+        id: personA.id,
+        title: personA.jobTitle,
+        included_in_filter: personA.isSelectedInEmailFilter,
+        sent_emails: sent_by_a,
+      },
+      person_2: {
+        email: personB.emailAddress,
+        id: personB.id,
+        title: personB.jobTitle,
+        included_in_filter: personB.isSelectedInEmailFilter,
+        sent_emails: sent_by_b,
+      },
+    };
+
+    inspectorData.additional_information = {
+      weight: data.weight,
+      edge_color: event.srcElement.attributes[0].value.toString(),
+      average_sentiment: data.avgSentiment.toPrecision(3),
+    };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 
   nodeClick(event, data) {
     const persons = store.getters["dataset/persons"];
     const person = persons.find((p) => p.id === data.id);
-
-    console.log(person);
-    console.log(data);
 
     let inspectorData = {
       person: {
@@ -154,7 +185,6 @@ export class NodeLinkVisualisation extends Visualisation {
       },
       sent_emails: { number: person.sendEmails.length },
       received_emails: { number: person.receivedEmails.length },
-      additional_information: { node_color: this.colors.nodeBody },
     };
 
     // Add fields only if there are emails
@@ -167,6 +197,8 @@ export class NodeLinkVisualisation extends Visualisation {
         inspectorData.received_emails
       );
     }
+
+    inspectorData.additional_information = { node_color: this.colors.nodeBody };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
   }
