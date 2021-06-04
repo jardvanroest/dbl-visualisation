@@ -1,12 +1,13 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
-import store from "../../store";
 
 export class AdjacencyMatrixVisualisation extends Visualisation {
-  constructor(changeInspectorData) {
+  constructor(changeInspectorData, setData, changeMatrixData) {
     super("#areaAdjacencyMatrix");
 
     this.changeInspectorData = changeInspectorData;
+    this.setData = setData;
+    this.changeMatrixData = changeMatrixData;
   }
 
   redraw(emails, personsRows, personsCols) {
@@ -20,17 +21,38 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
   _generateVisualisation() {
     const svg = this._getSVG();
     const matrix = this._getMatrix();
-    this._drawVisualisation(svg, matrix);
+    const sorted_matrix = this._sortMatrix(matrix);
+    this._drawVisualisation(svg, sorted_matrix);
   }
 
   _getMatrix() {
-    const matrix = new Matrix(this.personsRows, this.personsCols);
-    // Set {MatrixData} the first time when loading the matrix
-    if (store.getters.getMatrixDataForSorting === -1) {
-      console.log("changing");
-      store.dispatch("changeMatrixData", matrix.getMatrixData());
+    let matrix = new Matrix(this.personsRows, this.emails);
+
+    // Set {MatrixData} the first time when loading the matrix // NOT WORKING
+    if (this.setData === -1) {
+      this.setData = 0;
+      this.changeMatrixData(matrix.getMatrixData());
     }
+
     return matrix.getMatrixData();
+  }
+
+  _sortMatrix(matrix) {
+    let new_matrix = [];
+
+    for (let i = 0; i < this.personsRows.length; i++) {
+      let row = [];
+      let recipient = this.personsRows[i];
+
+      for (let i = 0; i < this.personsCols.length; i++) {
+        let sender = this.personsCols[i];
+
+        row.push(matrix[recipient.id - 1][sender.id - 1]);
+      }
+      new_matrix.push(row);
+    }
+
+    return new_matrix;
   }
 
   _drawVisualisation(svg, matrix) {

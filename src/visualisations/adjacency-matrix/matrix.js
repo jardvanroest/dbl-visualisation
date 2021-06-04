@@ -1,26 +1,30 @@
 export class Matrix {
-  constructor(personsRows, personsCols) {
-    this.matrixData = this._createMatrixData(personsRows, personsCols);
+  constructor(persons, emails) {
+    this.persons = persons;
+    this.emails = emails;
+    this.matrixData = this._createMatrixData();
   }
 
   getMatrixData() {
     return this.matrixData;
   }
 
-  _createMatrixData(peopleRows, peopleCols) {
+  _createMatrixData() {
     let matrix = {};
 
-    for (let i = 0; i < peopleRows.length; i++) {
-      const recipient = peopleRows[i];
-      const row = matrix[i];
-      if (row === undefined) matrix[i] = {};
+    this.persons.forEach((recipient) => {
+      const row = matrix[recipient.id];
+      if (row === undefined) matrix[recipient.id] = {};
 
-      for (let j = 0; j < peopleCols.length; j++) {
-        const sender = peopleCols[j];
-        matrix[i][j] = this._createCell(sender, recipient);
-        matrix[i][j].addEmails(sender.sendEmails, recipient.id);
-      }
-    }
+      this.persons.forEach((sender) => {
+        matrix[recipient.id][sender.id] = this._createCell(sender, recipient);
+      });
+    });
+
+    this.emails.forEach((email) => {
+      const cell = matrix[email.toId][email.fromId];
+      cell.addEmail(email);
+    });
 
     matrix = this._convertToArrayOfArrays(matrix);
 
@@ -50,27 +54,16 @@ class Cell {
     this._emails = [];
   }
 
-  addEmails(emails, recipientId) {
-    emails.forEach((email) => {
-      if (email.toId === recipientId) this._addEmail(email);
-    });
-  }
-
-  _addEmail(email) {
+  addEmail(email) {
     this._emails.push(email);
   }
 
   get fillColor() {
-    if (
-      this.sender.isSelectedInEmailFilter ||
-      this.recipient.isSelectedInEmailFilter
-    ) {
-      if (this._emails.length !== 0) {
-        return "#df848f";
-      }
+    if (this._emails.length === 0) {
+      return "#b8e0f6";
+    } else {
+      return "#df848f";
     }
-
-    return "#b8e0f6";
   }
 
   get weight() {

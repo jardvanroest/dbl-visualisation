@@ -37,6 +37,7 @@ export default {
     ...mapActions("dataset", ["changeSortedMatrixData"]),
     sortMatrix(event) {
       // TODO: make loading bar
+      // TODO: fix coeffs
       //let data = this.getMatrixData;
       // let coeffs = this.getCoefficients();
       //this.changeSortedMatrixData(this.transposeMatrix(this.people));
@@ -72,7 +73,7 @@ export default {
       for (let i = 0; i < data.length; i++) {
         let _row = [];
         for (let j = 0; j < data.length; j++) {
-          _row.push(data[i][j]["weight"]);
+          _row.push(data[i][j]._emails.length);
         }
         _coeffs.push(_row);
       }
