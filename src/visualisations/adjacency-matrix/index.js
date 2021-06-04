@@ -1,13 +1,10 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
+import store from "@/store";
 
 export class AdjacencyMatrixVisualisation extends Visualisation {
-  constructor(changeInspectorData, setData, changeMatrixData) {
+  constructor() {
     super("#areaAdjacencyMatrix");
-
-    this.changeInspectorData = changeInspectorData;
-    this.setData = setData;
-    this.changeMatrixData = changeMatrixData;
   }
 
   redraw(emails, personsRows, personsCols) {
@@ -29,9 +26,8 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
     let matrix = new Matrix(this.personsRows, this.emails);
 
     // Set {MatrixData} the first time when loading the matrix // NOT WORKING
-    if (this.setData === -1) {
-      this.setData = 0;
-      this.changeMatrixData(matrix.getMatrixData());
+    if (store.getters["dataset/getMatrixDataForSorting"] === -1) {
+      store.dispatch("dataset/changeMatrixData", matrix.getMatrixData());
     }
 
     return matrix.getMatrixData();
@@ -94,7 +90,8 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
       .attr("fill", function (d) {
         return d.fillColor;
       })
-      .on("click", this.updateInspectorData.bind(this));
+      .on("click", this.updateInspectorData.bind(this))
+      .classed("adj-mat-rows", true);
   }
 
   _getPositionFromIndex(d, i) {
@@ -114,20 +111,20 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
-        filtered: sender.isSelectedInEmailFilter,
+        included_in_filter: sender.isSelectedInEmailFilter,
       };
     } else {
       inspectorData.sender = {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
-        filtered: sender.isSelectedInEmailFilter,
+        included_in_filter: sender.isSelectedInEmailFilter,
       };
       inspectorData.recipient = {
         email: recipient.emailAddress,
         id: recipient.id,
         title: recipient.jobTitle,
-        filtered: recipient.isSelectedInEmailFilter,
+        included_in_filter: recipient.isSelectedInEmailFilter,
       };
     }
     inspectorData.additional_information = {
@@ -171,7 +168,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
       delete inspectorData.additional_information.tabbed;
     }
 
-    this.changeInspectorData(inspectorData);
+    store.dispatch("dataset/changeInspectorData", inspectorData);
 
     // Used functions for calculating some properties//
 
