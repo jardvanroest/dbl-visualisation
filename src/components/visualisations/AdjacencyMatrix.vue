@@ -12,9 +12,7 @@ export default {
   name: "AdjacencyMatrix",
   data() {
     return {
-      AdjacencyMatrixVisualisation: new AdjacencyMatrixVisualisation(
-        this.changeInspectorData
-      ),
+      AdjacencyMatrixVisualisation: new AdjacencyMatrixVisualisation(),
     };
   },
   computed: {

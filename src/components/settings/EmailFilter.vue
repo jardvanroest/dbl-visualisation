@@ -142,7 +142,7 @@ a {
   z-index: 1;
   width: 30em;
   height: 2em;
-  position: fixed;
+  position: absolute;
   background: var(--background-color);
 }
 

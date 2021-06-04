@@ -1,11 +1,10 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
+import store from "@/store";
 
 export class AdjacencyMatrixVisualisation extends Visualisation {
-  constructor(changeInspectorData) {
+  constructor() {
     super("#areaAdjacencyMatrix");
-
-    this.changeInspectorData = changeInspectorData;
   }
 
   redraw(emails, persons) {
@@ -85,17 +84,20 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
+        included_in_filter: sender.isSelectedInEmailFilter,
       };
     } else {
       inspectorData.sender = {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
+        included_in_filter: sender.isSelectedInEmailFilter,
       };
       inspectorData.recipient = {
         email: recipient.emailAddress,
         id: recipient.id,
         title: recipient.jobTitle,
+        included_in_filter: recipient.isSelectedInEmailFilter,
       };
     }
     inspectorData.additional_information = {
@@ -105,77 +107,14 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
       tabbed: 0,
     };
 
-    // Reset data
-    let sentiments = [];
-    let dates = [];
-    let maxDate = new Date("1001-01-01");
-    let minDate = new Date("3001-01-01");
-    let add_info = inspectorData.additional_information;
-
     // Add fields only if there are emails
     if (emails.length > 0) {
-      add_info.tabbed = {
-        TO: 0,
-        CC: 0,
-      };
-      add_info = inspectorData.additional_information;
-
-      emails.forEach((email) => {
-        // Count different {messageTypes}
-        _AddMessageType(email.messageType);
-
-        // Get all sentiments
-        sentiments.push(parseFloat(email.sentiment));
-
-        // Get the current elements date and sort it
-        _sortDates(new Date(email.date));
-      });
-      _formatDates();
-
-      // Get average sentiment
-      add_info.Average_Sentiment = _getAvgValue(sentiments).toPrecision(3);
+      this._newEmailsObject(emails, inspectorData.additional_information);
     } else {
       // Remove {tabbed} when there are no emails
       delete inspectorData.additional_information.tabbed;
     }
 
-    this.changeInspectorData(inspectorData);
-
-    // Used functions for calculating some properties//
-
-    function _AddMessageType(messageType) {
-      if (messageType === "CC") add_info.tabbed.CC++;
-      if (messageType === "TO") add_info.tabbed.TO++;
-    }
-
-    function _sortDates(currentDate) {
-      dates.push(currentDate.toDateString());
-      if (currentDate < minDate) minDate = currentDate;
-      if (currentDate > maxDate) maxDate = currentDate;
-    }
-
-    function _formatDates() {
-      // Convert dates to correct format
-      minDate = _formatDate(minDate);
-      maxDate = _formatDate(maxDate);
-
-      // Check if its the same date and set corresponding data
-      if (minDate === maxDate) {
-        add_info.Date = minDate;
-      } else {
-        add_info.From = minDate;
-        add_info.Until = maxDate;
-      }
-    }
-
-    function _formatDate(date) {
-      return date.toDateString().split(" ").slice(1).join(" ");
-    }
-
-    function _getAvgValue(array) {
-      // Gets avarage value in an array
-      const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
-      return AvgVal(array);
-    }
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }

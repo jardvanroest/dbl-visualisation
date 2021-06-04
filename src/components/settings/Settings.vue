@@ -80,7 +80,7 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 65%;
+  height: 100%;
   background-color: var(--background-color);
 }
 
@@ -91,7 +91,7 @@ export default {
 }
 
 .inspector {
-  height: 35%;
+  height: 32.5vh;
 }
 
 /* Borders around settings*/

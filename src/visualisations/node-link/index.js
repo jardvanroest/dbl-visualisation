@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
+import store from "@/store";
 
 export class NodeLinkVisualisation extends Visualisation {
   constructor() {
@@ -11,7 +12,7 @@ export class NodeLinkVisualisation extends Visualisation {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
       edgeNegative: "#e498a1",
-      nodeBody: "#B8E0F6",
+      nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
 
@@ -138,7 +139,35 @@ export class NodeLinkVisualisation extends Visualisation {
   }
 
   nodeClick(event, data) {
-    console.log("Node!");
+    const persons = store.getters["dataset/persons"];
+    const person = persons.find((p) => p.id === data.id);
+
+    console.log(person);
     console.log(data);
+
+    let inspectorData = {
+      person: {
+        email: person.emailAddress,
+        id: person.id,
+        title: person.jobTitle,
+        included_in_filter: person.isSelectedInEmailFilter,
+      },
+      sent_emails: { number: person.sendEmails.length },
+      received_emails: { number: person.receivedEmails.length },
+      additional_information: { node_color: this.colors.nodeBody },
+    };
+
+    // Add fields only if there are emails
+    if (person.sendEmails.length > 0) {
+      this._newEmailsObject(person.sendEmails, inspectorData.sent_emails);
+    }
+    if (person.receivedEmails.length > 0) {
+      this._newEmailsObject(
+        person.receivedEmails,
+        inspectorData.received_emails
+      );
+    }
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }
