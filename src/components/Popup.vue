@@ -1,24 +1,17 @@
 <template>
-  <div @click="togglePopup()" class="popup">
-    <div @click="togglePopup()" class="popup-inner">
-      <slot />
-      <div class="link-container">
-        <h2 class="title-text">Get Shareable Link</h2>
-        <h3>
-          <!-- use of <input> field is necessary for clipboard functionality -->
-          <input
-            class="link-text"
-            type="text"
-            id="dataset-link"
-            v-model="getDatasetLink"
-            readonly
-          />&nbsp;<Btn
-            class="button"
-            @click="copyToClipboard()"
-            text="Copy to clipboard"
-          />
-        </h3>
-      </div>
+  <div class="popup-container">
+    <div @click="togglePopup" class="popup-bg" />
+
+    <div class="link-container">
+      <div class="title-text">Get Shareable Link</div>
+      <!-- use of <input> field is necessary for clipboard functionality -->
+      <input
+        class="link-text"
+        type="text"
+        id="dataset-link"
+        v-model="getDatasetLink"
+      />
+      <Btn class="button" @click="copyToClipboard" text="Copy to clipboard" />
     </div>
   </div>
 </template>
@@ -51,58 +44,60 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.popup {
-  font-family: "Roboto", sans-serif;
-  z-index: 999;
+.popup-container {
+  z-index: 101;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+
+  width: 100%;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  font-size: 1vw;
+}
+
+.popup-bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+.link-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 1.25em;
 
-  .popup-inner {
-    min-width: 40%;
-    max-width: 60%;
-    z-index: 1000;
-    background: var(--background-color);
-    border-radius: 0.7rem;
-    padding: 0.6rem;
-    filter: drop-shadow(0rem 0rem 1.5rem rgba(0, 0, 0, 0.4));
-  }
+  width: 30em;
+  padding: 1.5em !important;
 
-  .title-text {
-    min-width: 80%;
-    height: 1.5rem;
-    display: block;
-    margin: 0 auto;
-    // align with link box
-    transform: translate(9.5%, 30%);
-    letter-spacing: 0.05rem;
-    font-weight: bold;
-  }
+  background: var(--background-color);
+  border-radius: 0.7rem;
+  padding: 0.6rem;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+}
 
-  .link-text {
-    font-family: monospace, monospace;
-    min-width: 80%;
-    height: 1.5rem;
-    font-size: 1.15rem;
-    display: block;
-    margin: 0 auto;
-    background-color: var(--background-color-2);
-  }
-  .button {
-    min-width: 20%;
-    max-width: 80%;
-    height: 2.3rem;
-    font-size: 1rem;
-    display: block;
-    margin: 0 auto;
-    font-weight: bold;
-  }
+.title-text {
+  font-size: 2vw;
+}
+
+.link-text {
+  margin-bottom: 0.5em;
+
+  font-family: monospace, monospace;
+  background-color: rgba(241, 241, 241, 0.486);
+
+  border: 1px solid rgb(180, 180, 180);
+  border-radius: 4px;
+}
+
+.button {
+  margin: 0 auto;
+  width: fit-content;
 }
 </style>
