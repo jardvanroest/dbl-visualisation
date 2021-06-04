@@ -19,10 +19,24 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
     this._generateVisualisation();
   }
 
+  // TODO: looks like selectedNodes is not updating when user discards selection by clicking outside the brush rect
   showSelection(selectedNodes) {
     const selectColor = "#A585C1";
 
-    // TODO: implement this
+    // IDEA: !!! only update on MouseUp, and not when brush rect is dragged
+    // IDEA: make groups for cols and highlight whole groups? so there's less elements to iterate through, change outline not border
+    // get nth child of div to identify groups
+
+    const selectedNodesArr = Object.values(selectedNodes);
+
+    this.drawnCells.attr("stroke", function (d) {
+      const selected =
+        selectedNodesArr.includes(d.sender.id) ||
+        selectedNodesArr.includes(d.receiver.id);
+
+      if (selected) return selectColor;
+      else return "white";
+    });
   }
 
   _generateVisualisation() {
@@ -41,7 +55,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
     this.rectMargin = this.rectLength * 0.06;
 
     const drawnRows = this._drawRows(svg, matrix);
-    const drawnCells = this._drawCells(drawnRows);
+    this.drawnCells = this._drawCells(drawnRows);
   }
 
   _drawRows(svg, matrix) {
@@ -65,14 +79,14 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
         return d;
       })
       .enter()
-      .append("g")
       .append("rect")
       .attr("x", this._getPositionFromIndex.bind(this))
       .attr("width", this.rectLength)
       .attr("height", this.rectLength)
       .attr("fill", function (d) {
         return d.fillColor;
-      });
+      })
+      .attr("stroke-width", "0.03%");
   }
 
   _getPositionFromIndex(d, i) {

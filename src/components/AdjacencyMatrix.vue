@@ -29,7 +29,6 @@ export default {
       },
     },
     selectedNodes: {
-      deep: true,
       handler() {
         this.showSelection();
       },

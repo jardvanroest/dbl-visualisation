@@ -24,6 +24,7 @@ export class Brush {
     const brush = this._createBrush();
 
     this.brushArea.append("g").call(brush);
+    // TODO: to fix node clicking set z-index of brush group to -1
   }
 
   _createBrush() {
@@ -54,7 +55,7 @@ export class Brush {
       const selected = x0 <= d.x && x1 >= d.x && y0 <= d.y && y1 >= d.y;
 
       if (selected) {
-        that._selectedObjects.push({ id: d.id });
+        that._selectedObjects.push(d.id);
         return that.colors.selected;
       }
 
