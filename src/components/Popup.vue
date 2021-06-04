@@ -3,7 +3,7 @@
     <div @click="togglePopup" class="popup-bg" />
 
     <div class="link-container">
-      <div class="title-text">Get Shareable Link</div>
+      <div class="title-text">Get shareable link</div>
       <!-- use of <input> field is necessary for clipboard functionality -->
       <input
         class="link-text"
@@ -87,17 +87,17 @@ export default {
 }
 
 .link-text {
-  margin-bottom: 0.5em;
-
   font-family: monospace, monospace;
   background-color: rgba(241, 241, 241, 0.486);
 
   border: 1px solid rgb(180, 180, 180);
   border-radius: 4px;
+  padding: 0.25em 0.5em;
 }
 
 .button {
   margin: 0 auto;
   width: fit-content;
+  font-size: 1.1em;
 }
 </style>
