@@ -88,7 +88,7 @@ export default {
   font-family: "Roboto", sans-serif;
   display: flex;
   align-items: center;
-  font-size: 22pt;
+  font-size: 1.8125rem;
   height: 100%;
 }
 

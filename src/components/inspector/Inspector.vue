@@ -112,10 +112,9 @@ export default {
 
 <style scoped lang="scss">
 .inspector-container {
-  margin: 1em 0;
   padding-left: 5%;
-  font-size: 10pt;
-  height: calc(100% - 2em);
+  font-size: 0.95rem;
+  height: 100%;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -123,7 +122,7 @@ export default {
 
 /* Format text at the beginning */
 .no-information {
-  font-size: 12pt;
+  font-size: 1rem;
   overflow: hidden;
 }
 

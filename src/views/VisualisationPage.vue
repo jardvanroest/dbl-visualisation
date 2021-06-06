@@ -3,7 +3,10 @@
   <div class="grid-container">
     <Visualisations class="visualisations-cont" />
     <div :class="{ hide: !showSettings }" class="wrapper-settings">
-      <Settings :class="{ dontShow: !showSettings }" class="settings" />
+      <Settings
+        :class="{ dontShow: !showSettings }"
+        class="container-settings"
+      />
     </div>
   </div>
 </template>
@@ -50,16 +53,19 @@ export default {
 .wrapper-settings {
   width: 18.75rem;
   transition: ease 150ms;
-  margin-top: 0.25rem;
   flex-shrink: 0;
 }
 
-.settings {
-  --stt-height: calc(100vh - var(--hdr-size));
+.container-settings {
+  --stt-height: calc(100vh - var(--hdr-size) - var(--brdr-size));
 
   width: 100%;
   height: min(100%, var(--stt-height));
   transition: ease 300ms;
+
+  background-color: var(--background-color);
+  border: var(--settings-border);
+  border-top: none;
 }
 
 .header {

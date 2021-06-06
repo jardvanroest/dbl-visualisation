@@ -1,7 +1,7 @@
 <template>
   <div class="section" :class="{ first: index === 0 }">{{ title }}</div>
   <hr />
-  <div>
+  <div v-if="fields != 'none'">
     <InspectorField
       v-for="f in fields"
       :key="f"
@@ -30,7 +30,7 @@ export default {
   margin-top: 0.8em;
 
   font-weight: bold;
-  font-size: 12pt;
+  font-size: 1.2rem;
   color: var(--accent-color);
 }
 
@@ -40,9 +40,10 @@ export default {
 
 /* Style horizontal lines */
 hr {
+  width: calc(100% - 1rem);
   margin-top: 3px;
   margin-bottom: 1px;
-  margin-right: 5px;
+  margin-right: 1rem;
   border: none;
   border-top: 1px solid var(--border-color);
 }

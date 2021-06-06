@@ -6,7 +6,7 @@
     }"
   >
     <span class="field" :class="{ tabbed: tabbed }">{{ field }}: </span>
-    <span :class="{ false: info === false, true: info === true }"
+    <span :class="{ false: info === false, true: info === true }" class="info"
       >{{ info }}
     </span>
     <span
@@ -41,12 +41,16 @@ export default {
   margin-left: 0.7em;
 }
 
+.info {
+  font-size: 1rem;
+}
+
 .tabbed {
   margin-left: 1.4em;
 }
 
 .smallerText {
-  font-size: 9pt;
+  font-size: 0.75rem;
 }
 
 .true {

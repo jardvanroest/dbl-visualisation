@@ -99,6 +99,7 @@ label {
 }
 
 .list-entry {
+  font-size: 0.8125rem;
   margin-bottom: 0.3em;
   margin-left: 0.7em;
 }
@@ -124,7 +125,7 @@ input[type="checkbox"] {
 a {
   color: var(--accent-color);
   text-decoration: underline;
-  font-size: 9pt;
+  font-size: 0.75rem;
   cursor: pointer;
   margin-left: 1em;
 
@@ -147,7 +148,7 @@ a {
 }
 
 .searchBox {
-  font-size: 10pt;
+  font-size: 0.8125rem;
   margin-bottom: 0.5em;
   border: var(--settings-border);
   border-radius: 4px;
