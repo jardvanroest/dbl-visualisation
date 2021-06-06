@@ -4,9 +4,9 @@ import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
 import store from "@/store";
 
-export class NodeLinkVisualisation extends Visualisation {
-  constructor() {
-    super("#areaNodeLinkSVG");
+export class NodeLink extends Visualisation {
+  constructor(HTMLselector) {
+    super(HTMLselector, "Node Link");
 
     this.colors = {
       edgePositive: "#b4ecb4",
@@ -26,8 +26,9 @@ export class NodeLinkVisualisation extends Visualisation {
     };
   }
 
-  redraw(emails) {
-    this._resetVisualisation();
+  redraw(emails, persons) {
+    this._persons = persons;
+    this.resetVisualisation();
     this._generateVis(emails);
   }
 

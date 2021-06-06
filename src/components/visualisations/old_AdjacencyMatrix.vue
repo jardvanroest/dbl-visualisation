@@ -6,13 +6,13 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { AdjacencyMatrixVisualisation } from "../../visualisations/adjacency-matrix";
+import { AdjacencyMatrix } from "../../visualisations/adjacency-matrix";
 
 export default {
   name: "AdjacencyMatrix",
   data() {
     return {
-      AdjacencyMatrixVisualisation: new AdjacencyMatrixVisualisation(),
+      AdjacencyMatrix: new AdjacencyMatrix(),
     };
   },
   computed: {
@@ -30,12 +30,8 @@ export default {
     this.redraw();
   },
   methods: {
-    ...mapActions("dataset", ["changeInspectorData"]),
     redraw() {
-      this.AdjacencyMatrixVisualisation.redraw(
-        this.filteredEmails,
-        this.persons
-      );
+      this.AdjacencyMatrix.redraw(this.filteredEmails, this.persons);
     },
   },
 };

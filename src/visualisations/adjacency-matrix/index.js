@@ -2,15 +2,15 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 import store from "@/store";
 
-export class AdjacencyMatrixVisualisation extends Visualisation {
-  constructor() {
-    super("#areaAdjacencyMatrix");
+export class AdjacencyMatrix extends Visualisation {
+  constructor(HTMLSelector) {
+    super(HTMLSelector, "Adjacency Matrix");
   }
 
   redraw(emails, persons) {
     this.emails = emails;
     this.persons = persons;
-    this._resetVisualisation();
+    this.resetVisualisation();
     this._generateVisualisation();
   }
 
