@@ -1,7 +1,7 @@
 <template>
   <Header class="header" @toggle-settings="toggleSettings" />
   <div class="grid-container">
-    <Visualisations class="vis" />
+    <Visualisations class="visualisations-cont" />
     <div :class="{ hide: !showSettings }" class="wrapper-settings">
       <Settings :class="{ dontShow: !showSettings }" class="settings" />
     </div>
@@ -42,7 +42,7 @@ export default {
   overflow-x: hidden;
 }
 
-.vis {
+.visualisations-cont {
   flex-grow: 1;
 }
 

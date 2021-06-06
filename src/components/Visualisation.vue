@@ -1,7 +1,8 @@
 <template>
-  <div class="visualisation" id="area">
+  <div class="visualisation">
     <DropDown
       class="dropdown"
+      :selected="id"
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
@@ -23,8 +24,7 @@ export default {
   },
   data: function () {
     return {
-      type: "NodeLink",
-      size: 450,
+      size: 500,
       zoomVals: { min: 3 / 4, max: 4, margin: 50 },
       dropdownItems: this.createDropDownItemsList(),
     };
@@ -52,15 +52,12 @@ export default {
       .call(this.zoom)
       .append("g");
 
-    this.createVisualisation(this.type);
+    this.createVisualisation(this.id);
     this.redraw();
   },
   methods: {
     createVisualisation(type) {
-      this.visualisation = new visualisations[type](
-        "#" + this.id,
-        this.changeInspectorData
-      );
+      this.visualisation = new visualisations[type]("#" + this.id);
     },
     changeVisualisation(type) {
       this.visualisation.resetVisualisation();
@@ -94,7 +91,27 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.visualisation {
+  --margin-size: 0.75rem;
+
+  position: relative;
+  margin: var(--margin-size);
+  margin-left: 0;
+  padding: 0.25rem;
+
+  border-radius: var(--border-rad);
+  background-color: var(--background-color);
+  box-shadow: 0 0 0 2px var(--background-color),
+    rgba(50, 50, 93, 0.25) 2px 4px 5px -1px, rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
+
+  &:hover {
+    box-shadow: 0 0 0 2px var(--accent-color),
+      rgba(50, 50, 93, 0.25) 2px 4px 5px -1px,
+      rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
+  }
+}
+
 .dropdown {
   position: absolute;
 }
