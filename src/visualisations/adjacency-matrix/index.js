@@ -4,7 +4,7 @@ import store from "@/store";
 
 export class AdjacencyMatrix extends Visualisation {
   constructor(HTMLSelector) {
-    super(HTMLSelector, "Adjacency Matrix");
+    super(HTMLSelector);
   }
 
   redraw(emails, persons) {

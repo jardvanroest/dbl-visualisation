@@ -6,7 +6,7 @@ import store from "@/store";
 
 export class NodeLink extends Visualisation {
   constructor(HTMLselector) {
-    super(HTMLselector, "Node Link");
+    super(HTMLselector);
 
     this.colors = {
       edgePositive: "#b4ecb4",

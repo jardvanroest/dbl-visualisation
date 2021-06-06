@@ -83,9 +83,21 @@ export default {
     createDropDownItemsList() {
       var list = [];
       for (const key of Object.keys(visualisations)) {
-        list.push({ value: key, name: visualisations[key].name });
+        list.push({ value: key, name: this.visName(key) });
       }
       return list;
+    },
+    visName(type) {
+      switch (type) {
+        case "AdjacencyMatrix":
+          return "Adjacency matrix";
+        case "NodeLink":
+          return "Node-link diagram";
+        case "CalendarVisualisation":
+          return "Calendar matrix";
+        default:
+          return "No name for vis";
+      }
     },
   },
 };
