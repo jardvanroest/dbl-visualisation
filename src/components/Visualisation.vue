@@ -6,7 +6,7 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
-    <svg :id="id"></svg>
+    <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
 
@@ -22,10 +22,10 @@ export default {
   components: {
     DropDown,
   },
-  data: function () {
+  data() {
     return {
       size: 500,
-      zoomVals: { min: 3 / 4, max: 4, margin: 50 },
+      zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
     };
   },
@@ -41,6 +41,11 @@ export default {
     },
   },
   mounted() {
+    // Calculate margin for initial zoom and scale
+    let rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    let m = 2.375 * rem;
+    let m_p = 1 - (2 * m) / this.size;
+
     this.zoom = d3
       .zoom()
       .scaleExtent([this.zoomVals.min, this.zoomVals.max])
@@ -50,7 +55,8 @@ export default {
       .select("#" + this.id)
       .attr("viewBox", "0 0 " + this.size + " " + this.size)
       .call(this.zoom)
-      .append("g");
+      .append("g")
+      .attr("transform", `translate(${m},${m}) scale(${m_p},${m_p})`);
 
     this.createVisualisation(this.id);
     this.redraw();
@@ -105,11 +111,7 @@ export default {
 
 <style scoped lang="scss">
 .visualisation {
-  --margin-size: 0.75rem;
-
   position: relative;
-  margin: var(--margin-size);
-  margin-left: 0;
   padding: 0.25rem;
 
   border-radius: var(--border-rad);
@@ -126,5 +128,15 @@ export default {
 
 .dropdown {
   position: absolute;
+  top: 1%;
+  left: 1%;
+}
+
+.vis-svg {
+  background-image: url("../assets/icons/tileable-hex.png");
+  background-repeat: repeat;
+  background-size: 6%;
+  background-color: hsl(0%, 0%, 92%);
+  background-blend-mode: screen;
 }
 </style>

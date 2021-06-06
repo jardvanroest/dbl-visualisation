@@ -31,11 +31,12 @@ export default {
 
 <style scoped lang="scss">
 .dropdown {
-  font: inherit;
+  font-size: inherit;
   position: relative;
 }
 
 .select {
+  font-size: inherit;
   border-radius: 0.32em;
   padding: 0.3em 1.5em 0.3em 0.3em;
   background-color: var(--background-color);

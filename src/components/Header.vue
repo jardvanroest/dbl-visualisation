@@ -65,7 +65,7 @@ export default {
 /* Format header */
 .container-header {
   width: 100%;
-  height: 3.125rem;
+  height: var(--hdr-size);
   display: flex;
   margin: 0 auto;
   justify-content: space-between;
@@ -113,8 +113,8 @@ export default {
   text-align: center;
   color: transparent;
 
-  height: 3.125rem;
-  width: 3.125rem;
+  height: var(--hdr-size);
+  width: var(--hdr-size);
 }
 
 /* Rotate settings icon on click */

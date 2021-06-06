@@ -18,11 +18,9 @@ export default {
 
 <style scoped lang="scss">
 .visualisations-cont {
+  margin: 0.75em;
   display: grid;
   grid-auto-flow: column;
-}
-
-.visualisations-cont *:first-child {
-  margin-left: var(--margin-size);
+  grid-gap: 0.75em;
 }
 </style>

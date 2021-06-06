@@ -36,14 +36,15 @@ export default {
 <style scoped lang="scss">
 .grid-container {
   display: flex;
-  margin-top: 3.125rem;
-  min-height: calc(100vh - 3.125rem);
+  margin-top: var(--hdr-size);
+  min-height: calc(100vh - var(--hdr-size));
   background-color: var(--background-color-2);
   overflow-x: hidden;
 }
 
 .visualisations-cont {
-  flex-grow: 1;
+  width: 100%;
+  height: fit-content;
 }
 
 .wrapper-settings {
@@ -54,8 +55,10 @@ export default {
 }
 
 .settings {
+  --stt-height: calc(100vh - var(--hdr-size));
+
   width: 100%;
-  height: 100%;
+  height: min(100%, var(--stt-height));
   transition: ease 300ms;
 }
 
