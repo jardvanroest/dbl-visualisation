@@ -28,6 +28,8 @@
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 
   --hdr-size: 3.125rem;
+  --stt-width: 300px;
+  --grd-dir: column;
 }
 
 #app {
@@ -61,5 +63,11 @@ header,
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+@media (max-width: 1000px) {
+  :root {
+    --grd-dir: row;
+  }
 }
 </style>

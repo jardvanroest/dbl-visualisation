@@ -51,7 +51,7 @@ export default {
 }
 
 .wrapper-settings {
-  width: 18.75rem;
+  width: var(--stt-width);
   transition: ease 150ms;
   flex-shrink: 0;
 }
@@ -85,5 +85,19 @@ export default {
 
 .hide {
   width: 0;
+}
+
+@media (max-width: 525px) {
+  .grid-container {
+    flex-direction: column;
+  }
+  .wrapper-settings {
+    position: absolute;
+    top: var(--hdr-size);
+    right: 0;
+
+    height: 100%;
+    width: 100%;
+  }
 }
 </style>
