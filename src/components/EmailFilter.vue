@@ -1,53 +1,64 @@
 <template>
-  <div
-    class="email-filter-container"
-    :class="{ hideScroll: noEmailAddressesAreShown }"
-  >
-    <input
-      class="searchBox"
-      v-model="searchText"
-      placeholder="Search email address..."
-    />
-
-    <p v-if="noEmailAddressesAreShown" class="error">
-      No email address matched your search
-    </p>
-
-    <div
-      v-for="(person, i) in searchedPersons"
-      :key="person.id"
-      class="list-entry"
-    >
-      <div v-if="i < numShownEmailAddresses">
-        <input
-          type="checkbox"
-          name="checkbox-item"
-          v-model="person.isSelectedInEmailFilter"
-        />
-        <label class="email-adress" for="checkbox-item">{{
-          person.emailAddress
-        }}</label>
-      </div>
+  <div class="email-filter-container">
+    <div class="searchBox-container">
+      <input
+        class="searchBox"
+        v-model="searchText"
+        placeholder="Search email address..."
+      />
+      <Btn @click="applyFilter" text="Filter" />
     </div>
 
-    <a
-      v-if="numShownEmailAddresses < searchedPersons.length"
-      @click="increaseShownEmailAddresses"
-      >Show more</a
-    >
+    <div class="entries-container">
+      <p v-if="noEmailAddressesAreShown" class="error">
+        No email address matched your search
+      </p>
+
+      <div
+        v-for="(person, i) in searchedPersons"
+        :key="person.id"
+        class="list-entry"
+      >
+        <div v-if="i < numShownEmailAddresses">
+          <input
+            type="checkbox"
+            name="checkbox-item"
+            v-model="person.isSelectedInEmailFilter"
+          />
+          <label class="email-adress" for="checkbox-item">{{
+            person.emailAddress
+          }}</label>
+        </div>
+      </div>
+
+      <a
+        v-if="numShownEmailAddresses < searchedPersons.length"
+        @click="increaseShownEmailAddresses"
+        >Show more</a
+      >
+    </div>
   </div>
 </template>
 
 <script>
+import Btn from "@/components/Btn.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  name: "EmailFilter",
+  components: {
+    Btn,
+  },
   data() {
-    return { numShownEmailAddresses: 10, searchText: "" };
+    return {
+      numShownEmailAddresses: 10,
+      searchText: "",
+      currentlySelectedPersons: [],
+    };
   },
   watch: {
     selectedPersons(currentlySelectedPersons) {
-      this.setFilteredPersons(currentlySelectedPersons);
+      this.currentlySelectedPersons = currentlySelectedPersons;
     },
   },
   computed: {
@@ -74,6 +85,10 @@ export default {
   },
   methods: {
     ...mapActions("dataset", ["setFilteredPersons"]),
+    applyFilter() {
+      console.log("ApplyFilter");
+      this.setFilteredPersons(this.currentlySelectedPersons);
+    },
     increaseShownEmailAddresses() {
       this.numShownEmailAddresses += 10;
     },
@@ -92,12 +107,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 label {
-  margin-left: 5px;
+  margin-left: 0.5em;
 }
 
 .list-entry {
+  font-size: 0.8125rem;
   margin-bottom: 0.3em;
   margin-left: 0.7em;
 }
@@ -109,34 +125,58 @@ input[type="checkbox"] {
 }
 
 .email-filter-container {
-  max-height: 200px;
-  overflow-y: scroll;
+  position: relative;
+  max-height: 15em;
+}
+
+.entries-container {
+  position: absolute;
+  top: 0;
+  max-height: 13em;
+  width: 100%;
+  margin-top: 2em;
+  overflow-y: auto;
 }
 
 a {
-  color: var(--accent-color-2);
+  color: var(--accent-color);
   text-decoration: underline;
-  font-size: 9pt;
+  font-size: 0.75rem;
   cursor: pointer;
+  margin-left: 1em;
+  &:hover {
+    color: var(--accent-color-2);
+  }
 }
 
 .error {
   color: var(--error-color);
+  margin: 0.25em;
+}
+
+.searchBox-container {
+  z-index: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-right: 1.5em;
+
+  font-size: 0.75rem;
+  background: transparent;
 }
 
 .searchBox {
-  font-size: 10pt;
-  margin-bottom: 0.5em;
   border: var(--settings-border);
   border-radius: 4px;
   background-image: url("../assets/icons/loupe.svg");
+  background-blend-mode: luminosity;
   background-size: 1em;
-  background-position: 0.2em 0.1em;
+  background-position: 0.25em 0.15em;
   background-repeat: no-repeat;
   padding-left: 1.5em;
-}
-
-.hideScroll {
-  overflow-y: hidden;
+  &:focus {
+    background-image: url("../assets/icons/loupe_focus.svg");
+  }
 }
 </style>
