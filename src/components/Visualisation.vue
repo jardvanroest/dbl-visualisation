@@ -136,7 +136,7 @@ export default {
   background-image: url("../assets/icons/tileable-hex.png");
   background-repeat: repeat;
   background-size: 6%;
-  background-color: hsl(0%, 0%, 92%);
+  background-color: rgb(235, 235, 235);
   background-blend-mode: screen;
 }
 </style>

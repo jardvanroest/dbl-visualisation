@@ -61,6 +61,8 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("x", this._getPositionFromIndex.bind(this))
       .attr("width", this.rectLength)
       .attr("height", this.rectLength)
+      .attr("stroke-width", this.rectMargin)
+      .attr("stroke", "white")
       .attr("fill", function (d) {
         return d.fillColor;
       })
