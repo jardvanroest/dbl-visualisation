@@ -86,7 +86,6 @@ export default {
   methods: {
     ...mapActions("dataset", ["setFilteredPersons"]),
     applyFilter() {
-      console.log("ApplyFilter");
       this.setFilteredPersons(this.currentlySelectedPersons);
     },
     increaseShownEmailAddresses() {
