@@ -35,4 +35,17 @@ export default {
   flex-direction: column;
   gap: 0.25em;
 }
+
+/* Show visualisations as one column on smaller screen sizes and
+   remove options to change amount of grid columns and rows */
+@media (max-width: 1000px) {
+  :root {
+    --grd-cols: 1;
+    --grd-rows: var(--vis-nums);
+  }
+  .rows-cont,
+  .columns-cont {
+    display: none;
+  }
+}
 </style>

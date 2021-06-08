@@ -67,11 +67,4 @@ header,
   -o-user-select: none;
   user-select: none;
 }
-
-@media (max-width: 1000px) {
-  :root {
-    --grd-cols: 1;
-    --grd-rows: var(--vis-nums);
-  }
-}
 </style>
