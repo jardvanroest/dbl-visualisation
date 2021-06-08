@@ -4,6 +4,7 @@
       <select id="sorting-selector" @change="sortMatrix">
         <option value="unsorted">Unsorted</option>
         <option value="rotate180">Rotate 180°</option>
+        <option value="idk">IDK</option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -36,10 +37,9 @@ export default {
   methods: {
     ...mapActions("dataset", ["changeSortedMatrixData"]),
     sortMatrix(event) {
-      // TODO: make loading bar
       // TODO: fix coeffs
       //let data = this.getMatrixData;
-      // let coeffs = this.getCoefficients();
+      //let coeffs = this.getCoefficients();
       //this.changeSortedMatrixData(this.transposeMatrix(this.people));
 
       // Do the selected sorting algorithm
