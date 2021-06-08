@@ -18,7 +18,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Btn from "@/components/Btn.vue";
+import Btn from "@/components/buttons/Btn.vue";
 
 export default {
   name: "Popup",
