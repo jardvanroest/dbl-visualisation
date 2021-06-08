@@ -52,44 +52,61 @@ export default {
       nodeHasBeenClicked: false,
       emailsExist: false,
       data: [{ section: "none", field: "none" }],
+      sections: null,
+      fields: null,
+      tabbed: null,
+      newData: null,
     };
   },
   methods: {
     incomingNewData(newData) {
+      this.newData = newData;
       this.nodeHasBeenClicked = true;
       this.resetData();
 
       // Get all section names correctly formatted
-      let _sections = Object.keys(newData);
+      this.sections = Object.keys(this.newData);
 
       // Get all fields
-      for (let i = 0; i < _sections.length; i++) {
-        // Make an object for each section
-        this.data.push({ section: this.formatValue(_sections[i]), fields: [] });
+      for (let i = 0; i < this.sections.length; i++) {
+        this.makeSectionObject(i);
+        this.fields = Object.keys(this.newData[this.sections[i]]);
 
-        let _fields = Object.keys(newData[_sections[i]]);
-        for (let j = 0; j < _fields.length; j++) {
-          if (_fields[j] === "tabbed") {
-            let _tabbed = Object.keys(newData[_sections[i]].tabbed);
-            for (let k = 0; k < _tabbed.length; k++) {
-              this.data[i].fields.push({
-                field: _tabbed[k],
-                info: newData[_sections[i]][_fields[j]][_tabbed[k]],
-                tabbed: true,
-              });
+        for (let j = 0; j < this.fields.length; j++) {
+          if (this.fields[j] === "tabbed") {
+            this.tabbed = Object.keys(this.newData[this.sections[i]].tabbed);
+
+            for (let k = 0; k < this.tabbed.length; k++) {
+              this.makeTabbedField(i, j, k);
             }
           } else {
-            this.data[i].fields.push({
-              field: this.formatValue(_fields[j]),
-              info: newData[_sections[i]][_fields[j]],
-              tabbed: false,
-            });
+            this.makeNormalField(i, j);
           }
         }
       }
     },
     resetData() {
       this.data = [];
+    },
+    makeSectionObject(i) {
+      this.data.push({
+        section: this.formatValue(this.sections[i]),
+        fields: [],
+      });
+    },
+    makeTabbedField(i, j, k) {
+      this.data[i].fields.push({
+        field: this.tabbed[k],
+        info: this.newData[this.sections[i]][this.fields[j]][this.tabbed[k]],
+        tabbed: true,
+      });
+    },
+    makeNormalField(i, j) {
+      this.data[i].fields.push({
+        field: this.formatValue(this.fields[j]),
+        info: this.newData[this.sections[i]][this.fields[j]],
+        tabbed: false,
+      });
     },
     formatValue(val) {
       // Replaces underscores with spaces

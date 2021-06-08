@@ -134,10 +134,10 @@ export class NodeLink extends Visualisation {
     this.drawnNodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
   }
 
-  edgeClick(event, data) {
+  edgeClick(event, cell) {
     const persons = store.getters["dataset/persons"];
-    const personA = persons.find((p) => p.id === data.target.id);
-    const personB = persons.find((p) => p.id === data.source.id);
+    const personA = persons.find((p) => p.id === cell.target.id);
+    const personB = persons.find((p) => p.id === cell.source.id);
     const emails = store.getters["dataset/filteredEmails"];
 
     let sent_by_a = 0;
@@ -165,17 +165,17 @@ export class NodeLink extends Visualisation {
     };
 
     inspectorData.additional_information = {
-      weight: data.weight,
+      weight: cell.weight,
       edge_color: event.srcElement.attributes[0].value.toString(),
-      average_sentiment: data.avgSentiment.toPrecision(3),
+      average_sentiment: cell.avgSentiment.toPrecision(3),
     };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 
-  nodeClick(event, data) {
+  nodeClick(event, cell) {
     const persons = store.getters["dataset/persons"];
-    const person = persons.find((p) => p.id === data.id);
+    const person = persons.find((p) => p.id === cell.id);
 
     let inspectorData = {
       person: {
