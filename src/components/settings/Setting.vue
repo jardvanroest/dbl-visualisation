@@ -29,6 +29,6 @@ export default {
 }
 
 .setting-cont p {
-  font-size: 11pt;
+  font-size: 1rem;
 }
 </style>

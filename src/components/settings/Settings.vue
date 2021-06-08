@@ -1,32 +1,21 @@
 <template>
-  <div class="container">
+  <div class="container-settings">
     <div class="settings">
-      <div class="select_mode">
-        <ul class="no_highlight">
-          <li @click="selectSettings(0)" class="selected"><div>Global</div></li>
-          <li @click="selectSettings(1)"><div>Vis1</div></li>
-          <li @click="selectSettings(2)"><div>Vis2</div></li>
-        </ul>
-      </div>
-      <div class="selected_setting_type">
-        <SettingType>
-          <Setting name="Filter e-mail"> <EmailFilter /> </Setting>
-        </SettingType>
-        <SettingType class="unselected">
-          <Setting name="Sorting algorithm" flexRow="yes">
-            <SortMatrix />
-          </Setting>
-        </SettingType>
-        <SettingType class="unselected" />
-      </div>
+      <Section title="General" fields="none" />
+      <Setting name="Sorting algorithm" flexRow="yes">
+        <SortMatrix />
+      </Setting>
+      <Setting name="Filter e-mail">
+        <EmailFilter />
+      </Setting>
     </div>
     <Inspector class="inspector" />
   </div>
 </template>
 
 <script>
+import Section from "@/components/inspector/Section.vue";
 import Inspector from "@/components/inspector/Inspector.vue";
-import SettingType from "@/components/settings/SettingType.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import SortMatrix from "@/components/settings/SortMatrix.vue";
@@ -34,8 +23,8 @@ import SortMatrix from "@/components/settings/SortMatrix.vue";
 export default {
   name: "Settings",
   components: {
+    Section,
     Inspector,
-    SettingType,
     Setting,
     EmailFilter,
     SortMatrix,
@@ -61,7 +50,7 @@ export default {
 
         // Get the newly selected settingsType element
         var selSettingsType = document.getElementsByClassName(
-          "selected_setting_type"
+          "container-settingType"
         )[0].children;
 
         // Unselect previous selected settings type
@@ -79,105 +68,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
-/* Settings occupies 60% of the space */
 .settings {
-  position: relative;
   display: flex;
   flex-direction: column;
-  height: 65%;
-  background-color: var(--background-color);
-}
+  height: calc(100% - 32.5vh);
+  padding-left: 5%;
 
-/* Occupy remaining space */
-.selected_setting_type {
-  height: 100%;
-  padding-top: 2rem;
-}
-
-.inspector {
-  height: 35%;
-}
-
-/* Borders around settings*/
-.selected_setting_type,
-.inspector {
-  background-color: var(--background-color);
-  border: var(--settings-border);
-  border-right: none;
-  border-top: none;
-}
-
-/* Settings type selection */
-.select_mode {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  z-index: 2;
-  background-color: var(--background-color-2);
-}
-
-.select_mode ul {
-  padding: 0;
-  margin: 0;
-  display: flex;
-
-  list-style-type: none;
-}
-
-.select_mode ul li:not(.selected) :hover {
-  cursor: pointer;
-  color: var(--accent-color);
-}
-
-.select_mode li {
-  z-index: 16;
-  display: table;
-
-  padding: 0 1.6em;
-  width: 100%;
-  height: 30px;
-  margin-right: 0.4em;
-
-  background-color: rgb(250, 250, 250);
-  border-top-right-radius: var(--border-rad);
-  border-top-left-radius: var(--border-rad);
-  border: var(--settings-border);
-  border-bottom: 0;
-}
-
-/* Center text in settings type selection */
-.select_mode li div {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-}
-
-/* Line under settings type selection */
-.select_mode::after {
-  z-index: 18;
-  content: "";
-  display: block;
-
-  position: absolute;
-  bottom: 0;
-  height: 0;
-  width: 300px;
-
+  font-size: 0.8125rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   border-bottom: var(--settings-border);
 }
 
-/* Make open space for the selected settings type on bottom */
-.select_mode ul .selected {
-  z-index: 22;
-  background-color: var(--background-color);
-  font-weight: bold;
-
-  color: var(--accent-color);
-  transition: step-start 200ms;
-}
-
-/* Show only selected settings */
-.selected_setting_type .unselected {
-  display: none;
+.inspector {
+  padding: 1em 0;
+  height: calc(32.5vh - 2em);
 }
 </style>

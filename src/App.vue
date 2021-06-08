@@ -20,11 +20,16 @@
   --error-color: #ff0000;
   --background-color: white;
   --background-color-2: #eaf3f3;
+  --brdr-size: 2px;
   --border-color: rgba(221, 221, 221);
-  --settings-border: 2px solid var(--border-color);
+  --settings-border: var(--brdr-size) solid var(--border-color);
   --border-rad: 7px;
   --box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+  --hdr-size: 3.125rem;
+  --stt-width: 300px;
+  --grd-dir: column;
 }
 
 #app {
@@ -58,5 +63,11 @@ header,
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
+}
+
+@media (max-width: 1000px) {
+  :root {
+    --grd-dir: row;
+  }
 }
 </style>

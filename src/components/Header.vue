@@ -5,12 +5,6 @@
         <img src="@/assets/icons/graph.svg" alt="logo" />
         <span>MailVis</span>
       </div>
-      <div class="import_data">
-        <div>
-          <img src="@/assets/icons/upload.svg" alt="upload" />
-          <span>{{ upload_text }}</span>
-        </div>
-      </div>
       <div class="nav_icons">
         <ul>
           <li @click="rotateSettings($event)">
@@ -34,7 +28,6 @@ export default {
   components: {},
   data() {
     return {
-      upload_text: "Start visualising...",
       rotSett: false,
     };
   },
@@ -72,7 +65,7 @@ export default {
 /* Format header */
 .container-header {
   width: 100%;
-  height: 3.125rem;
+  height: var(--hdr-size);
   display: flex;
   margin: 0 auto;
   justify-content: space-between;
@@ -95,7 +88,7 @@ export default {
   font-family: "Roboto", sans-serif;
   display: flex;
   align-items: center;
-  font-size: 22pt;
+  font-size: 1.8125rem;
   height: 100%;
 }
 
@@ -103,22 +96,6 @@ export default {
   padding-right: 0.25em;
   width: 2.75rem;
   height: 2.75rem;
-}
-
-/* Format upload div*/
-.import_data div {
-  display: flex;
-  align-items: center;
-  height: 3.125rem;
-}
-
-.import_data img {
-  padding: 1rem;
-}
-
-.import_data span {
-  transition: none;
-  padding-right: 1rem;
 }
 
 /* Format icons to the right*/
@@ -136,8 +113,8 @@ export default {
   text-align: center;
   color: transparent;
 
-  height: 3.125rem;
-  width: 3.125rem;
+  height: var(--hdr-size);
+  width: var(--hdr-size);
 }
 
 /* Rotate settings icon on click */
@@ -147,21 +124,16 @@ export default {
 
 /* Color image white and background var(--accent-color) when hovered */
 .nav_icons ul :hover,
-.nav_icons ul :focus,
-.import_data :hover,
-.import_data :focus {
+.nav_icons ul :focus {
   background: var(--accent-color);
   color: var(--background-color);
 }
 
-.nav_icons li:hover img,
-.import_data:hover img {
+.nav_icons li:hover img {
   filter: invert(1);
 }
 
-.nav_icons li img,
-.import_data div img,
-.import_data div span {
+.nav_icons li img {
   pointer-events: none;
 }
 </style>

@@ -6,6 +6,7 @@
         v-model="searchText"
         placeholder="Search email address..."
       />
+      <Btn @click="applyFilter" text="Filter" />
     </div>
 
     <div class="entries-container">
@@ -40,15 +41,24 @@
 </template>
 
 <script>
+import Btn from "@/components/buttons/Btn.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  name: "EmailFilter",
+  components: {
+    Btn,
+  },
   data() {
-    return { numShownEmailAddresses: 10, searchText: "" };
+    return {
+      numShownEmailAddresses: 10,
+      searchText: "",
+      currentlySelectedPersons: [],
+    };
   },
   watch: {
     selectedPersons(currentlySelectedPersons) {
-      this.setFilteredPersons(currentlySelectedPersons);
+      this.currentlySelectedPersons = currentlySelectedPersons;
     },
   },
   computed: {
@@ -75,6 +85,9 @@ export default {
   },
   methods: {
     ...mapActions("dataset", ["setFilteredPersons"]),
+    applyFilter() {
+      this.setFilteredPersons(this.currentlySelectedPersons);
+    },
     increaseShownEmailAddresses() {
       this.numShownEmailAddresses += 10;
     },
@@ -99,6 +112,7 @@ label {
 }
 
 .list-entry {
+  font-size: 0.8125rem;
   margin-bottom: 0.3em;
   margin-left: 0.7em;
 }
@@ -115,16 +129,18 @@ input[type="checkbox"] {
 }
 
 .entries-container {
-  overflow-y: auto;
-  position: relative;
-  margin-top: 2em;
+  position: absolute;
+  top: 0;
   max-height: 13em;
+  width: 100%;
+  margin-top: 2em;
+  overflow-y: auto;
 }
 
 a {
   color: var(--accent-color);
   text-decoration: underline;
-  font-size: 9pt;
+  font-size: 0.75rem;
   cursor: pointer;
   margin-left: 1em;
 
@@ -140,24 +156,25 @@ a {
 
 .searchBox-container {
   z-index: 1;
-  width: 30em;
-  height: 2em;
-  position: fixed;
-  background: var(--background-color);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-right: 1.5em;
+
+  font-size: 0.75rem;
+  background: transparent;
 }
 
 .searchBox {
-  font-size: 10pt;
-  margin-bottom: 0.5em;
   border: var(--settings-border);
   border-radius: 4px;
   background-image: url("../../assets/icons/loupe.svg");
   background-blend-mode: luminosity;
   background-size: 1em;
-  background-position: 0.2em 0.15em;
+  background-position: 0.25em 0.15em;
   background-repeat: no-repeat;
   padding-left: 1.5em;
-
   &:focus {
     background-image: url("../../assets/icons/loupe_focus.svg");
   }

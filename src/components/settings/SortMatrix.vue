@@ -4,7 +4,6 @@
       <select id="sorting-selector" @change="sortMatrix">
         <option value="unsorted">Unsorted</option>
         <option value="rotate180">Rotate 180°</option>
-        <option value="idk">IDK</option>
       </select>
       <span class="custom-arrow" />
     </div>

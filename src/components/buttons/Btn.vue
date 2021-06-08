@@ -16,7 +16,7 @@ button {
   font: inherit;
   background: none;
   border: 2px solid;
-  border-radius: 0.25em;
+  border-radius: 0.25rem;
   cursor: pointer;
 
   padding: 0.5em 1em;

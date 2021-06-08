@@ -2,16 +2,17 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
+import store from "@/store";
 
-export class NodeLinkVisualisation extends Visualisation {
-  constructor() {
-    super("#areaNodeLinkSVG");
+export class NodeLink extends Visualisation {
+  constructor(HTMLselector) {
+    super(HTMLselector);
 
     this.colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
       edgeNegative: "#e498a1",
-      nodeBody: "#B8E0F6",
+      nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
 
@@ -25,8 +26,9 @@ export class NodeLinkVisualisation extends Visualisation {
     };
   }
 
-  redraw(emails) {
-    this._resetVisualisation();
+  redraw(emails, persons) {
+    this._persons = persons;
+    this.resetVisualisation();
     this._generateVis(emails);
   }
 
@@ -133,12 +135,72 @@ export class NodeLinkVisualisation extends Visualisation {
   }
 
   edgeClick(event, data) {
-    console.log("Line!");
-    console.log(data);
+    const persons = store.getters["dataset/persons"];
+    const personA = persons.find((p) => p.id === data.target.id);
+    const personB = persons.find((p) => p.id === data.source.id);
+    const emails = store.getters["dataset/filteredEmails"];
+
+    let sent_by_a = 0;
+    let sent_by_b = 0;
+    emails.forEach((email) => {
+      if (email.fromId === personA.id && email.toId === personB.id) sent_by_a++;
+      if (email.fromId === personB.id && email.toId === personA.id) sent_by_b++;
+    });
+
+    let inspectorData = {
+      person_1: {
+        email: personA.emailAddress,
+        id: personA.id,
+        title: personA.jobTitle,
+        included_in_filter: personA.isSelectedInEmailFilter,
+        sent_emails: sent_by_a,
+      },
+      person_2: {
+        email: personB.emailAddress,
+        id: personB.id,
+        title: personB.jobTitle,
+        included_in_filter: personB.isSelectedInEmailFilter,
+        sent_emails: sent_by_b,
+      },
+    };
+
+    inspectorData.additional_information = {
+      weight: data.weight,
+      edge_color: event.srcElement.attributes[0].value.toString(),
+      average_sentiment: data.avgSentiment.toPrecision(3),
+    };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 
   nodeClick(event, data) {
-    console.log("Node!");
-    console.log(data);
+    const persons = store.getters["dataset/persons"];
+    const person = persons.find((p) => p.id === data.id);
+
+    let inspectorData = {
+      person: {
+        email: person.emailAddress,
+        id: person.id,
+        title: person.jobTitle,
+        included_in_filter: person.isSelectedInEmailFilter,
+      },
+      sent_emails: { number: person.sendEmails.length },
+      received_emails: { number: person.receivedEmails.length },
+    };
+
+    // Add fields only if there are emails
+    if (person.sendEmails.length > 0) {
+      this._newEmailsObject(person.sendEmails, inspectorData.sent_emails);
+    }
+    if (person.receivedEmails.length > 0) {
+      this._newEmailsObject(
+        person.receivedEmails,
+        inspectorData.received_emails
+      );
+    }
+
+    inspectorData.additional_information = { node_color: this.colors.nodeBody };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }

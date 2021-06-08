@@ -1,16 +1,19 @@
 <template>
   <Header class="header" @toggle-settings="toggleSettings" />
   <div class="grid-container">
-    <Visualisations class="vis" />
+    <Visualisations class="visualisations-cont" />
     <div :class="{ hide: !showSettings }" class="wrapper-settings">
-      <Settings :class="{ dontShow: !showSettings }" class="settings" />
+      <Settings
+        :class="{ dontShow: !showSettings }"
+        class="container-settings"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import Header from "@/components/Header.vue";
-import Visualisations from "@/components/visualisations/Visualisations.vue";
+import Visualisations from "@/components/Visualisations.vue";
 import Settings from "@/components/settings/Settings.vue";
 
 export default {
@@ -36,27 +39,33 @@ export default {
 <style scoped lang="scss">
 .grid-container {
   display: flex;
-  margin-top: 3.125rem;
-  min-height: calc(100vh - 3.125rem);
+  margin-top: var(--hdr-size);
+  min-height: calc(100vh - var(--hdr-size));
   background-color: var(--background-color-2);
   overflow-x: hidden;
 }
 
-.vis {
-  flex-grow: 1;
+.visualisations-cont {
+  width: 100%;
+  height: fit-content;
 }
 
 .wrapper-settings {
-  width: 18.75rem;
+  width: var(--stt-width);
   transition: ease 150ms;
-  margin-top: 0.25rem;
   flex-shrink: 0;
 }
 
-.settings {
+.container-settings {
+  --stt-height: calc(100vh - var(--hdr-size) - var(--brdr-size));
+
   width: 100%;
-  height: 100%;
+  height: min(100%, var(--stt-height));
   transition: ease 300ms;
+
+  background-color: var(--background-color);
+  border: var(--settings-border);
+  border-top: none;
 }
 
 .header {
@@ -76,5 +85,19 @@ export default {
 
 .hide {
   width: 0;
+}
+
+@media (max-width: 525px) {
+  .grid-container {
+    flex-direction: column;
+  }
+  .wrapper-settings {
+    position: absolute;
+    top: var(--hdr-size);
+    right: 0;
+
+    height: 100%;
+    width: 100%;
+  }
 }
 </style>
