@@ -13,7 +13,7 @@
 
 <script>
 import { parseFile } from "@/logic/parsing.js";
-import Btn from "@/components/Btn.vue";
+import Btn from "@/components/buttons/Btn.vue";
 import { mapActions } from "vuex";
 
 export default {
@@ -27,7 +27,6 @@ export default {
     },
     importFile(event) {
       const file = this.getFile(event.target);
-      const vm = this;
 
       parseFile(file)
         .then((result) => {

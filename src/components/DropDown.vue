@@ -1,23 +1,21 @@
 <template>
-  <div class="container">
-    <div class="select">
-      <select id="selector" v-model="selectedType">
-        <option v-for="item in items" :key="item.value" :value="item.value">
-          {{ item.name }}
-        </option>
-      </select>
-      <span class="custom-arrow" />
-    </div>
+  <div class="dropdown">
+    <select class="select" v-model="selectedType">
+      <option v-for="item in items" :key="item.value" :value="item.value">
+        {{ item.name }}
+      </option>
+    </select>
+    <span class="custom-arrow" />
   </div>
 </template>
 
 <script>
 export default {
   name: "DropDown",
-  props: ["items"],
+  props: ["items", "selected"],
   data: function () {
     return {
-      selectedType: undefined,
+      selectedType: this.selected,
     };
   },
   watch: {
@@ -32,15 +30,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
-  display: flex;
-}
-.select {
-  font: inherit;
+.dropdown {
+  font-size: inherit;
   position: relative;
 }
 
-#selector {
+.select {
+  font-size: inherit;
   border-radius: 0.32em;
   padding: 0.3em 1.5em 0.3em 0.3em;
   background-color: var(--background-color);

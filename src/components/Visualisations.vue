@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <Visualisation class="visualisation" id="vis1" />
-    <Visualisation class="visualisation" id="vis2" />
+  <div class="visualisations-cont">
+    <Visualisation class="visualisation" id="AdjacencyMatrix" />
+    <Visualisation class="visualisation" id="NodeLink" />
   </div>
 </template>
 
@@ -16,14 +16,11 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  background-color: var(--background-color-2);
-}
-
-.visualisation {
-  width: 0;
-  flex-grow: 1;
+<style scoped lang="scss">
+.visualisations-cont {
+  margin: 0.75em;
+  display: grid;
+  grid-auto-flow: var(--grd-dir);
+  grid-gap: 0.75em;
 }
 </style>

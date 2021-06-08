@@ -6,8 +6,13 @@
     @toggle-popup="toggleLinkPopup"
   />
   <div class="grid-container">
-    <Visualisations class="vis" />
-    <Settings v-if="showSettings" class="settings-containter" />
+    <Visualisations class="visualisations-cont" />
+    <div :class="{ hide: !showSettings }" class="wrapper-settings">
+      <Settings
+        :class="{ dontShow: !showSettings }"
+        class="container-settings"
+      />
+    </div>
   </div>
 </template>
 
@@ -15,7 +20,7 @@
 import { ref } from "vue";
 import Header from "@/components/Header.vue";
 import Visualisations from "@/components/Visualisations.vue";
-import Settings from "@/components/Settings.vue";
+import Settings from "@/components/settings/Settings.vue";
 import Popup from "@/components/Popup.vue";
 
 export default {
@@ -43,23 +48,68 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .grid-container {
-  height: calc(100vh - 50px);
   display: flex;
+  margin-top: var(--hdr-size);
+  min-height: calc(100vh - var(--hdr-size));
+  background-color: var(--background-color-2);
+  overflow-x: hidden;
 }
 
-.vis {
-  flex-grow: 1;
+.visualisations-cont {
+  width: 100%;
+  height: fit-content;
 }
 
-.settings-containter {
-  width: 300px;
-  height: 100%;
+.wrapper-settings {
+  width: var(--stt-width);
+  transition: ease 150ms;
+  flex-shrink: 0;
+}
+
+.container-settings {
+  --stt-height: calc(100vh - var(--hdr-size) - var(--brdr-size));
+
+  width: 100%;
+  height: min(100%, var(--stt-height));
+  transition: ease 300ms;
+
+  background-color: var(--background-color);
+  border: var(--settings-border);
+  border-top: none;
 }
 
 .header {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--background-color);
+  width: 100%;
   z-index: 50;
+}
+
+.dontShow {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.hide {
+  width: 0;
+}
+
+@media (max-width: 525px) {
+  .grid-container {
+    flex-direction: column;
+  }
+  .wrapper-settings {
+    position: absolute;
+    top: var(--hdr-size);
+    right: 0;
+
+    height: 100%;
+    width: 100%;
+  }
 }
 </style>
