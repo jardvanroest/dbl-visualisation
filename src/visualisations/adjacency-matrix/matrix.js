@@ -12,17 +12,17 @@ export class Matrix {
   _createMatrixData() {
     let matrix = {};
 
-    this.persons.forEach((sender) => {
-      const row = matrix[sender.id];
-      if (row === undefined) matrix[sender.id] = {};
+    this.persons.forEach((recipient) => {
+      const row = matrix[recipient.id];
+      if (row === undefined) matrix[recipient.id] = {};
 
-      this.persons.forEach((receiver) => {
-        matrix[sender.id][receiver.id] = this._createCell(sender, receiver);
+      this.persons.forEach((sender) => {
+        matrix[recipient.id][sender.id] = this._createCell(sender, recipient);
       });
     });
 
     this.emails.forEach((email) => {
-      const cell = matrix[email.fromId][email.toId];
+      const cell = matrix[email.toId][email.fromId];
       cell.addEmail(email);
     });
 
@@ -31,8 +31,8 @@ export class Matrix {
     return matrix;
   }
 
-  _createCell(sender, receiver) {
-    const cell = new Cell(sender, receiver);
+  _createCell(sender, recipient) {
+    const cell = new Cell(sender, recipient);
     return cell;
   }
 
@@ -48,9 +48,9 @@ export class Matrix {
 }
 
 class Cell {
-  constructor(sender, receiver) {
+  constructor(sender, recipient) {
     this.sender = sender;
-    this.receiver = receiver;
+    this.recipient = recipient;
     this._emails = [];
   }
 
@@ -60,9 +60,9 @@ class Cell {
 
   get fillColor() {
     if (this._emails.length === 0) {
-      return "#B8E0F6";
+      return "#b8e0f6";
     } else {
-      return "#DF848F";
+      return "#df848f";
     }
   }
 

@@ -1,15 +1,10 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
+import store from "@/store";
 
 export class AdjacencyMatrix extends Visualisation {
-  constructor(HTMLSelector, changeInspectorData) {
-    super(HTMLSelector, "Adjacency Matrix");
-
-    this.changeInspectorData = changeInspectorData;
-
-    this.options = {
-      width: 426,
-    };
+  constructor(HTMLSelector) {
+    super(HTMLSelector);
   }
 
   redraw(emails, persons) {
@@ -31,8 +26,11 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _drawVisualisation(svg, matrix) {
-    this.rectLength = this.options.width / (this.persons.length + 2);
-    this.rectMargin = this.rectLength * 0.06;
+    let margin = 0.1;
+    let nodeLength = this.width / this.persons.length;
+
+    this.rectLength = (1 - margin) * nodeLength;
+    this.rectMargin = margin * nodeLength;
 
     const drawnRows = this._drawRows(svg, matrix);
     const drawnCells = this._drawCells(drawnRows);
@@ -59,18 +57,66 @@ export class AdjacencyMatrix extends Visualisation {
         return d;
       })
       .enter()
-      .append("g")
       .append("rect")
       .attr("x", this._getPositionFromIndex.bind(this))
       .attr("width", this.rectLength)
       .attr("height", this.rectLength)
+      .attr("stroke-width", this.rectMargin)
+      .attr("stroke", "white")
       .attr("fill", function (d) {
         return d.fillColor;
-      });
+      })
+      .on("click", this.updateInspectorData.bind(this));
   }
 
   _getPositionFromIndex(d, i) {
     const position = (this.rectLength + this.rectMargin) * i;
     return position;
+  }
+
+  updateInspectorData(event, data) {
+    let sender = data.sender;
+    let recipient = data.recipient;
+    let emails = data._emails;
+
+    let inspectorData = {};
+
+    if (sender === recipient) {
+      inspectorData.sender_and_recipient = {
+        email: sender.emailAddress,
+        id: sender.id,
+        title: sender.jobTitle,
+        included_in_filter: sender.isSelectedInEmailFilter,
+      };
+    } else {
+      inspectorData.sender = {
+        email: sender.emailAddress,
+        id: sender.id,
+        title: sender.jobTitle,
+        included_in_filter: sender.isSelectedInEmailFilter,
+      };
+      inspectorData.recipient = {
+        email: recipient.emailAddress,
+        id: recipient.id,
+        title: recipient.jobTitle,
+        included_in_filter: recipient.isSelectedInEmailFilter,
+      };
+    }
+    inspectorData.additional_information = {
+      node_color: data.fillColor,
+      emails: emails.length,
+      // Tabbed fields dont get formated
+      tabbed: 0,
+    };
+
+    // Add fields only if there are emails
+    if (emails.length > 0) {
+      this._newEmailsObject(emails, inspectorData.additional_information);
+    } else {
+      // Remove {tabbed} when there are no emails
+      delete inspectorData.additional_information.tabbed;
+    }
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }
