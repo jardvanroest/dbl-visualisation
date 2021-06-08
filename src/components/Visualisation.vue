@@ -59,10 +59,11 @@ export default {
     },
   },
   mounted() {
-    // Calculate margin for initial zoom and scale
+    // Calculate margin for initial zoom and scale so that buttons do not cover the visualisation
     let rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    let m = 2.375 * rem;
-    let m_p = 1 - (2 * m) / this.size;
+    let margin = 2.375 * rem;
+    let marginScale = 1 - (2 * margin) / this.size;
+    let translation = `translate(${margin},${margin}) scale(${marginScale},${marginScale})`;
 
     this.zoom = d3
       .zoom()
@@ -74,7 +75,7 @@ export default {
       .attr("viewBox", "0 0 " + this.size + " " + this.size)
       .call(this.zoom)
       .append("g")
-      .attr("transform", `translate(${m},${m}) scale(${m_p},${m_p})`);
+      .attr("transform", translation);
 
     this.createVisualisation(this.id);
     this.redraw(this.persons, this.persons);
