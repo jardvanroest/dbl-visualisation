@@ -5,6 +5,7 @@
       <Setting name="Filter e-mail">
         <EmailFilter />
       </Setting>
+      <Setting name="Layout"><Layout /> </Setting>
     </div>
     <Inspector class="inspector" />
   </div>
@@ -15,6 +16,7 @@ import Section from "@/components/inspector/Section.vue";
 import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
+import Layout from "@/components/settings/Layout.vue";
 
 export default {
   name: "Settings",
@@ -23,6 +25,7 @@ export default {
     Inspector,
     Setting,
     EmailFilter,
+    Layout,
   },
   data() {
     return {

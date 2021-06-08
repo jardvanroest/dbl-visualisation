@@ -20,7 +20,8 @@ export default {
 .visualisations-cont {
   margin: 0.75em;
   display: grid;
-  grid-auto-flow: var(--grd-dir);
   grid-gap: 0.75em;
+  grid-template-columns: repeat(var(--grd-cols), 1fr);
+  grid-template-rows: repeat(var(--grd-rows), 1fr);
 }
 </style>

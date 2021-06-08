@@ -29,7 +29,10 @@
 
   --hdr-size: 3.125rem;
   --stt-width: 300px;
-  --grd-dir: column;
+
+  --grd-cols: 2;
+  --grd-rows: 1;
+  --vis-nums: 2;
 }
 
 #app {
@@ -67,7 +70,8 @@ header,
 
 @media (max-width: 1000px) {
   :root {
-    --grd-dir: row;
+    --grd-cols: 1;
+    --grd-rows: var(--vis-nums);
   }
 }
 </style>
