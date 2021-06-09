@@ -46,7 +46,9 @@ export default {
     },
     // Watch for new incoming {sortedMatrixData}
     getSortedMatrixData() {
-      this.redrawForAdjacency();
+      if (this.isAdjacencyMatrix()) {
+        this.redrawForAdjacency();
+      }
     },
   },
   mounted() {
