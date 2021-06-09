@@ -4,6 +4,8 @@
       <select id="sorting-selector" @change="sortMatrix">
         <option value="unsorted">Unsorted</option>
         <option value="rotate180">Rotate 180°</option>
+        <option value="cuthill–mckee">Cuthill–McKee</option>
+        <option value="random">Random Sorting</option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -12,6 +14,7 @@
 
 <script>
 import * as d3 from "d3";
+import * as reorder from "reorder.js";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -60,9 +63,29 @@ export default {
             personsCols: reversePeople,
           });
           break;
+        case "cuthill–mckee":
+          this.cuthillMcKeeSort();
+          break;
+        case "random":
+          this.randomSort();
+          break;
         default:
           console.log(this.sortAlg["type"]);
       }
+    },
+    cuthillMcKeeSort() {
+      this.changeSortedMatrixData({
+        personsRows: this.persons,
+        personsCols: this.persons,
+      });
+    },
+    randomSort() {
+      console.log("random sort");
+
+      this.changeSortedMatrixData({
+        personsRows: reorder.randomPermute(this.persons),
+        personsCols: reorder.randomPermute(this.persons),
+      });
     },
     getCoefficients() {
       let data = this.getMatrixData;
