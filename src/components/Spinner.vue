@@ -18,7 +18,7 @@ export default {
   display: flex;
   width: calc(100% - var(--offset));
   height: calc(100% - var(--offset));
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(255, 255, 255, 0.5);
 
   justify-content: center;
 }
