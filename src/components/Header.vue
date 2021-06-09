@@ -1,4 +1,4 @@
-  <template>
+<template>
   <header>
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
