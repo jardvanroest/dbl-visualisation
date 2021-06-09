@@ -24,7 +24,6 @@ export class Brush {
     const brush = this._createBrush();
 
     this.brushArea.append("g").call(brush);
-    // TODO: to fix node clicking set z-index of brush group to -1
   }
 
   _createBrush() {
@@ -34,16 +33,13 @@ export class Brush {
         [0, 0],
         [this.options.width, this.options.height],
       ]) // Sets boundaries for the brush
-      .on("brush end", (event) => this._onBrushNodes(event));
+      .on("start", (event) => this._onBrushNodesStart(event))
+      .on("brush", (event) => this._onBrushNodes(event));
   }
 
   // Node-specific brushing logic
   _onBrushNodes(event) {
-    if (event.selection === null) {
-      this.brushObjects.attr("stroke", this.colors.normal);
-      this._selectedObjects = [];
-      return;
-    }
+    if (event.selection === null) return;
 
     const that = this;
     const [[x0, y0], [x1, y1]] = event.selection; // Get boundaries of selection
@@ -61,6 +57,14 @@ export class Brush {
 
       return that.colors.normal;
     });
+
+    // Update global varibale, so the selection can be shown in other components
+    store.dispatch("brush_and_link/updateSelectedNodes", this._selectedObjects);
+  }
+
+  _onBrushNodesStart(event) {
+    this.brushObjects.attr("stroke", this.colors.normal);
+    this._selectedObjects = [];
 
     // Update global varibale, so the selection can be shown in other components
     store.dispatch("brush_and_link/updateSelectedNodes", this._selectedObjects);
