@@ -8,11 +8,12 @@ export class CalendarVisualisation extends Visualisation {
     super(HTMLSelector);
     //this.changeInspectorData = changeInspectorData;
 
-    this.width = 1200;
-    this.widthYear = 1000;
-    this.cellSize = 17;
-    this.heightYear = this.cellSize * 9;
-    this.height = 1300;
+    this.width = 500;
+    this.height = 500;
+    this.cellSize = this.width * 0.017;
+    this.widthYear = this.width / 1.2;
+    this.heightYear = this.cellSize * 12;
+    this.fontSize = this.width / 60;
 
     this.timeWeek = d3.utcMonday;
     this.countDay = (i) => (i + 6) % 7;
@@ -57,6 +58,7 @@ export class CalendarVisualisation extends Visualisation {
       .append("text")
       .attr("x", -5)
       .attr("y", -5)
+      .attr("font-size", this.fontSize)
       .attr("font-weight", "bold")
       .attr("text-anchor", "end")
       .text(([key]) => key);
@@ -65,6 +67,7 @@ export class CalendarVisualisation extends Visualisation {
     year
       .append("g")
       .attr("text-anchor", "end")
+      .attr("font-size", this.fontSize)
       .selectAll("text")
       .data(range)
       .join("text")
@@ -81,10 +84,11 @@ export class CalendarVisualisation extends Visualisation {
       .append("path")
       .attr("fill", "none")
       .attr("stroke", "#fff")
-      .attr("stroke-width", 3)
+      .attr("stroke-width", 2.5)
       .attr("d", (t) => this.___mapMonths(t));
     month
       .append("text")
+      .attr("font-size", this.fontSize)
       .attr("x", (d) => this.___getXposMonth(d))
       .attr("y", -5)
       .text(this.formatMonth);
