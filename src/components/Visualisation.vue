@@ -41,21 +41,12 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
-        this.redraw(this.persons, this.persons);
+        this.redrawAfterFiltering();
       },
     },
     // Watch for new incoming {sortedMatrixData}
-    getSortedMatrixData(newData) {
-      if (
-        this.type === "AdjacencyMatrix" ||
-        (this.type = "none" && this.id === "AdjacencyMatrix")
-      ) {
-        this.visualisation.redraw(
-          this.filteredEmails,
-          newData.personsRows,
-          newData.personsCols
-        );
-      }
+    getSortedMatrixData() {
+      this.redrawForAdjacency();
     },
   },
   mounted() {
@@ -123,6 +114,35 @@ export default {
         list.push({ value: key, name: this.visName(key) });
       }
       return list;
+    },
+    redrawAfterFiltering() {
+      if (this.isAdjacencyMatrix()) {
+        this.redrawForAdjacency();
+      } else {
+        this.redraw(this.persons, this.persons);
+      }
+    },
+    isAdjacencyMatrix() {
+      return (
+        this.type === "AdjacencyMatrix" ||
+        (this.type = "none" && this.id === "AdjacencyMatrix")
+      );
+    },
+    redrawForAdjacency() {
+      let newData = this.getSortedMatrixData;
+      if (newData === "unsorted") {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          this.persons,
+          this.persons
+        );
+      } else {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          newData.personsRows,
+          newData.personsCols
+        );
+      }
     },
     visName(type) {
       switch (type) {
