@@ -74,17 +74,18 @@ export default {
       }
     },
     cuthillMcKeeSort() {
-      this.changeSortedMatrixData({
+      // TODO: implement this
+      /*this.changeSortedMatrixData({
         personsRows: this.persons,
         personsCols: this.persons,
-      });
+      });*/
     },
     randomSort() {
-      console.log("random sort");
+      const personsCopy = [...this.persons];
 
       this.changeSortedMatrixData({
-        personsRows: reorder.randomPermute(this.persons),
-        personsCols: reorder.randomPermute(this.persons),
+        personsRows: reorder.randomPermute(personsCopy),
+        personsCols: reorder.randomPermute(personsCopy),
       });
     },
     getCoefficients() {
