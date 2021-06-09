@@ -129,12 +129,9 @@ input[type="checkbox"] {
 }
 
 .entries-container {
-  position: absolute;
-  top: 0;
   max-height: 13em;
   width: 100%;
-  margin-top: 2em;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 a {
