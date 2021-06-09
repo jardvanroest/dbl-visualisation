@@ -120,6 +120,8 @@ export default {
           return "Node-link diagram";
         case "CalendarVisualisation":
           return "Calendar matrix";
+        case "CalendarVisulasation":
+          return "Calendar visualisation";
         default:
           return "No name for vis";
       }
