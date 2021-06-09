@@ -1,4 +1,4 @@
-<template>
+  <template>
   <header>
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
@@ -59,11 +59,7 @@ export default {
 
 <style scoped>
 * {
-<<<<<<< HEAD
-  transition: all ease-in-out 150ms;
-=======
   transition: all ease-in-out 200ms;
->>>>>>> d63fabe80d49ce892a9b6086fc44c545c41a1ecb
 }
 
 /* Format header */
@@ -83,11 +79,7 @@ export default {
   height: 1.5rem;
 }
 
-<<<<<<< HEAD
-.container > div {
-=======
 .container-header > div {
->>>>>>> d63fabe80d49ce892a9b6086fc44c545c41a1ecb
   cursor: pointer;
 }
 

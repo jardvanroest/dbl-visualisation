@@ -1,11 +1,12 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
+import store from "@/store";
 import * as d3 from "d3";
 
 export class CalendarVisualisation extends Visualisation {
-  constructor(changeInspectorData) {
-    super("#area_calendar");
-    this.changeInspectorData = changeInspectorData;
+  constructor(HTMLSelector) {
+    super(HTMLSelector);
+    //this.changeInspectorData = changeInspectorData;
 
     this.width = 1200;
     this.widthYear = 1000;
@@ -48,10 +49,7 @@ export class CalendarVisualisation extends Visualisation {
   _generateLabels(year) {
     this.__generateText_KeyYears(year);
     this.__generateText_KeyDays(year, d3.range(7));
-    // this.__generateText_KeyMonths(
-    //   year,
-    //   d3.utcMonths(new Date("1-1-1999"), new Date("12-12-1999"))
-    // );
+    this.__generateText_KeyMonths(year, d3.utcMonths());
   }
 
   __generateText_KeyYears(year) {
@@ -119,15 +117,15 @@ export class CalendarVisualisation extends Visualisation {
     }V${n * this.cellSize}`;
   }
 
-  __getText_KeyMonths(year, range) {
+  __getText_KeyMonths(year) {
     return (
       year
         .append("g")
         .selectAll("g")
-        .data(() => range)
-        //.data((d) =>
-        //d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
-        //)
+        //.data(() => range)
+        .data((d) =>
+          d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
+        )
         .join("g")
     );
   }
@@ -148,7 +146,13 @@ export class CalendarVisualisation extends Visualisation {
       // hook listeners here .
       .on("click", (e, d) => {
         console.log(d);
-        vm.changeInspectorData(d);
+        vm.updateInspectorData(e, d);
       });
+  }
+
+  updateInspectorData(event, data) {
+    let inspectorData = {};
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }

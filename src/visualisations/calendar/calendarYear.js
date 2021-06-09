@@ -25,7 +25,10 @@ export class CalendarYear {
         try {
           this._findObjByDate(returnObj, arrDates[i]).emails.push(arrDates[i]);
         } catch (e) {
-          console.log("There was an error while parsing the dates in Calendar: date:" + arrDates[i].date.getTime());
+          console.log(
+            "There was an error while parsing the dates in Calendar: date:" +
+              arrDates[i].date.getTime()
+          );
         }
       } else {
         returnObj.push(this._createCellDate(arrDates[i].date, [arrDates[i]]));
