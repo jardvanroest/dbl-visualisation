@@ -58,6 +58,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
 
   _drawRows(svg, matrix) {
     return svg
+      .append("g")
       .selectAll("g")
       .data(matrix)
       .enter()
@@ -69,7 +70,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
     // Transpose matrix
     matrix.map((_, colIndex) => matrix.map((row) => row[colIndex]));
     return svg
-      .append("g") // Extra g element so it doesn't interfere with the row-grouped cells
+      .append("g")
       .selectAll("g")
       .data(matrix)
       .enter()
@@ -101,7 +102,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
       .attr("fill", function (d) {
         return d.fillColor;
       })
-      .attr("stroke-width", "0.03%");
+      .attr("stroke-width", this.rectMargin * 2);
   }
 
   _drawTransparentCells(columns) {
@@ -118,7 +119,7 @@ export class AdjacencyMatrixVisualisation extends Visualisation {
       .attr("fill", function (d) {
         return "transparent";
       })
-      .attr("stroke-width", "0.03%");
+      .attr("stroke-width", this.rectMargin * 2);
   }
 
   _getPositionFromIndex(d, i) {
