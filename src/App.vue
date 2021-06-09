@@ -18,6 +18,7 @@
   --error-color: #ff0000;
   --accent-color-2: #0f8c88;
   --background-color: white;
+  --background-color-2: #eaf3f3;
   --border-color: rgba(221, 221, 221);
   --settings-border: 2px solid var(--border-color);
 }

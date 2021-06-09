@@ -22,6 +22,7 @@
 </template>
 
 <script>
+// TODO: Add more functionality
 export default {
   name: "Tooltip",
   props: ["data", "posX", "posY", "visible"],

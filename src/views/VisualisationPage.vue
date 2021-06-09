@@ -1,5 +1,5 @@
 <template>
-  <Header @toggle-settings="toggleSettings" />
+  <Header class="header" @toggle-settings="toggleSettings" />
   <div class="grid-container">
     <Visualisations class="vis" />
     <Settings v-if="showSettings" class="settings" />
@@ -44,5 +44,10 @@ export default {
 .settings {
   width: 300px;
   height: 100%;
+}
+
+.header {
+  position: relative;
+  z-index: 50;
 }
 </style>
