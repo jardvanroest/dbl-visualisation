@@ -29,7 +29,9 @@ export default {
       const file = this.getFile(event.target);
 
       parseFile(file)
-        .then(this.saveData)
+        .then((result) => {
+          this.saveData({ data: result, isDefault: false });
+        })
         .then(this.goToVisualisationPage)
         .catch(this.handleError);
     },

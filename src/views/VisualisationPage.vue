@@ -1,5 +1,10 @@
 <template>
-  <Header class="header" @toggle-settings="toggleSettings" />
+  <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
+  <Header
+    class="header"
+    @toggle-settings="toggleSettings"
+    @toggle-popup="toggleLinkPopup"
+  />
   <div class="grid-container">
     <Visualisations class="visualisations-cont" />
     <div :class="{ hide: !showSettings }" class="wrapper-settings">
@@ -15,6 +20,7 @@
 import Header from "@/components/Header.vue";
 import Visualisations from "@/components/Visualisations.vue";
 import Settings from "@/components/settings/Settings.vue";
+import Popup from "@/components/Popup.vue";
 
 export default {
   name: "VisualisationPage",
@@ -22,13 +28,18 @@ export default {
     Header,
     Visualisations,
     Settings,
+    Popup,
   },
   data() {
     return {
       showSettings: true,
+      showPopup: false,
     };
   },
   methods: {
+    toggleLinkPopup() {
+      this.showPopup = !this.showPopup;
+    },
     toggleSettings() {
       this.showSettings = !this.showSettings;
     },

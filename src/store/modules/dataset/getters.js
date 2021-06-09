@@ -25,6 +25,13 @@ export default {
   getInspectorData(state) {
     return state.inspectorData;
   },
+  getDatasetID(state) {
+    return state.datasetID;
+  },
+  // this function is a workaround needed for Popup.vue
+  getDatasetLink(state) {
+    return "http://localhost:8080/download?id=" + state.datasetID;
+  },
 };
 
 function makeUnique(array) {
