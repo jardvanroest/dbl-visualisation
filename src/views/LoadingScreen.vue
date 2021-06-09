@@ -1,17 +1,14 @@
 <template>
-  <div class="centered-container">
-    <img
-      v-if="!showError"
-      class="loading-img"
-      src="../assets/icons/loading.gif"
-    />
-    <img v-if="showError" class="error-img" src="../assets/icons/error.svg" />
-    <h3 v-if="!showError" class="title">Loading your dataset...</h3>
-    <h1 v-if="showError" class="title">404. That's an error.</h1>
-    <h3 v-if="showError" class="title">
-      There is no dataset linked to the provided id.
-    </h3>
-    <h3></h3>
+  <div class="loading-container">
+    <div v-if="showError">
+      <img class="error-img" src="../assets/icons/error.svg" />
+      <h1>404. That's an error.</h1>
+      <h3>There is no dataset linked to the provided id.</h3>
+    </div>
+    <div v-else>
+      <img class="loading-img" src="../assets/icons/loading.gif" />
+      <h1>Loading your dataset...</h1>
+    </div>
   </div>
 </template>
 
@@ -25,7 +22,7 @@ let dataset_id = new URL(location.href).searchParams.get("id");
 
 export default {
   name: "LoadingScreen",
-  mounted: function () {
+  mounted() {
     this.loadVisualisation();
   },
   methods: {
@@ -83,32 +80,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.centered-container {
-  width: 50rem;
+.loading-container {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
-}
 
-.title {
   font-family: "Roboto", sans-serif;
-  margin-bottom: 1rem;
   letter-spacing: 0.05rem;
+  text-align: center;
 }
 
 .error-img {
   width: 27.5rem;
   height: 27.5rem;
-  margin: 0.2rem;
-  padding: 0.2rem;
 }
 
 .loading-img {
   width: 5rem;
   height: 5rem;
-  margin: 0.2rem;
-  padding: 0.2rem;
 }
 </style>
