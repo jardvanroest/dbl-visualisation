@@ -149,7 +149,6 @@ export class CalendarVisualisation extends Visualisation {
       .attr("fill", (d) => d.fillColor)
       .attr("opacity", (d) => d.opacity)
       .on("click", (e, d) => {
-        console.log(d);
         vm.updateInspectorData(e, d);
       });
   }
