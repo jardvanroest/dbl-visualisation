@@ -53,7 +53,11 @@ export default {
 
       console.log(`Making a GET request for dataset with id:${dataset_id}`);
       axios
-        .get(`http://localhost:5000/datasets/${dataset_id}`)
+        .get(
+          `http://` +
+            process.env.VUE_APP_SERVER_IP +
+            `:5000/datasets/${dataset_id}`
+        )
         .then((result) => {
           let dataset = [];
           for (var i in result.data) {
