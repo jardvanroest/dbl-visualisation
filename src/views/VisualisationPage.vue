@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import Header from "@/components/Header.vue";
 import Visualisations from "@/components/Visualisations.vue";
 import Settings from "@/components/settings/Settings.vue";

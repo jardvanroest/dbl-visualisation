@@ -21,7 +21,7 @@ import exampleDataSet from "@/assets/datasets/exampleDataset.csv";
 let dataset_id = new URL(location.href).searchParams.get("id");
 
 export default {
-  name: "LoadingScreen",
+  name: "DownloadPage",
   mounted() {
     this.loadVisualisation();
   },

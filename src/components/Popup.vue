@@ -10,6 +10,7 @@
         type="text"
         id="dataset-link"
         v-model="getDatasetLink"
+        readonly
       />
       <Btn class="button" @click="copyToClipboard" text="Copy to clipboard" />
     </div>
@@ -34,7 +35,6 @@ export default {
       var copyText = document.getElementById("dataset-link");
       copyText.select();
       document.execCommand("copy");
-      console.log("Copied the text: " + copyText.value);
     },
     togglePopup() {
       this.$emit("toggle-popup");

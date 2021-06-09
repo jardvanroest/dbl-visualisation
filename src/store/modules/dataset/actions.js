@@ -33,14 +33,12 @@ export default {
 };
 
 function postDataToBackend(data, context) {
-  console.log("Sending POST request to backend...");
   axios({
     method: "post",
     url: "http://localhost:5000/datasets",
     data: data,
   }).then(
     (response) => {
-      console.log("response.data: " + response.data);
       context.commit("updateDatasetID", response.data);
     },
     (error) => {

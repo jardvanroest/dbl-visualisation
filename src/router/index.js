@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Landing from "../views/Landing.vue";
 import VisualisationPage from "../views/VisualisationPage.vue";
 import InfoPage from "../views/InfoPage.vue";
-import LoadingScreen from "../views/LoadingScreen.vue";
+import DownloadPage from "../views/DownloadPage.vue";
 import store from "@/store";
 
 const routes = [
@@ -25,9 +25,9 @@ const routes = [
     component: InfoPage,
   },
   {
-    path: "/get",
+    path: "/download",
     name: "downloadPage",
-    component: LoadingScreen,
+    component: DownloadPage,
   },
 ];
 
