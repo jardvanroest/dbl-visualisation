@@ -1,31 +1,26 @@
 <template>
-  <div class="container">
-    <AdjacencyMatrix class="visualisation" />
-    <Calendar class="visualisation" />
+  <div class="visualisations-cont">
+    <Visualisation class="visualisation" id="AdjacencyMatrix" />
+    <Visualisation class="visualisation" id="NodeLink" />
   </div>
 </template>
 
 <script>
-import Calendar from "@/components/Calendar.vue";
-import AdjacencyMatrix from "@/components/AdjacencyMatrix.vue";
+import Visualisation from "@/components/Visualisation.vue";
 
 export default {
   name: "Visualisations",
   components: {
-    AdjacencyMatrix,
-    Calendar,
+    Visualisation,
   },
 };
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  background-color: var(--background-color-2);
-}
-
-.visualisation {
-  width: 0;
-  flex-grow: 1;
+<style scoped lang="scss">
+.visualisations-cont {
+  margin: 0.75em;
+  display: grid;
+  grid-auto-flow: var(--grd-dir);
+  grid-gap: 0.75em;
 }
 </style>

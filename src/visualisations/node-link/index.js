@@ -2,16 +2,17 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
+import store from "@/store";
 
-export class NodeLinkVisualisation extends Visualisation {
-  constructor() {
-    super("#areaNodeLinkSVG");
+export class NodeLink extends Visualisation {
+  constructor(HTMLselector) {
+    super(HTMLselector);
 
     this.colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
       edgeNegative: "#e498a1",
-      nodeBody: "#B8E0F6",
+      nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
 
@@ -25,8 +26,9 @@ export class NodeLinkVisualisation extends Visualisation {
     };
   }
 
-  redraw(emails) {
-    this._resetVisualisation();
+  redraw(emails, persons) {
+    this._persons = persons;
+    this.resetVisualisation();
     this._generateVis(emails);
   }
 
@@ -79,7 +81,8 @@ export class NodeLinkVisualisation extends Visualisation {
         if (d.avgSentiment > that.options.sentimentThreshold)
           return that.colors.edgePositive;
         return that.colors.edgeNeutral;
-      });
+      })
+      .on("click", this.edgeClick.bind(this));
   }
 
   _drawNodes(svg, nodes, simulation) {
@@ -92,7 +95,8 @@ export class NodeLinkVisualisation extends Visualisation {
       .join("circle")
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
-      .call(this._handleMouseDragOnNode(simulation)); // Append listener for drag events
+      .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
+      .on("click", this.nodeClick.bind(this));
   }
 
   _handleMouseDragOnNode(simulation) {
@@ -128,5 +132,75 @@ export class NodeLinkVisualisation extends Visualisation {
       .attr("y2", (d) => d.target.y);
 
     this.drawnNodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+  }
+
+  edgeClick(event, cell) {
+    const persons = store.getters["dataset/persons"];
+    const personA = persons.find((p) => p.id === cell.target.id);
+    const personB = persons.find((p) => p.id === cell.source.id);
+    const emails = store.getters["dataset/filteredEmails"];
+
+    let sent_by_a = 0;
+    let sent_by_b = 0;
+    emails.forEach((email) => {
+      if (email.fromId === personA.id && email.toId === personB.id) sent_by_a++;
+      if (email.fromId === personB.id && email.toId === personA.id) sent_by_b++;
+    });
+
+    let inspectorData = {
+      person_1: {
+        email: personA.emailAddress,
+        id: personA.id,
+        title: personA.jobTitle,
+        included_in_filter: personA.isSelectedInEmailFilter,
+        sent_emails: sent_by_a,
+      },
+      person_2: {
+        email: personB.emailAddress,
+        id: personB.id,
+        title: personB.jobTitle,
+        included_in_filter: personB.isSelectedInEmailFilter,
+        sent_emails: sent_by_b,
+      },
+    };
+
+    inspectorData.additional_information = {
+      weight: cell.weight,
+      edge_color: event.srcElement.attributes[0].value.toString(),
+      average_sentiment: cell.avgSentiment.toPrecision(3),
+    };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
+  }
+
+  nodeClick(event, cell) {
+    const persons = store.getters["dataset/persons"];
+    const person = persons.find((p) => p.id === cell.id);
+
+    let inspectorData = {
+      person: {
+        email: person.emailAddress,
+        id: person.id,
+        title: person.jobTitle,
+        included_in_filter: person.isSelectedInEmailFilter,
+      },
+      sent_emails: { number: person.sendEmails.length },
+      received_emails: { number: person.receivedEmails.length },
+    };
+
+    // Add fields only if there are emails
+    if (person.sendEmails.length > 0) {
+      this._newEmailsObject(person.sendEmails, inspectorData.sent_emails);
+    }
+    if (person.receivedEmails.length > 0) {
+      this._newEmailsObject(
+        person.receivedEmails,
+        inspectorData.received_emails
+      );
+    }
+
+    inspectorData.additional_information = { node_color: this.colors.nodeBody };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }

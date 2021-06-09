@@ -1,15 +1,9 @@
 <template>
   <header>
-    <div class="container">
+    <div class="container-header">
       <div class="logo" @click="redirectToHome()">
         <img src="@/assets/icons/graph.svg" alt="logo" />
-        <span>WebVis</span>
-      </div>
-      <div class="import_data">
-        <div>
-          <img src="@/assets/icons/upload.svg" alt="upload" />
-          <span>{{ upload_text }}</span>
-        </div>
+        <span>MailVis</span>
       </div>
       <div class="nav_icons">
         <ul>
@@ -34,7 +28,6 @@ export default {
   components: {},
   data() {
     return {
-      upload_text: "Start visualising...",
       rotSett: false,
     };
   },
@@ -66,13 +59,17 @@ export default {
 
 <style scoped>
 * {
+<<<<<<< HEAD
   transition: all ease-in-out 150ms;
+=======
+  transition: all ease-in-out 200ms;
+>>>>>>> d63fabe80d49ce892a9b6086fc44c545c41a1ecb
 }
 
 /* Format header */
-.container {
+.container-header {
   width: 100%;
-  height: 50px;
+  height: var(--hdr-size);
   display: flex;
   margin: 0 auto;
   justify-content: space-between;
@@ -81,12 +78,16 @@ export default {
     rgba(61, 61, 61, 0.15) 0px 1px 3px 1px;
 }
 
-.container img {
-  width: 24px;
-  height: 24px;
+.container-header img {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
+<<<<<<< HEAD
 .container > div {
+=======
+.container-header > div {
+>>>>>>> d63fabe80d49ce892a9b6086fc44c545c41a1ecb
   cursor: pointer;
 }
 
@@ -95,29 +96,14 @@ export default {
   font-family: "Roboto", sans-serif;
   display: flex;
   align-items: center;
-  font-size: 22pt;
+  font-size: 1.8125rem;
+  height: 100%;
 }
 
 .logo img {
-  padding-right: 10px;
-  width: 44px;
-  height: 44px;
-}
-
-/* Format upload div*/
-.import_data div {
-  display: flex;
-  align-items: center;
-  height: 50px;
-}
-
-.import_data img {
-  padding: 1em;
-}
-
-.import_data span {
-  transition: none;
-  padding-right: 1em;
+  padding-right: 0.25em;
+  width: 2.75rem;
+  height: 2.75rem;
 }
 
 /* Format icons to the right*/
@@ -125,6 +111,8 @@ export default {
   list-style-type: none;
   display: table;
   position: relative;
+  padding: 0;
+  margin: 0;
 }
 
 .nav_icons li {
@@ -133,8 +121,8 @@ export default {
   text-align: center;
   color: transparent;
 
-  height: 50px;
-  width: 50px;
+  height: var(--hdr-size);
+  width: var(--hdr-size);
 }
 
 /* Rotate settings icon on click */
@@ -144,21 +132,16 @@ export default {
 
 /* Color image white and background var(--accent-color) when hovered */
 .nav_icons ul :hover,
-.nav_icons ul :focus,
-.import_data :hover,
-.import_data :focus {
+.nav_icons ul :focus {
   background: var(--accent-color);
   color: var(--background-color);
 }
 
-.nav_icons li:hover img,
-.import_data:hover img {
+.nav_icons li:hover img {
   filter: invert(1);
 }
 
-.nav_icons li img,
-.import_data div img,
-.import_data div span {
+.nav_icons li img {
   pointer-events: none;
 }
 </style>
