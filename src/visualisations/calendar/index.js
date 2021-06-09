@@ -20,7 +20,7 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   redraw(data) {
-    this._resetVisualisation();
+    this.resetVisualisation();
     const calendarData = new CalendarYear(data);
     this._generateVisualisation(calendarData._getData());
   }
@@ -48,10 +48,10 @@ export class CalendarVisualisation extends Visualisation {
   _generateLabels(year) {
     this.__generateText_KeyYears(year);
     this.__generateText_KeyDays(year, d3.range(7));
-    this.__generateText_KeyMonths(
-      year,
-      d3.utcMonths(new Date("1-1-2000"), new Date("12-12-2000"))
-    );
+    // this.__generateText_KeyMonths(
+    //   year,
+    //   d3.utcMonths(new Date("1-1-1999"), new Date("12-12-1999"))
+    // );
   }
 
   __generateText_KeyYears(year) {
@@ -120,11 +120,16 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   __getText_KeyMonths(year, range) {
-    return year
-      .append("g")
-      .selectAll("g")
-      .data(() => range)
-      .join("g");
+    return (
+      year
+        .append("g")
+        .selectAll("g")
+        .data(() => range)
+        //.data((d) =>
+        //d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
+        //)
+        .join("g")
+    );
   }
 
   _drawDateCells(year) {
@@ -143,7 +148,7 @@ export class CalendarVisualisation extends Visualisation {
       // hook listeners here .
       .on("click", (e, d) => {
         console.log(d);
-        vm.changeInspetorData(d);
+        vm.changeInspectorData(d);
       });
   }
 }

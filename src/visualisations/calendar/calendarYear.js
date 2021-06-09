@@ -9,10 +9,7 @@ export class CalendarYear {
     return this.parsedData;
   }
 
-  _parseData(data) {
-    return this._groupData(data);
-  }
-  _groupData(set) {
+  _parseData(set) {
     let group = d3.groups(set, (d) => d.date.getUTCFullYear()).sort();
     for (let i = 0; i < group.length; i++) {
       group[i][1] = this.__parseDates(group[i][1]);
@@ -28,7 +25,7 @@ export class CalendarYear {
         try {
           this._findObjByDate(returnObj, arrDates[i]).emails.push(arrDates[i]);
         } catch (e) {
-          console.log(arrDates[i].date.getDay());
+          console.log("There was an error while parsing the dates in Calendar: date:" + arrDates[i].date.getTime());
         }
       } else {
         returnObj.push(this._createCellDate(arrDates[i].date, [arrDates[i]]));
