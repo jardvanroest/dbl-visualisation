@@ -2,10 +2,10 @@
   <div class="sort-container">
     <div class="sort-select">
       <select id="sorting-selector" @change="sortMatrix">
-        <option value="unsorted">Unsorted</option>
-        <option value="rotate180">Rotate 180°</option>
+        <option value="initial">Initial Order</option>
+        <option value="random">Random Order</option>
         <option value="cuthill–mckee">Cuthill–McKee</option>
-        <option value="random">Random Sorting</option>
+        <option value="optimal_leaf">Optimal Leaf Order</option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -20,15 +20,11 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "SortMatrix",
   computed: {
-    ...mapGetters("dataset", [
-      "getMatrixData",
-      "persons",
-      "getSortedMatrixData",
-    ]),
+    ...mapGetters("dataset", ["persons", "getMatrixDataForSorting"]),
   },
   data() {
     return {
-      sortAlg: { type: "unsorted", index: 0 },
+      sortAlg: { type: "initial", index: 0 },
     };
   },
   mounted() {
@@ -39,35 +35,25 @@ export default {
   methods: {
     ...mapActions("dataset", ["changeSortedMatrixData"]),
     sortMatrix(event) {
-      // TODO: fix coeffs
-      //let data = this.getMatrixData;
-      //let coeffs = this.getCoefficients();
-      //this.changeSortedMatrixData(this.transposeMatrix(this.people));
-
       // Do the selected sorting algorithm
       this.sortAlg["type"] = event.target.value;
       this.sortAlg["index"] = event.target.options.selectedIndex;
 
-      let reversePeople = this.persons.reverse();
-
       switch (this.sortAlg["type"]) {
-        case "unsorted":
+        case "initial":
           this.changeSortedMatrixData({
             personsRows: this.persons,
             personsCols: this.persons,
           });
           break;
-        case "rotate180":
-          this.changeSortedMatrixData({
-            personsRows: reversePeople,
-            personsCols: reversePeople,
-          });
+        case "random":
+          this.randomSort();
           break;
         case "cuthill–mckee":
           this.cuthillMcKeeSort();
           break;
-        case "random":
-          this.randomSort();
+        case "optimal_leaf":
+          this.optimalLeafOrder();
           break;
         default:
           console.log(this.sortAlg["type"]);
@@ -75,10 +61,24 @@ export default {
     },
     cuthillMcKeeSort() {
       // TODO: implement this
-      /*this.changeSortedMatrixData({
-        personsRows: this.persons,
-        personsCols: this.persons,
-      });*/
+    },
+    optimalLeafOrder() {
+      const matrix = this.getCoefficients(this.getMatrixDataForSorting);
+
+      const transpose = reorder.transpose(matrix),
+        dist_rows = reorder.dist()(matrix),
+        dist_cols = reorder.dist()(transpose),
+        order = reorder.optimal_leaf_order(),
+        row_perm = order.distanceMatrix(dist_rows)(matrix),
+        col_perm = order.distanceMatrix(dist_cols)(transpose);
+
+      const rows = this.getPermutedPersonArray(row_perm),
+        cols = this.getPermutedPersonArray(col_perm);
+
+      this.changeSortedMatrixData({
+        personsRows: rows,
+        personsCols: cols,
+      });
     },
     randomSort() {
       const personsCopy = [...this.persons];
@@ -88,37 +88,22 @@ export default {
         personsCols: reorder.randomPermute(personsCopy),
       });
     },
-    getCoefficients() {
-      let data = this.getMatrixData;
-
-      // Calculate matrix coefficients by taking the weights
+    getCoefficients(data) {
+      // Calculate matrix coefficients (only 1 and 0)
       let _coeffs = [];
       for (let i = 0; i < data.length; i++) {
         let _row = [];
         for (let j = 0; j < data.length; j++) {
-          _row.push(data[i][j]._emails.length);
+          _row.push(data[i][j]._emails.length != 0);
         }
         _coeffs.push(_row);
       }
 
       return _coeffs;
     },
-    permuteMatrix(matrix, permRows, permColumns) {
-      // Transpose matrix so it permutes the columns
-      matrix = this.transposeMatrix(matrix);
-      matrix = d3.permute(matrix, permColumns);
-
-      // Transpose back to original and permute rows
-      matrix = this.transposeMatrix(matrix);
-      matrix = d3.permute(matrix, permRows);
-
-      return matrix;
-    },
-    transposeMatrix(matrix) {
-      return matrix.reduce(
-        (prev, next) => next.map((item, i) => (prev[i] || []).concat(next[i])),
-        []
-      );
+    getPermutedPersonArray(permutation) {
+      let persons = this.persons;
+      return d3.permute(persons, permutation);
     },
   },
 };
