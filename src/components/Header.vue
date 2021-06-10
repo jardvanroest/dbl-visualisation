@@ -93,7 +93,7 @@ export default {
 }
 
 .logo img {
-  padding-right: 0.25em;
+  padding: 0 0.25em;
   width: 2.75rem;
   height: 2.75rem;
 }
