@@ -30,7 +30,12 @@ export default {
   },
   // this function is a workaround needed for Popup.vue
   getDatasetLink(state) {
-    return "http://localhost:8080/download?id=" + state.datasetID;
+    return (
+      "http://" +
+      process.env.VUE_APP_SERVER_IP +
+      ":8080/download?id=" +
+      state.datasetID
+    );
   },
 };
 
