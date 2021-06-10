@@ -9,6 +9,11 @@ export default {
     state.persons[email.fromId].sendEmails.push(email);
     state.persons[email.toId].receivedEmails.push(email);
   },
+  addJobtitle(state, jobTitle) {
+    if (!state.jobTitles.includes(jobTitle)) {
+      state.jobTitles.push(jobTitle);
+    }
+  },
   addPerson(state, person) {
     if (state.persons[person.id] === undefined) {
       state.persons[person.id] = person;

@@ -26,7 +26,7 @@ export default {
     return state.inspectorData;
   },
   jobtitles(state) {
-    return state.jobtitles;
+    return state.jobTitles;
   },
 };
 
