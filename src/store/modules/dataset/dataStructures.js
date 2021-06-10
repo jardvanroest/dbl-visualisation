@@ -3,6 +3,10 @@ class Email {
     this.date = Date.parse(emailData.date);
     this.fromId = parseInt(emailData.fromId);
     this.toId = parseInt(emailData.toId);
+    this.fromEmail = emailData.fromEmail;
+    this.toEmail = emailData.toEmail;
+    this.fromJobTitle = emailData.fromJobtitle;
+    this.toJobTitle = emailData.toJobtitle;
     this.messageType = emailData.messageType;
     this.sentiment = parseFloat(emailData.sentiment);
   }

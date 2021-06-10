@@ -1,13 +1,13 @@
 <template>
   <div class="job-title-filter-container">
-    <div class="list-entry" v-for="jobtitle in jobtitles" :key="jobtitle">
+    <div class="list-entry" v-for="jobTitle in jobTitles" :key="jobTitle">
       <input
         type="checkbox"
         name="checkbox"
-        :value="jobtitle"
-        v-model="checkedJobtitles"
+        :value="jobTitle"
+        v-model="checkedJobTitles"
       />
-      <label for="checkbox">{{ jobtitle }}</label>
+      <label for="checkbox">{{ jobTitle }}</label>
     </div>
   </div>
 </template>
@@ -18,17 +18,22 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      checkedJobtitles: [],
+      checkedJobTitles: [],
     };
   },
+  watch: {
+    checkedJobTitles() {
+      this.updateStore();
+    },
+  },
   computed: {
-    ...mapGetters("dataset", ["jobtitles"]),
+    ...mapGetters("dataset", ["jobTitles", "filteredJobTitles"]),
   },
   methods: {
-    // ...mapActions[("dataset", ["setFilteredJobtitles"])],
-    // updateStore() {
-    //   this.setFilteredJobtitles(checkedJobtitles);
-    // },
+    ...mapActions("dataset", ["setFilteredJobTitles"]),
+    updateStore() {
+      this.setFilteredJobTitles(this.checkedJobTitles);
+    },
   },
 };
 </script>

@@ -22,4 +22,7 @@ export default {
   setFilteredPersons(context, persons) {
     context.commit("setFilteredPersons", persons);
   },
+  setFilteredJobTitles(context, jobTitles) {
+    context.commit("setFilteredJobTitles", jobTitles);
+  },
 };

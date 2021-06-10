@@ -11,6 +11,7 @@ export default {
       filteredPersons: [],
       inspectorData: -1,
       jobTitles: [],
+      filteredJobTitles: [],
     };
   },
   getters,
