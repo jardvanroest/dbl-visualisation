@@ -21,17 +21,12 @@ export default {
       checkedJobTitles: [],
     };
   },
-  watch: {
-    checkedJobTitles() {
-      this.updateStore();
-    },
-  },
   computed: {
     ...mapGetters("dataset", ["jobTitles", "filteredJobTitles"]),
   },
   methods: {
     ...mapActions("dataset", ["setFilteredJobTitles"]),
-    updateStore() {
+    applyFilter() {
       this.setFilteredJobTitles(this.checkedJobTitles);
     },
   },

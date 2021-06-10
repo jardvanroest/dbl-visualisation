@@ -6,7 +6,6 @@
         v-model="searchText"
         placeholder="Search email address..."
       />
-      <Btn @click="applyFilter" text="Filter" />
     </div>
 
     <div class="entries-container">
@@ -41,14 +40,10 @@
 </template>
 
 <script>
-import Btn from "@/components/buttons/Btn.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "EmailFilter",
-  components: {
-    Btn,
-  },
   data() {
     return {
       numShownEmailAddresses: 10,

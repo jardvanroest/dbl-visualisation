@@ -3,11 +3,12 @@
     <div class="settings">
       <Section title="General" fields="none" />
       <Setting name="Filter e-mail">
-        <EmailFilter />
+        <EmailFilter ref="emailFilter" />
       </Setting>
       <Setting name="Filter jobtitle">
-        <JobtitleFilter />
+        <JobtitleFilter ref="jobTitleFilter" />
       </Setting>
+      <Btn text="Apply filters" @click="applyFilters" />
     </div>
     <Inspector class="inspector" />
   </div>
@@ -19,6 +20,7 @@ import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
+import Btn from "@/components/buttons/Btn.vue";
 
 export default {
   name: "Settings",
@@ -28,6 +30,7 @@ export default {
     Setting,
     EmailFilter,
     JobtitleFilter,
+    Btn,
   },
   data() {
     return {
@@ -35,6 +38,10 @@ export default {
     };
   },
   methods: {
+    applyFilters() {
+      this.$refs.emailFilter.applyFilter();
+      this.$refs.jobTitleFilter.applyFilter();
+    },
     selectSettings(n) {
       // Don't switch settings type if nothing changed
       if (this.lastSelected != n) {
