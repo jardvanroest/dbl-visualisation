@@ -4,8 +4,9 @@
       <select id="sorting-selector" @change="sortMatrix">
         <option value="initial">Initial Order</option>
         <option value="random">Random Order</option>
-        <option value="cuthill–mckee">Cuthill–McKee</option>
         <option value="optimal_leaf">Optimal Leaf Order</option>
+        <option value="pca">PCA Order</option>
+        <option value="spectral">Spectral Order</option>
       </select>
       <span class="custom-arrow" />
     </div>
@@ -39,6 +40,7 @@ export default {
       this.sortAlg["type"] = event.target.value;
       this.sortAlg["index"] = event.target.options.selectedIndex;
 
+      // TODO: this.getMatrixDataForSorting is not filtered?
       switch (this.sortAlg["type"]) {
         case "initial":
           this.changeSortedMatrixData({
@@ -49,18 +51,18 @@ export default {
         case "random":
           this.randomSort();
           break;
-        case "cuthill–mckee":
-          this.cuthillMcKeeSort();
-          break;
         case "optimal_leaf":
           this.optimalLeafOrder();
+          break;
+        case "pca":
+          this.pcaSort();
+          break;
+        case "spectral":
+          this.spectralSort();
           break;
         default:
           console.log(this.sortAlg["type"]);
       }
-    },
-    cuthillMcKeeSort() {
-      // TODO: implement this
     },
     optimalLeafOrder() {
       const matrix = this.getCoefficients(this.getMatrixDataForSorting);
@@ -78,6 +80,27 @@ export default {
       this.changeSortedMatrixData({
         personsRows: rows,
         personsCols: cols,
+      });
+    },
+    pcaSort() {
+      const matrix = this.getCoefficients(this.getMatrixDataForSorting);
+
+      const perms = reorder.pca_order(matrix);
+
+      this.changeSortedMatrixData({
+        personsRows: this.getPermutedPersonArray(perms),
+        personsCols: this.getPermutedPersonArray(perms),
+      });
+    },
+    spectralSort() {
+      const matrix = this.getCoefficients(this.getMatrixDataForSorting);
+      const graph = reorder.mat2graph(matrix);
+
+      const perms = reorder.spectral_order(graph);
+
+      this.changeSortedMatrixData({
+        personsRows: this.getPermutedPersonArray(perms),
+        personsCols: this.getPermutedPersonArray(perms),
       });
     },
     randomSort() {
