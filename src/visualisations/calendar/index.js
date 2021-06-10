@@ -20,6 +20,30 @@ export class CalendarVisualisation extends Visualisation {
     this.countDay = (i) => (i + 6) % 7;
     this.formatDay = (i) => "SMTWTFS"[i];
     this.formatMonth = d3.utcFormat("%b");
+
+    this.weekdayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    this.monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
   }
 
   redraw(data) {
@@ -156,34 +180,11 @@ export class CalendarVisualisation extends Visualisation {
   updateInspectorData(event, cellData) {
     let inspectorData = {};
     let _date = cellData.date;
-    const weekday = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const monthNames = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
 
     inspectorData.date = {
-      weekday: weekday[_date.getDay()],
+      weekday: this.weekdayNames[_date.getDay()],
       day_of_month: _date.getDate(),
-      month: monthNames[_date.getMonth()],
+      month: this.monthNames[_date.getMonth()],
       year: _date.getFullYear(),
     };
     inspectorData.emails = { number: cellData.emails.length };
