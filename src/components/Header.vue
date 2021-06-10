@@ -2,7 +2,7 @@
   <header>
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
-        <img src="@/assets/icons/graph.svg" alt="logo" />
+        <img src="@/assets/icons/logo.svg" alt="logo" />
         <span>MailVis</span>
       </div>
       <div class="nav_icons">

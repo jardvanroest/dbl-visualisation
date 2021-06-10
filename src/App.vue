@@ -13,7 +13,7 @@
 
 /* Global variables to be used troughout the whole site */
 :root {
-  --accent-color: #38ada9;
+  --accent-color: ;
   --accent-color-light: #38ada993;
   --accent-color-2: #067572;
   --link-color: #0000ff;
