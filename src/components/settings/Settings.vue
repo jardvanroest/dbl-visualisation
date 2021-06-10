@@ -5,8 +5,11 @@
       <Setting name="Filter e-mail">
         <EmailFilter ref="emailFilter" />
       </Setting>
-      <Setting name="Filter jobtitle">
+      <Setting name="Filter job title">
         <JobtitleFilter ref="jobTitleFilter" />
+      </Setting>
+      <Setting name="Filter date">
+        <DateFilter ref="dateFilter" />
       </Setting>
       <Btn text="Apply filters" @click="applyFilters" />
     </div>
@@ -20,6 +23,7 @@ import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
+import DateFilter from "@/components/settings/DateFilter.vue";
 import Btn from "@/components/buttons/Btn.vue";
 
 export default {
@@ -30,6 +34,7 @@ export default {
     Setting,
     EmailFilter,
     JobtitleFilter,
+    DateFilter,
     Btn,
   },
   data() {
