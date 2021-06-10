@@ -22,7 +22,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("dataset", ["jobTitles", "filteredJobTitles"]),
+    ...mapGetters("dataset", ["jobTitles"]),
   },
   methods: {
     ...mapActions("dataset", ["setFilteredJobTitles"]),
