@@ -61,14 +61,6 @@ export default {
   color: #ff3838;
 }
 
-.false {
-  color: #ff3838;
-}
-
-.true {
-  color: #3ae374;
-}
-
 /* Make color rectangle */
 div.color {
   display: flex;

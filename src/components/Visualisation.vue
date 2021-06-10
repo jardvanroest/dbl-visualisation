@@ -41,28 +41,22 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
-        this.redraw(this.persons, this.persons);
+        this.redrawAfterFiltering();
       },
     },
     // Watch for new incoming {sortedMatrixData}
-    getSortedMatrixData(newData) {
-      if (
-        this.type === "AdjacencyMatrix" ||
-        (this.type = "none" && this.id === "AdjacencyMatrix")
-      ) {
-        this.visualisation.redraw(
-          this.filteredEmails,
-          newData.personsRows,
-          newData.personsCols
-        );
+    getSortedMatrixData() {
+      if (this.isAdjacencyMatrix()) {
+        this.redrawForAdjacency();
       }
     },
   },
   mounted() {
-    // Calculate margin for initial zoom and scale
+    // Calculate margin for initial zoom and scale so that buttons do not cover the visualisation
     let rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
-    let m = 2.375 * rem;
-    let m_p = 1 - (2 * m) / this.size;
+    let margin = 2.375 * rem;
+    let marginScale = 1 - (2 * margin) / this.size;
+    let translation = `translate(${margin},${margin}) scale(${marginScale},${marginScale})`;
 
     this.zoom = d3
       .zoom()
@@ -74,7 +68,7 @@ export default {
       .attr("viewBox", "0 0 " + this.size + " " + this.size)
       .call(this.zoom)
       .append("g")
-      .attr("transform", `translate(${m},${m}) scale(${m_p},${m_p})`);
+      .attr("transform", translation);
 
     this.createVisualisation(this.id);
     this.redraw(this.persons, this.persons);
@@ -122,6 +116,35 @@ export default {
         list.push({ value: key, name: this.visName(key) });
       }
       return list;
+    },
+    redrawAfterFiltering() {
+      if (this.isAdjacencyMatrix()) {
+        this.redrawForAdjacency();
+      } else {
+        this.redraw(this.persons, this.persons);
+      }
+    },
+    isAdjacencyMatrix() {
+      return (
+        this.type === "AdjacencyMatrix" ||
+        (this.type = "none" && this.id === "AdjacencyMatrix")
+      );
+    },
+    redrawForAdjacency() {
+      let newData = this.getSortedMatrixData;
+      if (newData === "unsorted") {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          this.persons,
+          this.persons
+        );
+      } else {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          newData.personsRows,
+          newData.personsCols
+        );
+      }
     },
     visName(type) {
       switch (type) {
