@@ -25,6 +25,9 @@ export default {
   getInspectorData(state) {
     return state.inspectorData;
   },
+  jobtitles(state) {
+    return state.jobtitles;
+  },
 };
 
 function makeUnique(array) {
