@@ -1,5 +1,6 @@
 <template>
   <div class="visualisation">
+    <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
       :selected="id"
@@ -11,6 +12,7 @@
 </template>
 
 <script>
+import Spinner from "@/components/Spinner.vue";
 import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
 import * as d3 from "d3";
@@ -20,6 +22,7 @@ export default {
   name: "Visualisations",
   props: ["id"],
   components: {
+    Spinner,
     DropDown,
   },
   data() {
@@ -27,6 +30,7 @@ export default {
       size: 500,
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
+      showSpinner: false,
     };
   },
   computed: {
@@ -36,7 +40,7 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
-        this.redraw();
+        this.showSpinnerDoFunctionHideSpinner(this.redraw);
       },
     },
   },
@@ -67,9 +71,21 @@ export default {
       this.visualisation = new visualisations[type]("#" + this.id);
     },
     changeVisualisation(type) {
-      this.visualisation.resetVisualisation();
-      this.createVisualisation(type);
-      this.redraw();
+      let myFunction = () => {
+        this.visualisation.resetVisualisation();
+        this.createVisualisation(type);
+        this.redraw();
+      };
+      this.showSpinnerDoFunctionHideSpinner(myFunction);
+    },
+    showSpinnerDoFunctionHideSpinner(myFunction) {
+      this.showSpinner = true;
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          myFunction();
+          resolve();
+        }, 0);
+      }).then(() => (this.showSpinner = false));
     },
     redraw() {
       this.visualisation.redraw(this.filteredEmails, this.persons);
