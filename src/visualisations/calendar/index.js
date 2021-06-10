@@ -2,6 +2,7 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
 import store from "@/store";
 import * as d3 from "d3";
+import { rgb } from "d3";
 
 export class CalendarVisualisation extends Visualisation {
   constructor(HTMLSelector) {
@@ -19,6 +20,30 @@ export class CalendarVisualisation extends Visualisation {
     this.countDay = (i) => (i + 6) % 7;
     this.formatDay = (i) => "SMTWTFS"[i];
     this.formatMonth = d3.utcFormat("%b");
+
+    this.weekdayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    this.monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
   }
 
   redraw(data) {
@@ -147,16 +172,50 @@ export class CalendarVisualisation extends Visualisation {
       .attr("y", (d) => this.___getYposCellDate(d))
       .attr("fill", (d) => d.fillColor)
       .attr("opacity", (d) => d.opacity)
-      // hook listeners here .
       .on("click", (e, d) => {
-        console.log(d);
         vm.updateInspectorData(e, d);
       });
   }
 
-  updateInspectorData(event, data) {
+  updateInspectorData(event, cellData) {
     let inspectorData = {};
+    let _date = cellData.date;
+
+    inspectorData.date = {
+      weekday: this.weekdayNames[_date.getDay()],
+      day_of_month: _date.getDate(),
+      month: this.monthNames[_date.getMonth()],
+      year: _date.getFullYear(),
+    };
+    inspectorData.emails = { number: cellData.emails.length };
+
+    this._newEmailsObject(cellData.emails, inspectorData.emails);
+    delete inspectorData.emails.Date;
+
+    inspectorData.additional_information = {
+      color: _RGBToHex(cellData.fillColor),
+      opacity: Math.min(cellData.opacity.toPrecision(3), 1),
+    };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
+
+    // Functions //
+
+    function _RGBToHex(rgb) {
+      // Choose correct separator
+      let sep = rgb.indexOf(",") > -1 ? "," : " ";
+      // Turn "rgb(r,g,b)" into [r,g,b]
+      rgb = rgb.substr(4).split(")")[0].split(sep);
+
+      let r = Math.min(+rgb[0], 255).toString(16),
+        g = Math.min(+rgb[1], 255).toString(16),
+        b = Math.min(+rgb[2], 255).toString(16);
+
+      if (r.length == 1) r = "0" + r;
+      if (g.length == 1) g = "0" + g;
+      if (b.length == 1) b = "0" + b;
+
+      return "#" + r + g + b;
+    }
   }
 }
