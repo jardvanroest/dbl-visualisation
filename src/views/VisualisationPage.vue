@@ -50,7 +50,7 @@ export default {
 <style scoped lang="scss">
 .grid-container {
   display: flex;
-  margin-top: var(--hdr-size);
+  //margin-top: var(--hdr-size);
   min-height: calc(100vh - var(--hdr-size));
   background-color: var(--background-color-2);
   overflow-x: hidden;
@@ -110,5 +110,10 @@ export default {
     height: 100%;
     width: 100%;
   }
+}
+
+.header {
+  position: relative;
+  z-index: 50;
 }
 </style>

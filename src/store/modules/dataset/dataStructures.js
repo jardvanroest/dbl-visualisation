@@ -1,6 +1,6 @@
 class Email {
   constructor(emailData) {
-    this.date = Date.parse(emailData.date);
+    this.date = new Date(Date.parse(emailData.date));
     this.fromId = parseInt(emailData.fromId);
     this.toId = parseInt(emailData.toId);
     this.messageType = emailData.messageType;
