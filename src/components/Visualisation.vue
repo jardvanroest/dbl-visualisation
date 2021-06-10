@@ -40,14 +40,7 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
-        this.showSpinner = true;
-        new Promise((resolve, reject) => {
-          setTimeout(() => {
-            this.redraw();
-
-            resolve();
-          }, 0);
-        }).then(() => (this.showSpinner = false));
+        this.showSpinnerDoFunctionHideSpinner(this.redraw);
       },
     },
   },
@@ -78,13 +71,18 @@ export default {
       this.visualisation = new visualisations[type]("#" + this.id);
     },
     changeVisualisation(type) {
+      let myFunction = () => {
+        this.visualisation.resetVisualisation();
+        this.createVisualisation(type);
+        this.redraw();
+      };
+      this.showSpinnerDoFunctionHideSpinner(myFunction);
+    },
+    showSpinnerDoFunctionHideSpinner(myFunction) {
       this.showSpinner = true;
       new Promise((resolve, reject) => {
         setTimeout(() => {
-          this.visualisation.resetVisualisation();
-          this.createVisualisation(type);
-          this.redraw();
-
+          myFunction();
           resolve();
         }, 0);
       }).then(() => (this.showSpinner = false));
