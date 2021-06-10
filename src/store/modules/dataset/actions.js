@@ -35,7 +35,7 @@ export default {
 function postDataToBackend(data, context) {
   axios({
     method: "post",
-    url: "http://localhost:5000/datasets",
+    url: "http://" + process.env.VUE_APP_SERVER_IP + ":5000/datasets",
     data: data,
   }).then(
     (response) => {
