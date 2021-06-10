@@ -6,7 +6,7 @@
       <h3>There is no dataset linked to the provided id.</h3>
     </div>
     <div v-else>
-      <img class="loading-img" src="../assets/icons/loading.gif" />
+      <div class="spinner" />
       <h1>Loading your dataset...</h1>
     </div>
   </div>
@@ -23,7 +23,11 @@ let dataset_id = new URL(location.href).searchParams.get("id");
 export default {
   name: "DownloadPage",
   mounted() {
-    this.loadVisualisation();
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    }).then(() => this.loadVisualisation());
   },
   methods: {
     importExampleDataset() {
@@ -96,8 +100,40 @@ export default {
   height: 27.5rem;
 }
 
-.loading-img {
-  width: 5rem;
-  height: 5rem;
+.spinner {
+  --ldr-size: 1rem;
+  --dimensions: calc(4 * var(--ldr-size));
+
+  margin: auto;
+  transform: translate(-50%, -50%);
+
+  width: var(--dimensions);
+  height: var(--dimensions);
+
+  border: var(--ldr-size) solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: var(--ldr-size) solid var(--accent-color);
+
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
