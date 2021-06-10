@@ -86,20 +86,17 @@ export class AdjacencyMatrix extends Visualisation {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
-        included_in_filter: sender.isSelectedInEmailFilter,
       };
     } else {
       inspectorData.sender = {
         email: sender.emailAddress,
         id: sender.id,
         title: sender.jobTitle,
-        included_in_filter: sender.isSelectedInEmailFilter,
       };
       inspectorData.recipient = {
         email: recipient.emailAddress,
         id: recipient.id,
         title: recipient.jobTitle,
-        included_in_filter: recipient.isSelectedInEmailFilter,
       };
     }
     inspectorData.additional_information = {
