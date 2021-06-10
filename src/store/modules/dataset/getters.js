@@ -54,7 +54,3 @@ export default {
     );
   },
 };
-
-function makeUnique(array) {
-  return [...new Set(array)];
-}
