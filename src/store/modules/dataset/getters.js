@@ -41,6 +41,18 @@ export default {
   jobTitles(state) {
     return state.jobTitles;
   },
+  getDatasetID(state) {
+    return state.datasetID;
+  },
+  // this function is a workaround needed for Popup.vue
+  getDatasetLink(state) {
+    return (
+      "http://" +
+      process.env.VUE_APP_SERVER_IP +
+      ":8080/download?id=" +
+      state.datasetID
+    );
+  },
 };
 
 function makeUnique(array) {

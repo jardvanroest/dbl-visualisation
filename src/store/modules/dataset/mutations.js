@@ -28,4 +28,7 @@ export default {
   setFilteredJobTitles(state, jobTitles) {
     state.filteredJobTitles = jobTitles;
   },
+  updateDatasetID(state, id) {
+    state.datasetID = id;
+  },
 };
