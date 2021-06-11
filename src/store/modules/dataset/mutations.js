@@ -3,6 +3,12 @@ export default {
     state.emails = [];
     state.persons = {};
     state.filteredPersons = [];
+    state.inspectorData = -1;
+    state.jobTitles = [];
+    state.filteredJobTitles = [];
+    state.filteredDates = {};
+    state.minDate = undefined;
+    state.maxDate = undefined;
   },
   addEmail(state, email) {
     state.emails.push(email);
