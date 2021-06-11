@@ -1,7 +1,11 @@
 <template>
   <div class="visualisations-cont">
-    <Visualisation class="visualisation" id="AdjacencyMatrix" />
-    <Visualisation class="visualisation" id="NodeLink" />
+    <Visualisation
+      v-for="n in amount"
+      :key="n"
+      class="visualisation"
+      :id="ids[n % ids.length] + '-' + n"
+    />
   </div>
 </template>
 
@@ -12,6 +16,12 @@ export default {
   name: "Visualisations",
   components: {
     Visualisation,
+  },
+  props: ["amount"],
+  data() {
+    return {
+      ids: ["CalendarVisualisation", "AdjacencyMatrix", "NodeLink"],
+    };
   },
 };
 </script>

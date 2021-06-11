@@ -1,6 +1,6 @@
 <template>
   <div class="setting-cont" :class="{ flexRow: flexRow === 'yes' }">
-    <p>{{ name }}:</p>
+    <p class="pi">{{ name }}:</p>
     <slot></slot>
   </div>
 </template>
@@ -18,6 +18,7 @@ export default {
 
 <style>
 .setting-cont {
+  --margin-p: 1em 0 0 0.5em;
   display: flex;
   flex-direction: column;
 }
@@ -30,5 +31,14 @@ export default {
 
 .setting-cont p {
   font-size: 1rem;
+  margin: var(--margin-p);
+}
+
+/* Style horizontal lines */
+hr {
+  width: 75%;
+  margin: 3px 2em 0.5em 0em;
+  border: none;
+  border-top: 1px solid var(--border-color);
 }
 </style>

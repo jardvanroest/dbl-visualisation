@@ -3,7 +3,7 @@
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
-      :selected="id"
+      :selected="id.split('-')[0]"
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
@@ -68,15 +68,19 @@ export default {
   },
   methods: {
     createVisualisation(type) {
-      this.visualisation = new visualisations[type]("#" + this.id);
+      let newType = type.split("-")[0];
+      this.visualisation = new visualisations[newType]("#" + this.id);
     },
     changeVisualisation(type) {
-      let myFunction = () => {
-        this.visualisation.resetVisualisation();
-        this.createVisualisation(type);
-        this.redraw();
-      };
-      this.showSpinnerDoFunctionHideSpinner(myFunction);
+      let newType = this.id.split("-")[0];
+      if (newType !== type) {
+        let myFunction = () => {
+          this.visualisation.resetVisualisation();
+          this.createVisualisation(type);
+          this.redraw();
+        };
+        this.showSpinnerDoFunctionHideSpinner(myFunction);
+      }
     },
     showSpinnerDoFunctionHideSpinner(myFunction) {
       this.showSpinner = true;
@@ -118,8 +122,6 @@ export default {
           return "Node-link diagram";
         case "CalendarVisualisation":
           return "Calendar matrix";
-        case "CalendarVisulasation":
-          return "Calendar visualisation";
         default:
           return "No name for vis";
       }

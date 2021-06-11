@@ -5,7 +5,7 @@
       <Setting name="Filter e-mail">
         <EmailFilter />
       </Setting>
-      <Setting name="Layout"><Layout /> </Setting>
+      <Layout @change-amount="$emit('change-amount', $event)" />
     </div>
     <Inspector class="inspector" />
   </div>

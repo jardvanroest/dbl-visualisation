@@ -6,9 +6,10 @@
     @toggle-popup="toggleLinkPopup"
   />
   <div class="grid-container">
-    <Visualisations class="visualisations-cont" />
+    <Visualisations class="visualisations-cont" :amount="amount" />
     <div :class="{ hide: !showSettings }" class="wrapper-settings">
       <Settings
+        @change-amount="changeAmount"
         :class="{ dontShow: !showSettings }"
         class="container-settings"
       />
@@ -34,9 +35,14 @@ export default {
     return {
       showSettings: true,
       showPopup: false,
+      amount: 2,
     };
   },
   methods: {
+    changeAmount(amount) {
+      this.amount = amount;
+    },
+
     toggleLinkPopup() {
       this.showPopup = !this.showPopup;
     },
@@ -50,7 +56,7 @@ export default {
 <style scoped lang="scss">
 .grid-container {
   display: flex;
-  //margin-top: var(--hdr-size);
+  margin-top: var(--hdr-size);
   min-height: calc(100vh - var(--hdr-size));
   background-color: var(--background-color-2);
   overflow-x: hidden;
@@ -100,8 +106,9 @@ export default {
 
 @media (max-width: 525px) {
   .grid-container {
-    flex-direction: column;
+    --grd-cols: 1;
   }
+
   .wrapper-settings {
     position: absolute;
     top: var(--hdr-size);
@@ -110,10 +117,5 @@ export default {
     height: 100%;
     width: 100%;
   }
-}
-
-.header {
-  position: relative;
-  z-index: 50;
 }
 </style>
