@@ -67,6 +67,7 @@ div.color {
   flex-direction: row;
 }
 span.color {
+  cursor: pointer;
   display: block;
   content: "";
 

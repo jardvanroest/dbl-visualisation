@@ -1,5 +1,6 @@
 <template>
   <div class="visualisation">
+    <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
       :selected="id"
@@ -11,6 +12,7 @@
 </template>
 
 <script>
+import Spinner from "@/components/Spinner.vue";
 import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
 import * as d3 from "d3";
@@ -20,6 +22,7 @@ export default {
   name: "Visualisations",
   props: ["id"],
   components: {
+    Spinner,
     DropDown,
   },
   data() {
@@ -28,6 +31,7 @@ export default {
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
       type: "none",
+      showSpinner: false,
     };
   },
   computed: {
@@ -41,13 +45,13 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
-        this.redrawAfterFiltering();
+        this.spinnerFunctionality(this.redrawAfterFiltering);
       },
     },
     // Watch for new incoming {sortedMatrixData}
     getSortedMatrixData() {
       if (this.isAdjacencyMatrix()) {
-        this.redrawForAdjacency();
+        this.spinnerFunctionality(this.redrawForAdjacency);
       }
     },
   },
@@ -78,10 +82,26 @@ export default {
       this.visualisation = new visualisations[type]("#" + this.id);
     },
     changeVisualisation(type) {
-      this.type = type;
-      this.visualisation.resetVisualisation();
-      this.createVisualisation(this.type);
-      this.redraw(this.persons, this.persons);
+      let myFunction = () => {
+        this.type = type;
+        this.visualisation.resetVisualisation();
+        this.createVisualisation(this.type);
+        if (this.isAdjacencyMatrix()) {
+          this.redrawForAdjacency();
+        } else {
+          this.redraw(this.persons, this.persons);
+        }
+      };
+      this.spinnerFunctionality(myFunction);
+    },
+    spinnerFunctionality(myFunction) {
+      this.showSpinner = true;
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          myFunction();
+          resolve();
+        }, 0);
+      }).then(() => (this.showSpinner = false));
     },
     redraw(personsRows, personsCols) {
       let type = this.type;
@@ -127,7 +147,7 @@ export default {
     isAdjacencyMatrix() {
       return (
         this.type === "AdjacencyMatrix" ||
-        (this.type = "none" && this.id === "AdjacencyMatrix")
+        (this.type === "none" && this.id === "AdjacencyMatrix")
       );
     },
     redrawForAdjacency() {
@@ -154,6 +174,8 @@ export default {
           return "Node-link diagram";
         case "CalendarVisualisation":
           return "Calendar matrix";
+        case "CalendarVisulasation":
+          return "Calendar visualisation";
         default:
           return "No name for vis";
       }

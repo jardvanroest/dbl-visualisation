@@ -26,4 +26,7 @@ export default {
   newMatrixData(state, newData) {
     state.matrixData = newData;
   },
+  updateDatasetID(state, id) {
+    state.datasetID = id;
+  },
 };

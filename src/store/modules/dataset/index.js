@@ -12,6 +12,7 @@ export default {
       inspectorData: -1,
       sortedMatrixData: "unsorted",
       matrixData: -1,
+      datasetID: "default",
     };
   },
   getters,
