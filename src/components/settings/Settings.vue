@@ -2,10 +2,11 @@
   <div class="container-settings">
     <div class="settings">
       <Section title="General" fields="none" />
-      <Setting name="Filter e-mail">
+      <Section title="Filters" fields="none" />
+      <Setting name="By E-mail">
         <EmailFilter ref="emailFilter" />
       </Setting>
-      <Setting name="Filter jobtitle">
+      <Setting name="By Job Title">
         <JobtitleFilter ref="jobTitleFilter" />
       </Setting>
       <Btn text="Apply filters" @click="applyFilters" />

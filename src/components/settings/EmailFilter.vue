@@ -120,13 +120,12 @@ input[type="checkbox"] {
 
 .email-filter-container {
   position: relative;
-  max-height: 15em;
 }
 
 .entries-container {
   max-height: 13em;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 a {
@@ -167,6 +166,7 @@ a {
   background-position: 0.25em 0.15em;
   background-repeat: no-repeat;
   padding-left: 1.5em;
+
   &:focus {
     background-image: url("../../assets/icons/loupe_focus.svg");
   }
