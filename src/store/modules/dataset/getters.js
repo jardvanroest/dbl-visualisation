@@ -53,4 +53,10 @@ export default {
       state.datasetID
     );
   },
+  minDate(state) {
+    return state.minDate;
+  },
+  maxDate(state) {
+    return state.maxDate;
+  },
 };

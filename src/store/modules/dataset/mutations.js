@@ -22,6 +22,13 @@ export default {
   setFilteredPersons(state, persons) {
     state.filteredPersons = persons;
   },
+  setFilteredDates(state, payload) {
+    const from = payload.from;
+    const to = payload.to;
+
+    state.filteredDates = { from, to };
+    console.log(state.filteredDates);
+  },
   newInspectorData(state, newData) {
     state.inspectorData = newData;
   },
@@ -30,5 +37,20 @@ export default {
   },
   updateDatasetID(state, id) {
     state.datasetID = id;
+  },
+  updateMinMaxDates(state, date) {
+    if (
+      state.maxDate === undefined ||
+      date.getTime() > state.maxDate.getTime()
+    ) {
+      state.maxDate = date;
+    }
+
+    if (
+      state.minDate === undefined ||
+      date.getTime() < state.minDate.getTime()
+    ) {
+      state.minDate = date;
+    }
   },
 };

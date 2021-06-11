@@ -46,6 +46,7 @@ export default {
     applyFilters() {
       this.$refs.emailFilter.applyFilter();
       this.$refs.jobTitleFilter.applyFilter();
+      this.$refs.dateFilter.applyFilter();
     },
     selectSettings(n) {
       // Don't switch settings type if nothing changed
