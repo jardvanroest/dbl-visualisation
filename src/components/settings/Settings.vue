@@ -2,14 +2,16 @@
   <div class="container-settings">
     <div class="settings">
       <Section title="General" fields="none" />
-      <Section title="Filters" fields="none" />
-      <Setting name="By E-mail">
-        <EmailFilter ref="emailFilter" />
-      </Setting>
-      <Setting name="By Job Title">
-        <JobtitleFilter ref="jobTitleFilter" />
-      </Setting>
-      <Btn text="Apply filters" @click="applyFilters" />
+      <div class="filters-container">
+        <Section title="Filters" fields="none" />
+        <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
+        <Setting name="By e-mail">
+          <EmailFilter ref="emailFilter" />
+        </Setting>
+        <Setting name="By job title">
+          <JobtitleFilter ref="jobTitleFilter" />
+        </Setting>
+      </div>
     </div>
     <Inspector class="inspector" />
   </div>
@@ -76,20 +78,41 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.container-settings {
+  --padding: 0.5rem;
+}
+
 .settings {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 32.5vh);
+  height: calc(100% - 32.5vh - var(--padding));
   padding-left: 5%;
 
   font-size: 0.8125rem;
   overflow-y: auto;
   overflow-x: hidden;
-  border-bottom: var(--settings-border);
+  margin-bottom: var(--padding);
 }
 
 .inspector {
-  padding: 1em 0;
-  height: calc(32.5vh - 2em);
+  padding: var(--padding) 0;
+  border-top: var(--settings-border);
+
+  height: calc(32.5vh - 2 * var(--padding));
+}
+
+.filters-container {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+}
+
+.apply-filters {
+  position: absolute;
+  top: 0.5em;
+  right: 1.5em;
+
+  width: fit-content;
+  background-color: var(--background-color);
 }
 </style>

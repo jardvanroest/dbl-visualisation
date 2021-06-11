@@ -101,15 +101,15 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 label {
   margin-left: 0.5em;
 }
 
 .list-entry {
   font-size: 0.8125rem;
-  margin-bottom: 0.3em;
-  margin-left: 0.7em;
+  margin-bottom: 0.25em;
+  margin-left: 0.75em;
 }
 
 input[type="checkbox"] {
@@ -123,7 +123,7 @@ input[type="checkbox"] {
 }
 
 .entries-container {
-  max-height: 13em;
+  max-height: 8em;
   width: 100%;
   overflow-y: auto;
 }
@@ -152,6 +152,7 @@ a {
   align-items: flex-start;
   justify-content: space-between;
   margin-right: 1.5em;
+  margin-bottom: 0.2em;
 
   font-size: 0.75rem;
   background: transparent;
