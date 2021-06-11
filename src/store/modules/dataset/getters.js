@@ -1,3 +1,9 @@
+import {
+  passesDateFilter,
+  passesJobTitleFilter,
+  passesEmailFilter,
+} from "./filtering";
+
 export default {
   emails(state) {
     return state.emails;
@@ -5,19 +11,14 @@ export default {
   filteredEmails(state, getters) {
     const filteredEmailAddresses = getters.filteredEmailAddresses;
     const filteredJobTitles = getters.filteredJobTitles;
+    const filteredDates = getters.filteredDates;
 
     return getters.emails.filter((email) => {
-      const passesEmailFilter =
-        filteredEmailAddresses.includes(email.fromEmail) ||
-        filteredEmailAddresses.includes(email.toEmail) ||
-        filteredEmailAddresses.length === 0;
-
-      const passesJobTitleFilter =
-        filteredJobTitles.includes(email.fromJobTitle) ||
-        filteredJobTitles.includes(email.toJobTitle) ||
-        filteredJobTitles.length === 0;
-
-      return passesEmailFilter && passesJobTitleFilter;
+      return (
+        passesEmailFilter(email, filteredEmailAddresses) &&
+        passesJobTitleFilter(email, filteredJobTitles) &&
+        passesDateFilter(email, filteredDates)
+      );
     });
   },
   filteredEmailAddresses(state) {
@@ -25,6 +26,9 @@ export default {
   },
   filteredJobTitles(state) {
     return state.filteredJobTitles;
+  },
+  filteredDates(state) {
+    return state.filteredDates;
   },
   persons(state) {
     return Object.values(state.persons);
