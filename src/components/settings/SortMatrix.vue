@@ -40,7 +40,6 @@ export default {
       this.sortAlg["type"] = event.target.value;
       this.sortAlg["index"] = event.target.options.selectedIndex;
 
-      // TODO: this.getMatrixDataForSorting is not filtered?
       switch (this.sortAlg["type"]) {
         case "initial":
           this.changeSortedMatrixData({
@@ -112,12 +111,12 @@ export default {
       });
     },
     getCoefficients(data) {
-      // Calculate matrix coefficients (only 1 and 0)
+      // Calculate matrix coefficients
       let _coeffs = [];
       for (let i = 0; i < data.length; i++) {
         let _row = [];
         for (let j = 0; j < data.length; j++) {
-          _row.push(data[i][j]._emails.length != 0);
+          _row.push(data[i][j]._emails.length);
         }
         _coeffs.push(_row);
       }
