@@ -3,15 +3,28 @@ export default {
     return state.emails;
   },
   filteredEmails(state, getters) {
-    if (!getters.thereAreAddressesSelectedInTheEmailFilter) return state.emails;
+    const filteredEmailAddresses = getters.filteredEmailAddresses;
+    const filteredJobTitles = getters.filteredJobTitles;
 
-    const persons = state.filteredPersons;
+    return getters.emails.filter((email) => {
+      const passesEmailFilter =
+        filteredEmailAddresses.includes(email.fromEmail) ||
+        filteredEmailAddresses.includes(email.toEmail) ||
+        filteredEmailAddresses.length === 0;
 
-    const filteredEmails = persons.flatMap((person) =>
-      person.sendEmails.concat(person.receivedEmails)
-    );
+      const passesJobTitleFilter =
+        filteredJobTitles.includes(email.fromJobTitle) ||
+        filteredJobTitles.includes(email.toJobTitle) ||
+        filteredJobTitles.length === 0;
 
-    return makeUnique(filteredEmails);
+      return passesEmailFilter && passesJobTitleFilter;
+    });
+  },
+  filteredEmailAddresses(state) {
+    return state.filteredPersons.map((person) => person.emailAddress);
+  },
+  filteredJobTitles(state) {
+    return state.filteredJobTitles;
   },
   persons(state) {
     return Object.values(state.persons);
@@ -24,6 +37,9 @@ export default {
   },
   getInspectorData(state) {
     return state.inspectorData;
+  },
+  jobTitles(state) {
+    return state.jobTitles;
   },
   getDatasetID(state) {
     return state.datasetID;
@@ -38,7 +54,3 @@ export default {
     );
   },
 };
-
-function makeUnique(array) {
-  return [...new Set(array)];
-}
