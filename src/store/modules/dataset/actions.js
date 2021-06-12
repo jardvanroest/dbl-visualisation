@@ -30,10 +30,15 @@ export default {
       context.commit("addPerson", sendingPerson);
       context.commit("addPerson", receivingPerson);
       context.commit("addEmail", email);
+      context.commit("addJobtitle", sendingPerson.jobTitle);
+      context.commit("addJobtitle", receivingPerson.jobTitle);
     });
   },
   setFilteredPersons(context, persons) {
     context.commit("setFilteredPersons", persons);
+  },
+  setFilteredJobTitles(context, jobTitles) {
+    context.commit("setFilteredJobTitles", jobTitles);
   },
 };
 

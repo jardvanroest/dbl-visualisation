@@ -12,6 +12,8 @@ export default {
       inspectorData: -1,
       sortedMatrixData: "unsorted",
       matrixData: -1,
+      jobTitles: [],
+      filteredJobTitles: [],
       datasetID: "default",
     };
   },

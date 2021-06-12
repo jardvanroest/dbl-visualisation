@@ -2,12 +2,19 @@
   <div class="container-settings">
     <div class="settings">
       <Section title="General" fields="none" />
-      <Setting name="Sorting algorithm" flexRow="yes">
+      <Setting name="Sorting algorithm">
         <SortMatrix />
       </Setting>
-      <Setting name="Filter e-mail">
-        <EmailFilter />
-      </Setting>
+      <div class="filters-container">
+        <Section title="Filters" fields="none" />
+        <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
+        <Setting name="By e-mail">
+          <EmailFilter ref="emailFilter" />
+        </Setting>
+        <Setting name="By job title">
+          <JobtitleFilter ref="jobTitleFilter" />
+        </Setting>
+      </div>
     </div>
     <Inspector class="inspector" />
   </div>
@@ -19,6 +26,8 @@ import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import SortMatrix from "@/components/settings/SortMatrix.vue";
+import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
+import Btn from "@/components/buttons/Btn.vue";
 
 export default {
   name: "Settings",
@@ -28,6 +37,8 @@ export default {
     Setting,
     EmailFilter,
     SortMatrix,
+    JobtitleFilter,
+    Btn,
   },
   data() {
     return {
@@ -35,6 +46,10 @@ export default {
     };
   },
   methods: {
+    applyFilters() {
+      this.$refs.emailFilter.applyFilter();
+      this.$refs.jobTitleFilter.applyFilter();
+    },
     selectSettings(n) {
       // Don't switch settings type if nothing changed
       if (this.lastSelected != n) {
@@ -68,20 +83,41 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.container-settings {
+  --padding: 0.5rem;
+}
+
 .settings {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 32.5vh);
+  height: calc(100% - 32.5vh - var(--padding));
   padding-left: 5%;
 
   font-size: 0.8125rem;
   overflow-y: auto;
   overflow-x: hidden;
-  border-bottom: var(--settings-border);
+  margin-bottom: var(--padding);
 }
 
 .inspector {
-  padding: 1em 0;
-  height: calc(32.5vh - 2em);
+  padding: var(--padding) 0;
+  border-top: var(--settings-border);
+
+  height: calc(32.5vh - 2 * var(--padding));
+}
+
+.filters-container {
+  position: relative;
+  width: 100%;
+  height: fit-content;
+}
+
+.apply-filters {
+  position: absolute;
+  top: 0.5em;
+  right: 1.5em;
+
+  width: fit-content;
+  background-color: var(--background-color);
 }
 </style>

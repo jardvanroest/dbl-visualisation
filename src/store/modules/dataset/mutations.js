@@ -3,11 +3,19 @@ export default {
     state.emails = [];
     state.persons = {};
     state.filteredPersons = [];
+    state.inspectorData = -1;
+    state.jobTitles = [];
+    state.filteredJobTitles = [];
   },
   addEmail(state, email) {
     state.emails.push(email);
     state.persons[email.fromId].sendEmails.push(email);
     state.persons[email.toId].receivedEmails.push(email);
+  },
+  addJobtitle(state, jobTitle) {
+    if (!state.jobTitles.includes(jobTitle)) {
+      state.jobTitles.push(jobTitle);
+    }
   },
   addPerson(state, person) {
     if (state.persons[person.id] === undefined) {
@@ -25,6 +33,9 @@ export default {
   },
   newMatrixData(state, newData) {
     state.matrixData = newData;
+  },
+  setFilteredJobTitles(state, jobTitles) {
+    state.filteredJobTitles = jobTitles;
   },
   updateDatasetID(state, id) {
     state.datasetID = id;
