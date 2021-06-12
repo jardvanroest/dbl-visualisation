@@ -5,9 +5,9 @@ import { Simulator } from "@/visualisations/node-link/simulator.js";
 import store from "@/store";
 
 export class NodeLink extends Visualisation {
-  constructor(HTMLselector) {
+  constructor(HTMLselector, tooltipsUpdate) {
     super(HTMLselector);
-
+    this.updateTooltips = tooltipsUpdate;
     this.colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
@@ -96,7 +96,22 @@ export class NodeLink extends Visualisation {
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
       .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
-      .on("click", this.nodeClick.bind(this));
+      .on("click", this.nodeClick.bind(this))
+      .on("mousemove", (e, d) => {
+        //console.log(e);
+        let pos = {
+          top: e.clientY,
+          left: e.clientX,
+        };
+        this.updateTooltips({
+          visible: true,
+          pos: pos,
+          data: { test: "test" },
+        });
+      })
+      .on("mouseout", (e, d) => {
+        this.updateTooltips({ visible: false });
+      });
   }
 
   _handleMouseDragOnNode(simulation) {

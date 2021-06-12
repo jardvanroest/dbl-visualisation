@@ -2,13 +2,12 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
 import store from "@/store";
 import * as d3 from "d3";
-import { rgb } from "d3";
 
 export class CalendarVisualisation extends Visualisation {
-  constructor(HTMLSelector) {
+  constructor(HTMLSelector, tooltipsUpdate) {
     super(HTMLSelector);
+    this.updateTooltips = tooltipsUpdate;
     //this.changeInspectorData = changeInspectorData;
-
     this.width = 500;
     this.height = 500;
     this.cellSize = this.width * 0.017;
@@ -62,6 +61,7 @@ export class CalendarVisualisation extends Visualisation {
   _generateYear(svg, data) {
     return svg
       .selectAll("g")
+      .attr("id", "laina")
       .data(data)
       .join("g")
       .attr("transform", (d, i) => this._transformYear(i));
@@ -147,16 +147,13 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   __getText_KeyMonths(year) {
-    return (
-      year
-        .append("g")
-        .selectAll("g")
-        //.data(() => range)
-        .data((d) =>
-          d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
-        )
-        .join("g")
-    );
+    return year
+      .append("g")
+      .selectAll("g")
+      .data((d) =>
+        d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
+      )
+      .join("g");
   }
 
   _drawDateCells(year) {
@@ -170,10 +167,29 @@ export class CalendarVisualisation extends Visualisation {
       .attr("height", this.cellSize - 1)
       .attr("x", (d) => this.___getXposCellDate(d))
       .attr("y", (d) => this.___getYposCellDate(d))
+      // coloring and opacity
       .attr("fill", (d) => d.fillColor)
       .attr("opacity", (d) => d.opacity)
+      // hooks
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
+      })
+      .on("mousemove", (e, d) => {
+        let pos = {
+          top: this.___getYposCellDate(d) + e.screenX / 4,
+          //e.pageY - document.getElementById(this.HTMLSelector).offset().top,
+          left: this.___getYposCellDate(d) * 2 + 50,
+          //e.pageX - document.getElementById(this.HTMLSelector).offset().left,
+        };
+        // wtf?????
+        vm.updateTooltips({
+          visible: true,
+          pos: pos,
+          data: { test: "test" },
+        });
+      })
+      .on("mouseout", (e) => {
+        vm.updateTooltips({ visible: false });
       });
   }
 

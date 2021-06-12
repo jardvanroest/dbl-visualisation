@@ -7,6 +7,12 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
+    <Tooltip
+      :visible="tooltipVisibility"
+      :data="tooltipData"
+      :pos="tooltipPosition"
+      @tooltipUpdate="tooltipUpdate"
+    />
     <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
@@ -17,6 +23,7 @@ import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
 import * as d3 from "d3";
 import { mapGetters, mapActions } from "vuex";
+import Tooltip from "./Tooltip.vue";
 
 export default {
   name: "Visualisations",
@@ -24,6 +31,7 @@ export default {
   components: {
     Spinner,
     DropDown,
+    Tooltip,
   },
   data() {
     return {
@@ -31,6 +39,9 @@ export default {
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
+      tooltipVisibility: false,
+      tooltipPosition: { top: 0, left: 0 },
+      tooltipData: { kurvi: "mnogo", belo: "obilno" },
     };
   },
   computed: {
@@ -68,7 +79,11 @@ export default {
   },
   methods: {
     createVisualisation(type) {
-      this.visualisation = new visualisations[type]("#" + this.id);
+      this.visualisation = new visualisations[type](
+        "#" + this.id,
+        this.tooltipUpdate
+      );
+      //console.log(element.getBoundingClientRect());
     },
     changeVisualisation(type) {
       let myFunction = () => {
@@ -123,6 +138,21 @@ export default {
         default:
           return "No name for vis";
       }
+    },
+    tooltipUpdate(d) {
+      if (d.visible) {
+        this.showTooltip(d.pos, d.data);
+      } else {
+        this.hideTooltip();
+      }
+    },
+    showTooltip(position, data) {
+      this.tooltipPosition = position;
+      this.tooltipData = data;
+      this.tooltipVisibility = true;
+    },
+    hideTooltip() {
+      this.tooltipVisibility = false;
     },
   },
 };

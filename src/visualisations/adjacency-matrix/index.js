@@ -3,8 +3,9 @@ import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 import store from "@/store";
 
 export class AdjacencyMatrix extends Visualisation {
-  constructor(HTMLSelector) {
+  constructor(HTMLSelector, tooltipsUpdate) {
     super(HTMLSelector);
+    this.updateTooltips = tooltipsUpdate;
   }
 
   redraw(emails, persons) {
@@ -66,7 +67,22 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("fill", function (d) {
         return d.fillColor;
       })
-      .on("click", this.updateInspectorData.bind(this));
+      .on("click", this.updateInspectorData.bind(this))
+      .on("mousemove", (e, d) => {
+        //console.log(e);
+        let pos = {
+          top: e.clientY,
+          left: e.clientX,
+        };
+        this.updateTooltips({
+          visible: true,
+          pos: pos,
+          data: { test: "test" },
+        });
+      })
+      .on("mouseout", (e, d) => {
+        this.updateTooltips({ visible: false });
+      });
   }
 
   _getPositionFromIndex(d, i) {

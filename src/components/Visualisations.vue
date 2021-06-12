@@ -1,5 +1,10 @@
 <template>
   <div class="visualisations-cont">
+    <div
+      id="tooltip"
+      display="none"
+      style="position: absolute; display: none"
+    ></div>
     <Visualisation class="visualisation" id="AdjacencyMatrix" />
     <Visualisation class="visualisation" id="NodeLink" />
   </div>
