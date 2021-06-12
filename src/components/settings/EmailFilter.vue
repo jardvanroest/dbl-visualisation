@@ -6,7 +6,6 @@
         v-model="searchText"
         placeholder="Search email address..."
       />
-      <Btn @click="applyFilter" text="Filter" />
     </div>
 
     <div class="entries-container">
@@ -41,14 +40,10 @@
 </template>
 
 <script>
-import Btn from "@/components/buttons/Btn.vue";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "EmailFilter",
-  components: {
-    Btn,
-  },
   data() {
     return {
       numShownEmailAddresses: 10,
@@ -106,15 +101,15 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 label {
   margin-left: 0.5em;
 }
 
 .list-entry {
   font-size: 0.8125rem;
-  margin-bottom: 0.3em;
-  margin-left: 0.7em;
+  margin-bottom: 0.25em;
+  margin-left: 0.75em;
 }
 
 input[type="checkbox"] {
@@ -128,7 +123,7 @@ input[type="checkbox"] {
 }
 
 .entries-container {
-  max-height: 13em;
+  max-height: 8em;
   width: 100%;
   overflow-y: auto;
 }
@@ -157,6 +152,7 @@ a {
   align-items: flex-start;
   justify-content: space-between;
   margin-right: 1.5em;
+  margin-bottom: 0.2em;
 
   font-size: 0.75rem;
   background: transparent;
@@ -171,6 +167,7 @@ a {
   background-position: 0.25em 0.15em;
   background-repeat: no-repeat;
   padding-left: 1.5em;
+
   &:focus {
     background-image: url("../../assets/icons/loupe_focus.svg");
   }

@@ -1,6 +1,7 @@
 <template>
   <div class="setting-cont" :class="{ flexRow: flexRow === 'yes' }">
-    <p class="pi">{{ name }}:</p>
+    <p>{{ name }}:</p>
+    <hr />
     <slot></slot>
   </div>
 </template>
@@ -16,7 +17,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .setting-cont {
   --margin-p: 1em 0 0 0.5em;
   display: flex;
@@ -27,6 +28,10 @@ export default {
   flex-direction: row;
   align-items: center;
   gap: 1em;
+}
+
+.flexRow hr {
+  display: none;
 }
 
 .setting-cont p {

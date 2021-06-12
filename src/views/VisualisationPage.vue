@@ -1,18 +1,20 @@
 <template>
-  <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
-  <Header
-    class="header"
-    @toggle-settings="toggleSettings"
-    @toggle-popup="toggleLinkPopup"
-  />
-  <div class="grid-container">
-    <Visualisations class="visualisations-cont" :amount="amount" />
-    <div :class="{ hide: !showSettings }" class="wrapper-settings">
-      <Settings
-        @change-amount="changeAmount"
-        :class="{ dontShow: !showSettings }"
-        class="container-settings"
-      />
+  <div class="visualisation-page-container">
+    <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
+    <Header
+      class="header"
+      @toggle-settings="toggleSettings"
+      @toggle-popup="toggleLinkPopup"
+    />
+    <div class="grid-container">
+      <Visualisations class="visualisations-cont" :amount="amount" />
+      <div :class="{ hide: !showSettings }" class="wrapper-settings">
+        <Settings
+          @change-amount="changeAmount"
+          :class="{ dontShow: !showSettings }"
+          class="container-settings"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +56,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.visualisation-page-container {
+  position: relative;
+}
+
 .grid-container {
   display: flex;
   margin-top: var(--hdr-size);
@@ -77,7 +83,7 @@ export default {
   --stt-height: calc(100vh - var(--hdr-size) - var(--brdr-size));
 
   width: 100%;
-  height: min(100%, var(--stt-height));
+  height: var(--stt-height);
   transition: ease 300ms;
 
   background-color: var(--background-color);

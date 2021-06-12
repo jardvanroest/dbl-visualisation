@@ -45,6 +45,6 @@ hr {
   margin-bottom: 1px;
   margin-right: 1rem;
   border: none;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--accent-color);
 }
 </style>
