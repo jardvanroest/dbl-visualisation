@@ -10,7 +10,9 @@
       <Visualisations class="visualisations-cont" :amount="amount" />
       <div :class="{ hide: !showSettings }" class="wrapper-settings">
         <Settings
-          @change-amount="changeAmount"
+          @change-vis-amount="changeVisAmount"
+          @change-column-num="changeColumnNum"
+          @change-row-num="changeRowNum"
           :class="{ dontShow: !showSettings }"
           class="container-settings"
         />
@@ -41,10 +43,17 @@ export default {
     };
   },
   methods: {
-    changeAmount(amount) {
+    changeVisAmount(amount) {
       this.amount = amount;
     },
-
+    changeColumnNum(number) {
+      const r = document.querySelector(":root");
+      r.style.setProperty("--grd-cols", number);
+    },
+    changeRowNum(number) {
+      const r = document.querySelector(":root");
+      r.style.setProperty("--grd-rows", number);
+    },
     toggleLinkPopup() {
       this.showPopup = !this.showPopup;
     },
@@ -117,7 +126,7 @@ export default {
 
   .wrapper-settings {
     position: absolute;
-    top: var(--hdr-size);
+    top: 0;
     right: 0;
 
     height: 100%;

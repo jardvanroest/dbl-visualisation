@@ -13,7 +13,11 @@
         </Setting>
       </div>
       <Section title="Layout" fields="none" />
-      <Layout @change-amount="$emit('change-amount', $event)" />
+      <Layout
+        @change-vis-amount="$emit('change-vis-amount', $event)"
+        @change-column-num="$emit('change-column-num', $event)"
+        @change-row-num="$emit('change-row-num', $event)"
+      />
     </div>
     <Inspector class="inspector" />
   </div>
@@ -49,34 +53,6 @@ export default {
       this.$refs.emailFilter.applyFilter();
       this.$refs.jobTitleFilter.applyFilter();
     },
-    selectSettings(n) {
-      // Don't switch settings type if nothing changed
-      if (this.lastSelected != n) {
-        // Get the newly selected selection li
-        var selection = document.getElementsByClassName("select_mode")[0]
-          .children[0].children;
-
-        // Unselect previous selected settings type
-        selection[this.lastSelected].classList.remove("selected");
-
-        // Select current selected settings type
-        selection[n].classList.add("selected");
-
-        // Get the newly selected settingsType element
-        var selSettingsType = document.getElementsByClassName(
-          "container-settingType"
-        )[0].children;
-
-        // Unselect previous selected settings type
-        selSettingsType[this.lastSelected].classList.add("unselected");
-
-        // Select current selected settings type
-        selSettingsType[n].classList.remove("unselected");
-
-        // Update lastSelected
-        this.lastSelected = n;
-      }
-    },
   },
 };
 </script>
@@ -84,6 +60,7 @@ export default {
 <style scoped lang="scss">
 .container-settings {
   --padding: 0.5rem;
+  border-bottom-left-radius: var(--border-rad);
 }
 
 .settings {

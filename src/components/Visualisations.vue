@@ -1,5 +1,5 @@
 <template>
-  <div class="visualisations-cont">
+  <div class="visualisations-cont" id="vis-cont">
     <Visualisation
       v-for="n in amount"
       :key="n"
@@ -33,5 +33,10 @@ export default {
   grid-gap: 0.75em;
   grid-template-columns: repeat(var(--grd-cols), 1fr);
   grid-template-rows: repeat(var(--grd-rows), 1fr);
+}
+
+.visualisations-cont.outlined {
+  outline: 0.15rem dashed var(--accent-color-light);
+  outline-offset: 0.2rem;
 }
 </style>

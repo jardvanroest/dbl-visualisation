@@ -1,11 +1,19 @@
 <template>
   <div class="layout-container">
-    <Setting name="Amount" flexRow="yes">
+    <Setting name="Show grid outline" flexRow="yes">
+      <input
+        type="checkbox"
+        name="checkbox"
+        class="cb-outline"
+        @change="toggleGridOutline"
+      />
+    </Setting>
+    <Setting name="Visualisations" flexRow="yes">
       <DropDown
         class="dropdown"
         :selected="2"
         :items="createDropDownObj(16)"
-        @changed="changeAmount"
+        @changed="changeVisAmount"
       />
     </Setting>
     <Setting class="columns-cont" name="Columns" flexRow="yes">
@@ -13,7 +21,7 @@
         class="dropdown"
         :selected="2"
         :items="createDropDownObj(4)"
-        @changed="idk"
+        @changed="changeColumnNum"
       />
     </Setting>
     <Setting class="rows-cont" name="Rows" flexRow="yes">
@@ -21,7 +29,7 @@
         class="dropdown"
         :selected="1"
         :items="createDropDownObj(4)"
-        @changed="idk"
+        @changed="changeRowNum"
       />
     </Setting>
   </div>
@@ -46,11 +54,19 @@ export default {
     };
   },
   methods: {
-    changeAmount(amount) {
-      this.$emit("change-amount", amount);
+    changeVisAmount(amount) {
+      this.$emit("change-vis-amount", amount);
     },
-    idk() {
-      console.log("idk");
+    changeColumnNum(number) {
+      this.$emit("change-column-num", number);
+    },
+    changeRowNum(number) {
+      this.$emit("change-row-num", number);
+    },
+    toggleGridOutline(e) {
+      let visCont = document.getElementById("vis-cont");
+      if (e.target.checked) visCont.classList.add("outlined");
+      else visCont.classList.remove("outlined");
     },
     createDropDownObj(maxNum) {
       var list = [];
@@ -78,6 +94,19 @@ export default {
 
 .setting-cont {
   --margin-p: 0.5em 0 0.5em 0.5em !important;
+}
+
+input.cb-outline {
+  transform: scale(1.25);
+  -ms-transform: scale(1.25);
+  -webkit-transform: scale(1.25);
+  -o-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
 }
 
 /* Show visualisations as one column on smaller screen sizes and
