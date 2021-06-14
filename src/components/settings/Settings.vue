@@ -2,6 +2,9 @@
   <div class="container-settings">
     <div class="settings">
       <Section title="General" fields="none" />
+      <Setting name="Interaction Mode">
+        <InteractionMode />
+      </Setting>
       <div class="filters-container">
         <Section title="Filters" fields="none" />
         <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
@@ -23,6 +26,7 @@ import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
+import InteractionMode from "@/components/settings/InteractionMode.vue";
 import Btn from "@/components/buttons/Btn.vue";
 
 export default {
@@ -33,6 +37,7 @@ export default {
     Setting,
     EmailFilter,
     JobtitleFilter,
+    InteractionMode,
     Btn,
   },
   data() {
