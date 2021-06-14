@@ -93,7 +93,7 @@ export default {
 }
 
 .setting-cont {
-  --margin-p: 0.5em 0 0.5em 0.5em !important;
+  --margin-p: 0.4em 0 0.4em 0.4em !important;
 }
 
 input.cb-outline {
