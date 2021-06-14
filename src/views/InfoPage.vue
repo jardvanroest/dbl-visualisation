@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import Btn from "@/components/Btn.vue";
+import Btn from "@/components/buttons/Btn.vue";
 
 export default {
   name: "InfoPage",

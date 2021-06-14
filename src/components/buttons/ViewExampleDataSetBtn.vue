@@ -11,7 +11,7 @@ export default {
   name: "ViewExampleDataSetBtn",
   methods: {
     importExampleDataset() {
-      this.saveData(parseString(exampleDataSet));
+      this.saveData({ data: parseString(exampleDataSet), isDefault: true });
       this.goToVisualisationPage();
     },
     goToVisualisationPage() {
@@ -25,11 +25,11 @@ export default {
 <style scoped lang="scss">
 p {
   text-decoration: underline;
-  margin: 4px;
+  margin: 0.5em;
 
   &:hover {
     cursor: pointer;
-    color: #2e2e2e;
+    color: var(--accent-color-2);
   }
 }
 </style>

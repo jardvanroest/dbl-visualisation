@@ -4,9 +4,9 @@ import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
 import { Brush } from "@/visualisations/node-link/brush.js";
 
-export class NodeLinkVisualisation extends Visualisation {
-  constructor() {
-    super("#areaNodeLinkSVG");
+export class NodeLink extends Visualisation {
+  constructor(HTMLSelector) {
+    super(HTMLSelector);
 
     this.colors = {
       edgePositive: "#b4ecb4",
@@ -30,7 +30,7 @@ export class NodeLinkVisualisation extends Visualisation {
   }
 
   redraw(emails) {
-    this._resetVisualisation();
+    this.resetVisualisation();
     this._generateVis(emails);
   }
 
@@ -56,14 +56,14 @@ export class NodeLinkVisualisation extends Visualisation {
 
     // TODO: adding the brush invalidates drag behaviour
     // and fucks up zooming
-    new Brush(
+    /*new Brush(
       svg,
       this.drawnNodes,
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
       this.colors.nodeSelectedOutline
-    ).appendBrush();
+    ).appendBrush();*/
   }
 
   _getSimulation(nodes, links) {

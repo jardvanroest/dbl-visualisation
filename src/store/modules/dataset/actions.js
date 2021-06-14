@@ -1,10 +1,20 @@
+import axios from "axios";
+
 import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
   changeInspectorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
-  saveData(context, data) {
+
+  saveData(context, { data: data, isDefault: isDefault }) {
+    if (!isDefault) {
+      // upload dataset if it is not default
+      postDataToBackend(data, context);
+    } else {
+      context.commit("updateDatasetID", "default");
+    }
+
     context.commit("removeCurrentDataset"); // there might already be a dataset loaded
 
     data.forEach((entry) => {
@@ -15,9 +25,29 @@ export default {
       context.commit("addPerson", sendingPerson);
       context.commit("addPerson", receivingPerson);
       context.commit("addEmail", email);
+      context.commit("addJobtitle", sendingPerson.jobTitle);
+      context.commit("addJobtitle", receivingPerson.jobTitle);
     });
   },
   setFilteredPersons(context, persons) {
     context.commit("setFilteredPersons", persons);
   },
+  setFilteredJobTitles(context, jobTitles) {
+    context.commit("setFilteredJobTitles", jobTitles);
+  },
 };
+
+function postDataToBackend(data, context) {
+  axios({
+    method: "post",
+    url: "http://" + process.env.VUE_APP_SERVER_IP + ":5000/datasets",
+    data: data,
+  }).then(
+    (response) => {
+      context.commit("updateDatasetID", response.data);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+}
