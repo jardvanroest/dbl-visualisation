@@ -4,8 +4,16 @@
       <input
         type="checkbox"
         name="checkbox"
-        class="cb-outline"
+        id="cb-outline"
         @change="toggleGridOutline"
+      />
+    </Setting>
+    <Setting name="Show horizontal calendar" flexRow="yes">
+      <input
+        type="checkbox"
+        name="checkbox"
+        id="cb-hor-cal"
+        @change="toggleRowCalendar"
       />
     </Setting>
     <Setting name="Visualisations" flexRow="yes">
@@ -39,8 +47,6 @@
 import DropDown from "@/components/DropDown.vue";
 import Setting from "@/components/settings/Setting.vue";
 
-// TODO: --vis-nums := number of visualisations (remember to change)
-
 export default {
   name: "Layout",
   components: {
@@ -52,6 +58,9 @@ export default {
       visDimObj: this.createDropDownObj(4),
       visNumObj: this.createDropDownObj(16),
     };
+  },
+  mounted() {
+    document.getElementById("cb-hor-cal").checked = true;
   },
   methods: {
     changeVisAmount(amount) {
@@ -67,6 +76,11 @@ export default {
       let visCont = document.getElementById("vis-cont");
       if (e.target.checked) visCont.classList.add("outlined");
       else visCont.classList.remove("outlined");
+    },
+    toggleRowCalendar(e) {
+      let rowCalendar = document.getElementById("horizontal-calendar");
+      if (e.target.checked) rowCalendar.classList.remove("hidden");
+      else rowCalendar.classList.add("hidden");
     },
     createDropDownObj(maxNum) {
       var list = [];
@@ -96,7 +110,8 @@ export default {
   --margin-p: 0.4em 0 0.4em 0.4em !important;
 }
 
-input.cb-outline {
+input#cb-outline,
+input#cb-hor-cal {
   transform: scale(1.25);
   -ms-transform: scale(1.25);
   -webkit-transform: scale(1.25);

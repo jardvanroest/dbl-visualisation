@@ -45,6 +45,8 @@ export default {
   methods: {
     changeVisAmount(amount) {
       this.amount = amount;
+      const r = document.querySelector(":root");
+      r.style.setProperty("--vis-nums", amount);
     },
     changeColumnNum(number) {
       const r = document.querySelector(":root");
