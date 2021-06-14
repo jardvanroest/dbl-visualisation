@@ -3,18 +3,19 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
 import { Brush } from "@/visualisations/node-link/brush.js";
+import store from "@/store";
 
 export class NodeLink extends Visualisation {
-  constructor(HTMLSelector) {
-    super(HTMLSelector);
+  constructor(HTMLselector) {
+    super(HTMLselector);
 
     this.colors = {
       edgePositive: "#b4ecb4",
       edgeNeutral: "#cfcfc4",
       edgeNegative: "#e498a1",
-      nodeBody: "#B8E0F6",
+      nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
-      nodeSelectedOutline: "#A585C1",
+      nodeSelectedOutline: "#a585c1",
     };
 
     this.options = {
@@ -25,11 +26,10 @@ export class NodeLink extends Visualisation {
       edgeOpacity: 0.6,
       sentimentThreshold: 0.01,
     };
-
-    this.brushedNodes = [];
   }
 
-  redraw(emails) {
+  redraw(emails, persons) {
+    this._persons = persons;
     this.resetVisualisation();
     this._generateVis(emails);
   }
@@ -56,14 +56,14 @@ export class NodeLink extends Visualisation {
 
     // TODO: adding the brush invalidates drag behaviour
     // and fucks up zooming
-    /*new Brush(
+    new Brush(
       svg,
       this.drawnNodes,
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
       this.colors.nodeSelectedOutline
-    ).appendBrush();*/
+    ).appendBrush();
   }
 
   _getSimulation(nodes, links) {
@@ -94,7 +94,8 @@ export class NodeLink extends Visualisation {
         if (d.avgSentiment > that.options.sentimentThreshold)
           return that.colors.edgePositive;
         return that.colors.edgeNeutral;
-      });
+      })
+      .on("click", this.edgeClick.bind(this));
   }
 
   _drawNodes(svg, nodes, simulation) {
@@ -111,7 +112,8 @@ export class NodeLink extends Visualisation {
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
-      .call(this._handleMouseDragOnNode(simulation)); // Append listener for drag events
+      .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
+      .on("click", this.nodeClick.bind(this));
   }
 
   _handleMouseDragOnNode(simulation) {
@@ -147,5 +149,75 @@ export class NodeLink extends Visualisation {
       .attr("y2", (d) => d.target.y);
 
     this.drawnNodes.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+  }
+
+  edgeClick(event, cell) {
+    const persons = store.getters["dataset/persons"];
+    const personA = persons.find((p) => p.id === cell.target.id);
+    const personB = persons.find((p) => p.id === cell.source.id);
+    const emails = store.getters["dataset/filteredEmails"];
+
+    let sent_by_a = 0;
+    let sent_by_b = 0;
+    emails.forEach((email) => {
+      if (email.fromId === personA.id && email.toId === personB.id) sent_by_a++;
+      if (email.fromId === personB.id && email.toId === personA.id) sent_by_b++;
+    });
+
+    let inspectorData = {
+      person_1: {
+        email: personA.emailAddress,
+        id: personA.id,
+        title: personA.jobTitle,
+        included_in_filter: this._isFiltered(personA),
+        sent_emails: sent_by_a,
+      },
+      person_2: {
+        email: personB.emailAddress,
+        id: personB.id,
+        title: personB.jobTitle,
+        included_in_filter: this._isFiltered(personB),
+        sent_emails: sent_by_b,
+      },
+    };
+
+    inspectorData.additional_information = {
+      weight: cell.weight,
+      edge_color: event.srcElement.attributes[0].value.toString(),
+      average_sentiment: cell.avgSentiment.toPrecision(3),
+    };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
+  }
+
+  nodeClick(event, cell) {
+    const persons = store.getters["dataset/persons"];
+    const person = persons.find((p) => p.id === cell.id);
+
+    let inspectorData = {
+      person: {
+        email: person.emailAddress,
+        id: person.id,
+        title: person.jobTitle,
+        included_in_filter: this._isFiltered(person),
+      },
+      sent_emails: { number: person.sendEmails.length },
+      received_emails: { number: person.receivedEmails.length },
+    };
+
+    // Add fields only if there are emails
+    if (person.sendEmails.length > 0) {
+      this._newEmailsObject(person.sendEmails, inspectorData.sent_emails);
+    }
+    if (person.receivedEmails.length > 0) {
+      this._newEmailsObject(
+        person.receivedEmails,
+        inspectorData.received_emails
+      );
+    }
+
+    inspectorData.additional_information = { node_color: this.colors.nodeBody };
+
+    store.dispatch("dataset/changeInspectorData", inspectorData);
   }
 }

@@ -18,6 +18,8 @@ export class Visualisation {
     d3.select(this.HTMLSelector).selectChild("g").selectAll("*").remove();
   }
 
+  showSelection() {}
+
   _getSVG() {
     return d3.select(this.HTMLSelector).selectChild("g");
   }

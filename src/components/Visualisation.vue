@@ -35,12 +35,18 @@ export default {
   },
   computed: {
     ...mapGetters("dataset", ["filteredEmails", "persons"]),
+    ...mapGetters("brush_and_link", ["selectedNodes"]),
   },
   watch: {
     filteredEmails: {
       deep: true,
       handler() {
         this.showSpinnerDoFunctionHideSpinner(this.redraw);
+      },
+    },
+    selectedNodes: {
+      handler() {
+        this.showSelection();
       },
     },
   },
@@ -54,7 +60,7 @@ export default {
     this.zoom = d3
       .zoom()
       .scaleExtent([this.zoomVals.min, this.zoomVals.max])
-      .on("zoom", this.zoomed);
+      .on("zoom", this.zoomed); // TODO: notZoomed can be calledso it does not interfere with brush-and-link
 
     this.g = d3
       .select("#" + this.id)
@@ -77,6 +83,9 @@ export default {
         this.redraw();
       };
       this.showSpinnerDoFunctionHideSpinner(myFunction);
+    },
+    showSelection() {
+      this.visualisation.showSelection(this.selectedNodes);
     },
     showSpinnerDoFunctionHideSpinner(myFunction) {
       this.showSpinner = true;
@@ -103,6 +112,7 @@ export default {
       this.zoom.translateExtent([topLeft, bottomRight]);
       this.g.attr("transform", event.transform);
     },
+    notZoomed(event) {},
     createDropDownItemsList() {
       var list = [];
       for (const key of Object.keys(visualisations)) {

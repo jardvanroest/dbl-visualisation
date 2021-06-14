@@ -42,7 +42,7 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _drawVisualisation(svg, matrix) {
-    let margin = 0.1;
+    let margin = 0.2;
     let nodeLength = this.width / this.persons.length;
 
     this.rectLength = (1 - margin) * nodeLength;
@@ -56,7 +56,6 @@ export class AdjacencyMatrix extends Visualisation {
 
   _drawRows(svg, matrix) {
     return svg
-      .append("g")
       .selectAll("g")
       .data(matrix)
       .enter()
@@ -98,11 +97,9 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("width", this.rectLength)
       .attr("height", this.rectLength)
       .attr("stroke-width", this.rectMargin)
-      .attr("stroke", "white")
       .attr("fill", function (d) {
         return d.fillColor;
-      })
-      .on("click", this.updateInspectorData.bind(this));
+      });
   }
 
   _drawTransparentCells(columns) {
@@ -116,10 +113,11 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("y", this._getPositionFromIndex.bind(this))
       .attr("width", this.rectLength)
       .attr("height", this.rectLength)
+      .attr("stroke-width", this.rectMargin)
       .attr("fill", function (d) {
         return "transparent";
       })
-      .attr("stroke-width", this.rectMargin * 2);
+      .on("click", this.updateInspectorData.bind(this));
   }
 
   _getPositionFromIndex(d, i) {
