@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="import-btn">
     <Btn @click="openFilePicker" text="Upload dataset (.csv)" />
     <input
       type="file"
@@ -50,6 +50,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.import-btn {
+  margin: auto;
+  width: fit-content;
+  border-radius: var(--border-rad);
+  background-color: var(--background-color);
+}
+
 .hidden {
   display: none;
 }

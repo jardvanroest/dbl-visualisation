@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import store from "@/store";
 
 export class Visualisation {
   constructor(HTMLSelector, name) {
@@ -84,5 +85,13 @@ export class Visualisation {
       const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
       return AvgVal(array);
     }
+  }
+
+  _isFiltered(person) {
+    const filteredJobTitles = store.getters["dataset/filteredJobTitles"];
+    let isFilteredByJobTitle = filteredJobTitles.includes(person.jobTitle);
+    let filtered = isFilteredByJobTitle || person.isSelectedInEmailFilter;
+
+    return filtered;
   }
 }

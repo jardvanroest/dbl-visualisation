@@ -1,17 +1,22 @@
 <template>
-  <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
-  <Header
-    class="header"
-    @toggle-settings="toggleSettings"
-    @toggle-popup="toggleLinkPopup"
-  />
-  <div class="grid-container">
-    <Visualisations class="visualisations-cont" />
-    <div :class="{ hide: !showSettings }" class="wrapper-settings">
-      <Settings
-        :class="{ dontShow: !showSettings }"
-        class="container-settings"
-      />
+  <div class="visualisation-page-container">
+    <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
+    <Header
+      class="header"
+      @toggle-settings="toggleSettings"
+      @toggle-popup="toggleLinkPopup"
+    />
+    <div class="grid-container">
+      <Visualisations class="visualisations-cont" :amount="amount" />
+      <div :class="{ hide: !showSettings }" class="wrapper-settings">
+        <Settings
+          @change-vis-amount="changeVisAmount"
+          @change-column-num="changeColumnNum"
+          @change-row-num="changeRowNum"
+          :class="{ dontShow: !showSettings }"
+          class="container-settings"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -34,9 +39,21 @@ export default {
     return {
       showSettings: true,
       showPopup: false,
+      amount: 2,
     };
   },
   methods: {
+    changeVisAmount(amount) {
+      this.amount = amount;
+    },
+    changeColumnNum(number) {
+      const r = document.querySelector(".visualisation-page-container");
+      r.style.setProperty("--grd-cols", number);
+    },
+    changeRowNum(number) {
+      const r = document.querySelector(".visualisation-page-container");
+      r.style.setProperty("--grd-rows", number);
+    },
     toggleLinkPopup() {
       this.showPopup = !this.showPopup;
     },
@@ -48,9 +65,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.visualisation-page-container {
+  position: relative;
+
+  --grd-cols: 2;
+  --grd-rows: 1;
+  --vis-nums: 2;
+}
+
 .grid-container {
   display: flex;
-  //margin-top: var(--hdr-size);
+  margin-top: var(--hdr-size);
   min-height: calc(100vh - var(--hdr-size));
   background-color: var(--background-color-2);
   overflow-x: hidden;
@@ -71,7 +96,7 @@ export default {
   --stt-height: calc(100vh - var(--hdr-size) - var(--brdr-size));
 
   width: 100%;
-  height: min(100%, var(--stt-height));
+  height: var(--stt-height);
   transition: ease 300ms;
 
   background-color: var(--background-color);
@@ -100,20 +125,16 @@ export default {
 
 @media (max-width: 525px) {
   .grid-container {
-    flex-direction: column;
+    --grd-cols: 1;
   }
+
   .wrapper-settings {
     position: absolute;
-    top: var(--hdr-size);
+    top: 0;
     right: 0;
 
     height: 100%;
     width: 100%;
   }
-}
-
-.header {
-  position: relative;
-  z-index: 50;
 }
 </style>
