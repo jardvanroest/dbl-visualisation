@@ -3,7 +3,7 @@
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
-      :selected="id"
+      :selected="type"
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
@@ -20,7 +20,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Visualisations",
-  props: ["id"],
+  props: ["id", "initialType"],
   components: {
     Spinner,
     DropDown,
@@ -30,8 +30,8 @@ export default {
       size: 500,
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
-      type: "none",
       showSpinner: false,
+      type: this.initialType,
     };
   },
   computed: {
@@ -74,7 +74,7 @@ export default {
       .append("g")
       .attr("transform", translation);
 
-    this.createVisualisation(this.id);
+    this.createVisualisation(this.type);
     this.redraw(this.persons, this.persons);
   },
   methods: {

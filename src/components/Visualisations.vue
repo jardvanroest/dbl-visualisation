@@ -1,7 +1,11 @@
 <template>
   <div class="visualisations-cont">
-    <Visualisation class="visualisation" id="AdjacencyMatrix" />
-    <Visualisation class="visualisation" id="NodeLink" />
+    <Visualisation
+      class="visualisation"
+      id="vis1"
+      initialType="AdjacencyMatrix"
+    />
+    <Visualisation class="visualisation" id="vis2" initialType="NodeLink" />
   </div>
 </template>
 
