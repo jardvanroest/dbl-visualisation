@@ -45,12 +45,12 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
-        this.spinnerFunctionality(this.redrawAfterFiltering);
+        this.spinnerFunctionality(this.redraw);
       },
     },
     // Watch for new incoming {sortedMatrixData}
     getSortedMatrixData() {
-      if (this.isAdjacencyMatrix()) {
+      if (this.type === "AdjacencyMatrix") {
         this.spinnerFunctionality(this.redrawForAdjacency);
       }
     },
@@ -75,7 +75,7 @@ export default {
       .attr("transform", translation);
 
     this.createVisualisation(this.type);
-    this.redraw(this.persons, this.persons);
+    this.redraw();
   },
   methods: {
     createVisualisation(type) {
@@ -87,11 +87,7 @@ export default {
         this.type = type;
         this.visualisation.resetVisualisation();
         this.createVisualisation(this.type);
-        if (this.isAdjacencyMatrix()) {
-          this.redrawForAdjacency();
-        } else {
-          this.redraw(this.persons, this.persons);
-        }
+        this.redraw();
       };
       this.spinnerFunctionality(myFunction);
     },
@@ -103,20 +99,6 @@ export default {
           resolve();
         }, 0);
       }).then(() => (this.showSpinner = false));
-    },
-    redraw(personsRows, personsCols) {
-      let type = this.type;
-      if (this.type == "none") type = this.id;
-
-      if (type === "AdjacencyMatrix") {
-        this.visualisation.redraw(
-          this.filteredEmails,
-          personsRows,
-          personsCols
-        );
-      } else {
-        this.visualisation.redraw(this.filteredEmails, this.persons);
-      }
     },
     zoomed(event) {
       var box = this.g.node().getBBox();
@@ -138,18 +120,12 @@ export default {
       }
       return list;
     },
-    redrawAfterFiltering() {
-      if (this.isAdjacencyMatrix()) {
+    redraw() {
+      if (this.type === "AdjacencyMatrix") {
         this.redrawForAdjacency();
       } else {
-        this.redraw(this.persons, this.persons);
+        this.visualisation.redraw(this.filteredEmails, this.persons);
       }
-    },
-    isAdjacencyMatrix() {
-      return (
-        this.type === "AdjacencyMatrix" ||
-        (this.type === "none" && this.id === "AdjacencyMatrix")
-      );
     },
     redrawForAdjacency() {
       let newData = this.getSortedMatrixData;

@@ -64,11 +64,20 @@ class Cell {
     this._emails.push(email);
   }
 
+  _isFiltered(person) {
+    const filteredJobTitles = store.getters["dataset/filteredJobTitles"];
+    let isFilteredByJobTitle = filteredJobTitles.includes(person.jobTitle);
+    let filtered = isFilteredByJobTitle || person.isSelectedInEmailFilter;
+
+    return filtered;
+  }
+
   get fillColor() {
     if (
-      this.sender.isSelectedInEmailFilter ||
-      this.recipient.isSelectedInEmailFilter ||
-      !store.getters["dataset/thereAreAddressesSelectedInTheEmailFilter"]
+      this._isFiltered(this.sender) ||
+      this._isFiltered(this.recipient) ||
+      (!store.getters["dataset/thereAreAddressesSelectedInTheEmailFilter"] &&
+        store.getters["dataset/filteredJobTitles"].length <= 0)
     ) {
       if (this._emails.length !== 0) {
         return "#df848f";
