@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapGetters("dataset", ["filteredEmails", "persons"]),
-    ...mapGetters("brush_and_link", ["selectedNodes"]),
+    ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
   watch: {
     filteredEmails: {
@@ -49,6 +49,11 @@ export default {
         this.showSelection();
       },
     },
+    interactionMode: {
+      handler() {
+        this.showSpinnerDoFunctionHideSpinner(this.toggleInteractionMode);
+      },
+    },
   },
   mounted() {
     // Calculate margin for initial zoom and scale so that buttons do not cover the visualisation
@@ -57,10 +62,9 @@ export default {
     let marginScale = 1 - (2 * margin) / this.size;
     let translation = `translate(${margin},${margin}) scale(${marginScale},${marginScale})`;
 
-    this.zoom = d3
-      .zoom()
-      .scaleExtent([this.zoomVals.min, this.zoomVals.max])
-      .on("zoom", this.zoomed); // TODO: notZoomed can be calledso it does not interfere with brush-and-link
+    this.zoom = d3.zoom().scaleExtent([this.zoomVals.min, this.zoomVals.max]);
+    //.on("zoom", this.zoomed);
+    // TODO: remove/add zoom based on {interactionMode}
 
     this.g = d3
       .select("#" + this.id)
@@ -102,6 +106,9 @@ export default {
     },
     redraw() {
       this.visualisation.redraw(this.filteredEmails, this.persons);
+    },
+    toggleInteractionMode() {
+      this.visualisation.toggleInteractionMode(this.interactionMode);
     },
     zoomed(event) {
       var box = this.g.node().getBBox();

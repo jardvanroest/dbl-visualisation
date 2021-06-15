@@ -34,6 +34,10 @@ export class NodeLink extends Visualisation {
     this._generateVis(emails);
   }
 
+  toggleInteractionMode(interactionMode) {
+    this._toggleBrush(interactionMode);
+  }
+
   _generateVis(emails) {
     const { nodes, links } = this._parseData(emails);
     const svg = this._getSVG();
@@ -54,16 +58,24 @@ export class NodeLink extends Visualisation {
 
     simulation.on("tick", this._handleSimulationTick.bind(this));
 
-    // TODO: adding the brush invalidates drag behaviour
-    // and fucks up zooming
-    new Brush(
+    // Create brush object
+    this.brush = new Brush(
       svg,
       this.drawnNodes,
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
       this.colors.nodeSelectedOutline
-    ).appendBrush();
+    );
+
+    // Toggle brush based on current {interactionMode}
+    const interactionMode = store.getters["brush_and_link/interactionMode"];
+    this._toggleBrush(interactionMode);
+  }
+
+  _toggleBrush(interactionMode) {
+    if (interactionMode === "select") this.brush.appendBrush();
+    else this.brush.removeBrush();
   }
 
   _getSimulation(nodes, links) {

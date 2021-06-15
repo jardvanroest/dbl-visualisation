@@ -20,6 +20,8 @@ export class Visualisation {
 
   showSelection() {}
 
+  toggleInteractionMode(interactionMode) {}
+
   _getSVG() {
     return d3.select(this.HTMLSelector).selectChild("g");
   }

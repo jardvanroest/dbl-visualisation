@@ -2,7 +2,7 @@
   <div class="interaction-mode-container">
     <DropDown
       class="dropdown"
-      selected="inspection"
+      selected="inspect"
       :items="dropdownItems"
       @changed="changeInteractionMode"
     />
@@ -11,6 +11,7 @@
 
 <script>
 import DropDown from "@/components/DropDown.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "InteractionMode",
@@ -21,15 +22,15 @@ export default {
   data() {
     return {
       dropdownItems: [
-        { value: "inspection", name: "Inspection" },
-        { value: "selection", name: "Selection" },
+        { value: "inspect", name: "Inspection" },
+        { value: "select", name: "Selection" },
       ],
     };
   },
   methods: {
+    ...mapActions("brush_and_link", ["updateInteractionMode"]),
     changeInteractionMode(value) {
-      // TODO: implement this
-      console.log(value);
+      this.updateInteractionMode(value);
     },
   },
 };

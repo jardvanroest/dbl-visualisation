@@ -18,12 +18,16 @@ export class Brush {
       width: width,
       height: height,
     };
+
+    this.brush = this._createBrush();
   }
 
   appendBrush() {
-    const brush = this._createBrush();
+    this.brushArea.append("g").attr("class", "brush").call(this.brush);
+  }
 
-    this.brushArea.append("g").call(brush);
+  removeBrush() {
+    this.brushArea.selectAll("g.brush").remove();
   }
 
   _createBrush() {
