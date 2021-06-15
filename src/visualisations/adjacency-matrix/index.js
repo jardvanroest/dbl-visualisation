@@ -17,7 +17,10 @@ export class AdjacencyMatrix extends Visualisation {
   showSelection(selectedNodes) {
     const selectColor = "#A585C1";
 
-    const selectedNodesArr = Object.values(selectedNodes);
+    // Substract 1 to each selectedNode item, since the rows in AdjMat start from 0
+    const selectedNodesArr = Object.values(selectedNodes).map(function (item) {
+      return item - 1;
+    });
 
     this.drawnRows.attr("stroke", function (d, i) {
       const selected = selectedNodesArr.includes(i);
