@@ -26,9 +26,9 @@ export default {
   data() {
     return {
       dropdownItems: [
-        { value: "initial", name: "Initial order" },
-        { value: "random", name: "Random order" },
-        { value: "optimal_leaf", name: "Optimal leaf order" },
+        { value: "initial", name: "Initial Order" },
+        { value: "random", name: "Random Order" },
+        { value: "optimal_leaf", name: "Optimal Leaf Order" },
         { value: "pca", name: "PCA Order" },
         { value: "spectral", name: "Spectral Order" },
       ],
@@ -39,26 +39,29 @@ export default {
     sortMatrix(value) {
       switch (value) {
         case "initial":
-          this.changeSortedMatrixData({
-            personsRows: this.persons,
-            personsCols: this.persons,
-          });
+          this.initialOrder();
           break;
         case "random":
-          this.randomSort();
+          this.randomOrder();
           break;
         case "optimal_leaf":
           this.optimalLeafOrder();
           break;
         case "pca":
-          this.pcaSort();
+          this.pcaOrder();
           break;
         case "spectral":
-          this.spectralSort();
+          this.spectralOrder();
           break;
         default:
           console.log(value);
       }
+    },
+    initialOrder() {
+      this.changeSortedMatrixData({
+        personsRows: this.persons,
+        personsCols: this.persons,
+      });
     },
     optimalLeafOrder() {
       const matrix = this.getCoefficients(this.getMatrixDataForSorting);
@@ -78,7 +81,7 @@ export default {
         personsCols: cols,
       });
     },
-    pcaSort() {
+    pcaOrder() {
       const matrix = this.getCoefficients(this.getMatrixDataForSorting);
 
       const perms = reorder.pca_order(matrix);
@@ -88,7 +91,7 @@ export default {
         personsCols: this.getPermutedPersonArray(perms),
       });
     },
-    spectralSort() {
+    spectralOrder() {
       const matrix = this.getCoefficients(this.getMatrixDataForSorting);
       const graph = reorder.mat2graph(matrix);
 
@@ -99,7 +102,7 @@ export default {
         personsCols: this.getPermutedPersonArray(perms),
       });
     },
-    randomSort() {
+    randomOrder() {
       const personsCopy = [...this.persons];
 
       this.changeSortedMatrixData({
