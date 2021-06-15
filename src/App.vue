@@ -29,10 +29,6 @@
 
   --hdr-size: 3.125rem;
   --stt-width: 300px;
-
-  --grd-cols: 2;
-  --grd-rows: 1;
-  --vis-nums: 2;
 }
 
 #app {
