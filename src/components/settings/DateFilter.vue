@@ -1,19 +1,19 @@
 <template>
   <div class="date-filter-container">
-    <div class="date">
-      <p class="date__label">From date:</p>
+    <div class="from-container">
+      <p class="date-label">From:</p>
       <input
-        class="date__input"
+        class="date-input"
         type="date"
         :min="minDateAsString"
         :max="toDate"
         v-model="fromDate"
       />
     </div>
-    <div>
-      <p class="date__label">To date:</p>
+    <div class="to-container">
+      <p class="date-label">To:</p>
       <input
-        class="date__input"
+        class="date-input"
         type="date"
         :min="fromDate"
         :max="maxDateAsString"
@@ -61,12 +61,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.date {
-  margin-bottom: 10px;
+.from-container,
+.to-container {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 
-  &__label {
-    display: inline;
-    margin-right: 10px;
+  margin-left: 0.75em;
+}
+
+input[type="date"] {
+  height: fit-content;
+  padding: 0.25em;
+  border: var(--settings-border);
+  border-radius: var(--border-rad);
+
+  &:hover,
+  :focus {
+    border-color: black;
   }
 }
 </style>
