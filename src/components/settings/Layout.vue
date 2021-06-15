@@ -111,7 +111,7 @@ input.cb-outline {
 
 /* Show visualisations as one column on smaller screen sizes and
    remove options to change amount of grid columns and rows */
-@media (max-width: 1000px) {
+@media (max-width: 525px) {
   .rows-cont,
   .columns-cont {
     display: none;
