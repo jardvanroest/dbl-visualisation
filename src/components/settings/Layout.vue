@@ -39,8 +39,6 @@
 import DropDown from "@/components/DropDown.vue";
 import Setting from "@/components/settings/Setting.vue";
 
-// TODO: --vis-nums := number of visualisations (remember to change)
-
 export default {
   name: "Layout",
   components: {
