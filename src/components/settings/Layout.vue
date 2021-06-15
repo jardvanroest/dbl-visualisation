@@ -12,7 +12,7 @@
       <DropDown
         class="dropdown"
         :selected="2"
-        :items="createDropDownObj(16)"
+        :items="CreateDropdownList(16)"
         @changed="changeVisAmount"
       />
     </Setting>
@@ -20,7 +20,7 @@
       <DropDown
         class="dropdown"
         :selected="2"
-        :items="createDropDownObj(4)"
+        :items="CreateDropdownList(4)"
         @changed="changeColumnNum"
       />
     </Setting>
@@ -28,7 +28,7 @@
       <DropDown
         class="dropdown"
         :selected="1"
-        :items="createDropDownObj(4)"
+        :items="CreateDropdownList(4)"
         @changed="changeRowNum"
       />
     </Setting>
@@ -47,12 +47,6 @@ export default {
     DropDown,
     Setting,
   },
-  data() {
-    return {
-      visDimObj: this.createDropDownObj(4),
-      visNumObj: this.createDropDownObj(16),
-    };
-  },
   methods: {
     changeVisAmount(amount) {
       this.$emit("change-vis-amount", amount);
@@ -68,7 +62,7 @@ export default {
       if (e.target.checked) visCont.classList.add("outlined");
       else visCont.classList.remove("outlined");
     },
-    createDropDownObj(maxNum) {
+    CreateDropdownList(maxNum) {
       var list = [];
       for (let i = 1; i <= maxNum; i++) {
         list.push({ value: i, name: i });
