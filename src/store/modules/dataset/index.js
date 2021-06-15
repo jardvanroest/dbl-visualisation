@@ -14,7 +14,10 @@ export default {
       matrixData: -1,
       jobTitles: [],
       filteredJobTitles: [],
+      filteredDates: {},
       datasetID: "default",
+      minDate: undefined,
+      maxDate: undefined,
     };
   },
   getters,

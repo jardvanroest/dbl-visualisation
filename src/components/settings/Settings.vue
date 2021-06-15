@@ -14,6 +14,9 @@
         <Setting name="By job title">
           <JobtitleFilter ref="jobTitleFilter" />
         </Setting>
+        <Setting name="By date">
+          <DateFilter ref="dateFilter" />
+        </Setting>
       </div>
       <Section title="Layout" fields="none" />
       <Layout
@@ -32,6 +35,7 @@ import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
 import SortMatrix from "@/components/settings/SortMatrix.vue";
+import DateFilter from "@/components/settings/DateFilter.vue";
 import Layout from "@/components/settings/Layout.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
 import Btn from "@/components/buttons/Btn.vue";
@@ -44,8 +48,9 @@ export default {
     Setting,
     EmailFilter,
     SortMatrix,
-    Layout,
     JobtitleFilter,
+    DateFilter,
+    Layout,
     Btn,
   },
   data() {
@@ -57,6 +62,7 @@ export default {
     applyFilters() {
       this.$refs.emailFilter.applyFilter();
       this.$refs.jobTitleFilter.applyFilter();
+      this.$refs.dateFilter.applyFilter();
     },
   },
 };

@@ -27,6 +27,7 @@ export default {
 .flexRow {
   flex-direction: row;
   align-items: center;
+  gap: 1em;
 }
 
 .flexRow hr {
