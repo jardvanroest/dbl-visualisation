@@ -79,7 +79,8 @@ export default {
   },
   methods: {
     createVisualisation(type) {
-      this.visualisation = new visualisations[type]("#" + this.id);
+      let newType = type.split("-")[0];
+      this.visualisation = new visualisations[newType]("#" + this.id);
     },
     changeVisualisation(type) {
       let myFunction = () => {
@@ -174,8 +175,6 @@ export default {
           return "Node-link diagram";
         case "CalendarVisualisation":
           return "Calendar matrix";
-        case "CalendarVisulasation":
-          return "Calendar visualisation";
         default:
           return "No name for vis";
       }

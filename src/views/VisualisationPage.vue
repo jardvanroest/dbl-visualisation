@@ -1,5 +1,5 @@
 <template>
-  <div class="visualisation-page-conta">
+  <div class="visualisation-page-container">
     <Popup v-if="showPopup" @toggle-popup="toggleLinkPopup"> </Popup>
     <Header
       class="header"
@@ -7,9 +7,12 @@
       @toggle-popup="toggleLinkPopup"
     />
     <div class="grid-container">
-      <Visualisations class="visualisations-cont" />
+      <Visualisations class="visualisations-cont" :amount="amount" />
       <div :class="{ hide: !showSettings }" class="wrapper-settings">
         <Settings
+          @change-vis-amount="changeVisAmount"
+          @change-column-num="changeColumnNum"
+          @change-row-num="changeRowNum"
           :class="{ dontShow: !showSettings }"
           class="container-settings"
         />
@@ -36,9 +39,21 @@ export default {
     return {
       showSettings: true,
       showPopup: false,
+      amount: 2,
     };
   },
   methods: {
+    changeVisAmount(amount) {
+      this.amount = amount;
+    },
+    changeColumnNum(number) {
+      const r = document.querySelector(".visualisation-page-container");
+      r.style.setProperty("--grd-cols", number);
+    },
+    changeRowNum(number) {
+      const r = document.querySelector(".visualisation-page-container");
+      r.style.setProperty("--grd-rows", number);
+    },
     toggleLinkPopup() {
       this.showPopup = !this.showPopup;
     },
@@ -52,7 +67,12 @@ export default {
 <style scoped lang="scss">
 .visualisation-page-container {
   position: relative;
+
+  --grd-cols: 2;
+  --grd-rows: 1;
+  --vis-nums: 2;
 }
+
 .grid-container {
   display: flex;
   margin-top: var(--hdr-size);
@@ -105,11 +125,12 @@ export default {
 
 @media (max-width: 525px) {
   .grid-container {
-    flex-direction: column;
+    --grd-cols: 1;
   }
+
   .wrapper-settings {
     position: absolute;
-    top: var(--hdr-size);
+    top: 0;
     right: 0;
 
     height: 100%;

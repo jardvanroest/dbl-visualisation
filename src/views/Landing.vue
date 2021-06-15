@@ -1,11 +1,9 @@
 <template>
-  <div class="home">
-    <div class="centered-container">
+  <div class="landing">
+    <div class="home">
+      <img src="@/assets/icons/logo.svg" alt="logo" />
       <h1 class="title">MailVis</h1>
-      <p class="introduction">
-        A tool to analyze e-mail traffic. You can import your own dataset or
-        view an example.
-      </p>
+      <p class="introduction">A tool to analyze e-mail traffic.</p>
       <ImportDataSetBtn />
       <ViewExampleDataSetBtn />
     </div>
@@ -26,8 +24,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.centered-container {
-  width: 17.5rem;
+.landing {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/icons/tileable-hex.png");
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-size: auto 69%;
+  background-color: var(--border-color);
+  background-blend-mode: screen;
+
+  animation: animatedBackground 50s linear infinite;
+}
+
+.home {
+  width: fit-content;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -37,13 +48,29 @@ export default {
 
 .title {
   font-family: "Roboto", sans-serif;
-  font-size: 3rem;
+  font-size: 4rem;
   margin-bottom: 1rem;
   letter-spacing: 0.05em;
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+img {
+  width: 15rem;
 }
 
 .introduction {
-  color: rgb(95, 95, 95);
-  margin: 1rem 0 1.25rem 0;
+  font-size: 1.5rem;
+}
+
+@keyframes animatedBackground {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 100px 75px;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 </style>

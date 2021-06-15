@@ -17,8 +17,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .setting-cont {
+  --margin-p: 1em 0 0 0.5em;
   display: flex;
   flex-direction: column;
 }
@@ -28,10 +29,13 @@ export default {
   align-items: center;
 }
 
+.flexRow hr {
+  display: none;
+}
+
 .setting-cont p {
   font-size: 1rem;
-  margin-left: 0.5em;
-  margin-bottom: 0;
+  margin: var(--margin-p);
 }
 
 /* Style horizontal lines */
