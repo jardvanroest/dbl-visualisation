@@ -27,6 +27,7 @@ export default {
       context.commit("addEmail", email);
       context.commit("addJobtitle", sendingPerson.jobTitle);
       context.commit("addJobtitle", receivingPerson.jobTitle);
+      context.commit("updateMinMaxDates", email.date);
     });
   },
   setFilteredPersons(context, persons) {
@@ -34,6 +35,9 @@ export default {
   },
   setFilteredJobTitles(context, jobTitles) {
     context.commit("setFilteredJobTitles", jobTitles);
+  },
+  setFilteredDates(context, payload) {
+    context.commit("setFilteredDates", payload);
   },
 };
 
