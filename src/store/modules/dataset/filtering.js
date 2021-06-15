@@ -18,11 +18,23 @@ function passesDateFilter(email, filteredDates) {
   const date = email.date;
 
   return (
-    (filteredDates.from === undefined ||
-      date.getTime() >= filteredDates.from.getTime()) &&
-    (filteredDates.to === undefined ||
-      date.getTime() <= filteredDates.to.getTime())
+    passesLowerBound(date, filteredDates.from) &&
+    passesUpperBound(date, filteredDates.to)
   );
+}
+
+function passesLowerBound(date, minDate) {
+  if (!isValidDate(minDate)) return true;
+  return date.getTime() >= minDate.getTime();
+}
+
+function passesUpperBound(date, maxDate) {
+  if (!isValidDate(maxDate)) return true;
+  return date.getTime() <= maxDate.getTime();
+}
+
+function isValidDate(date) {
+  return date && !isNaN(date.getTime());
 }
 
 export { passesEmailFilter, passesJobTitleFilter, passesDateFilter };

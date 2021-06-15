@@ -33,7 +33,6 @@ export default {
     const to = payload.to;
 
     state.filteredDates = { from, to };
-    console.log(state.filteredDates);
   },
   newInspectorData(state, newData) {
     state.inspectorData = newData;
