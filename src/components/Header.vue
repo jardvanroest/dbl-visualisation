@@ -2,7 +2,7 @@
   <header>
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
-        <img src="@/assets/icons/graph.svg" alt="logo" />
+        <img src="@/assets/icons/logo.svg" alt="logo" />
         <span>MailVis</span>
       </div>
       <div class="nav_icons">
@@ -11,7 +11,7 @@
             <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
           <li @click="showLinkPopup()">
-            <img src="@/assets/icons/import.svg" alt="shareable link" />
+            <img src="@/assets/icons/link.svg" alt="shareable link" />
           </li>
           <li @click="redirectToInfo()">
             <img src="@/assets/icons/info.svg" alt="information" />
@@ -93,7 +93,7 @@ export default {
 }
 
 .logo img {
-  padding-right: 0.25em;
+  padding: 0 0.25em;
   width: 2.75rem;
   height: 2.75rem;
 }
