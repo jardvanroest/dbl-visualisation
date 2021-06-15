@@ -47,11 +47,11 @@ export default {
       this.amount = amount;
     },
     changeColumnNum(number) {
-      const r = document.querySelector(":root");
+      const r = document.querySelector(".visualisation-page-container");
       r.style.setProperty("--grd-cols", number);
     },
     changeRowNum(number) {
-      const r = document.querySelector(":root");
+      const r = document.querySelector(".visualisation-page-container");
       r.style.setProperty("--grd-rows", number);
     },
     toggleLinkPopup() {
@@ -67,6 +67,10 @@ export default {
 <style scoped lang="scss">
 .visualisation-page-container {
   position: relative;
+
+  --grd-cols: 2;
+  --grd-rows: 1;
+  --vis-nums: 2;
 }
 
 .grid-container {
