@@ -20,7 +20,7 @@
       <DropDown
         class="dropdown"
         :selected="2"
-        :items="createDropDownObj(16)"
+        :items="CreateDropdownList(16)"
         @changed="changeVisAmount"
       />
     </Setting>
@@ -28,7 +28,7 @@
       <DropDown
         class="dropdown"
         :selected="2"
-        :items="createDropDownObj(4)"
+        :items="CreateDropdownList(4)"
         @changed="changeColumnNum"
       />
     </Setting>
@@ -36,7 +36,7 @@
       <DropDown
         class="dropdown"
         :selected="1"
-        :items="createDropDownObj(4)"
+        :items="CreateDropdownList(4)"
         @changed="changeRowNum"
       />
     </Setting>
@@ -52,12 +52,6 @@ export default {
   components: {
     DropDown,
     Setting,
-  },
-  data() {
-    return {
-      visDimObj: this.createDropDownObj(4),
-      visNumObj: this.createDropDownObj(16),
-    };
   },
   mounted() {
     document.getElementById("cb-hor-cal").checked = true;
@@ -82,7 +76,7 @@ export default {
       if (e.target.checked) rowCalendar.classList.remove("hidden");
       else rowCalendar.classList.add("hidden");
     },
-    createDropDownObj(maxNum) {
+    CreateDropdownList(maxNum) {
       var list = [];
       for (let i = 1; i <= maxNum; i++) {
         list.push({ value: i, name: i });
@@ -126,7 +120,7 @@ input#cb-hor-cal {
 
 /* Show visualisations as one column on smaller screen sizes and
    remove options to change amount of grid columns and rows */
-@media (max-width: 1000px) {
+@media (max-width: 525px) {
   .rows-cont,
   .columns-cont {
     display: none;
