@@ -7,9 +7,10 @@ export class AdjacencyMatrix extends Visualisation {
     super(HTMLSelector);
   }
 
-  redraw(emails, persons) {
+  redraw(emails, personsRows, personsCols) {
     this.emails = emails;
-    this.persons = persons;
+    this.personsRows = personsRows;
+    this.personsCols = personsCols;
     this.resetVisualisation();
     this._generateVisualisation();
   }
@@ -17,17 +18,42 @@ export class AdjacencyMatrix extends Visualisation {
   _generateVisualisation() {
     const svg = this._getSVG();
     const matrix = this._getMatrix();
-    this._drawVisualisation(svg, matrix);
+    const sorted_matrix = this._sortMatrix(matrix);
+    this._drawVisualisation(svg, sorted_matrix);
   }
 
   _getMatrix() {
-    const matrix = new Matrix(this.persons, this.emails);
+    let matrix = new Matrix(this.personsRows);
+
+    // Set {MatrixData} the first time when loading the matrix // NOT WORKING
+    if (store.getters["dataset/getMatrixDataForSorting"] === -1) {
+      store.dispatch("dataset/changeMatrixData", matrix.getMatrixData());
+    }
+
     return matrix.getMatrixData();
+  }
+
+  _sortMatrix(matrix) {
+    let new_matrix = [];
+
+    for (let i = 0; i < this.personsRows.length; i++) {
+      let row = [];
+      let recipient = this.personsRows[i];
+
+      for (let i = 0; i < this.personsCols.length; i++) {
+        let sender = this.personsCols[i];
+
+        row.push(matrix[recipient.id - 1][sender.id - 1]);
+      }
+      new_matrix.push(row);
+    }
+
+    return new_matrix;
   }
 
   _drawVisualisation(svg, matrix) {
     let margin = 0.1;
-    let nodeLength = this.width / this.persons.length;
+    let nodeLength = this.width / this.personsRows.length;
 
     this.rectLength = (1 - margin) * nodeLength;
     this.rectMargin = margin * nodeLength;
@@ -66,7 +92,8 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("fill", function (d) {
         return d.fillColor;
       })
-      .on("click", this.updateInspectorData.bind(this));
+      .on("click", this.updateInspectorData.bind(this))
+      .classed("adj-mat-rows", true);
   }
 
   _getPositionFromIndex(d, i) {
