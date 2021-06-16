@@ -18,20 +18,36 @@ export class AdjacencyMatrix extends Visualisation {
   showSelection(selectedNodes) {
     const selectColor = "#A585C1";
 
-    // Substract 1 to each selectedNode item, since the rows in AdjMat start from 0
-    const selectedNodesArr = Object.values(selectedNodes).map(function (item) {
-      return item - 1;
-    });
+    const { selectedRows, selectedCols } = this._computeSelected(selectedNodes);
 
     this.drawnRows.attr("stroke", function (d, i) {
-      const selected = selectedNodesArr.includes(i);
+      const selected = selectedRows.includes(i);
       if (selected) return selectColor;
     });
 
     this.drawnColumns.attr("stroke", function (d, i) {
-      const selected = selectedNodesArr.includes(i);
+      const selected = selectedCols.includes(i);
       if (selected) return selectColor;
     });
+  }
+
+  // Computes rows and columns indices based on selectedNodes
+  _computeSelected(selectedNodes) {
+    let selectedRows = [];
+    let selectedCols = [];
+
+    const selectedNodesArr = Object.values(selectedNodes);
+
+    for (let index = 0; index < this.personsRows.length; index++) {
+      const rowPersonID = this.personsRows[index].id;
+      const colPersonID = this.personsCols[index].id;
+
+      if (selectedNodesArr.includes(rowPersonID)) selectedRows.push(index);
+
+      if (selectedNodesArr.includes(colPersonID)) selectedCols.push(index);
+    }
+
+    return { selectedRows, selectedCols };
   }
 
   _generateVisualisation() {
@@ -71,7 +87,7 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _drawVisualisation(svg, matrix) {
-    let margin = 0.1;
+    let margin = 0.2;
     let nodeLength = this.width / this.personsRows.length;
 
     this.rectLength = (1 - margin) * nodeLength;
@@ -95,6 +111,11 @@ export class AdjacencyMatrix extends Visualisation {
   _drawColumns(svg, matrix) {
     // Transpose matrix
     matrix.map((_, colIndex) => matrix.map((row) => row[colIndex]));
+    // TODO: not sure why we would transpose the matrix ?
+
+    // TODO: column drawing fucks up on click behaviour, since the data is transposed
+    // currently, the on click event is appended to the transparent cells
+
     return svg
       .append("g")
       .selectAll("g")
