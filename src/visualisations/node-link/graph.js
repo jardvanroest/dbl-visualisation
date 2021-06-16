@@ -29,7 +29,10 @@ export class Graph {
 
       // Get index of edge in {edges}
       let indexOfEdge = edgesCount.findIndex(
-        (element) => element["source"] === u && element["target"] === v
+        (element) =>
+          // Edges are undirected
+          (element["source"] === u && element["target"] === v) ||
+          (element["source"] === v && element["target"] === u)
       );
       // If edge does not exist
       if (indexOfEdge === -1) {

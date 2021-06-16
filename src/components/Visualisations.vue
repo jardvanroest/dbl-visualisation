@@ -4,7 +4,8 @@
       v-for="n in amount"
       :key="n"
       class="visualisation"
-      :id="ids[n % ids.length] + '-' + n"
+      :id="'vis' + n"
+      :initialType="ids[n % ids.length]"
     />
     <div id="horizontal-calendar">
       <!-- <Visualisation class="visualisation" id="CalendarVisualisation-100" /> -->

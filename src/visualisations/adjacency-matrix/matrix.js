@@ -1,7 +1,8 @@
+import store from "@/store";
+
 export class Matrix {
-  constructor(persons, emails) {
+  constructor(persons) {
     this.persons = persons;
-    this.emails = emails;
     this.matrixData = this._createMatrixData();
   }
 
@@ -18,12 +19,11 @@ export class Matrix {
 
       this.persons.forEach((sender) => {
         matrix[recipient.id][sender.id] = this._createCell(sender, recipient);
+        matrix[recipient.id][sender.id].addEmails(
+          sender.sendEmails,
+          recipient.id
+        );
       });
-    });
-
-    this.emails.forEach((email) => {
-      const cell = matrix[email.toId][email.fromId];
-      cell.addEmail(email);
     });
 
     matrix = this._convertToArrayOfArrays(matrix);
@@ -54,16 +54,36 @@ class Cell {
     this._emails = [];
   }
 
-  addEmail(email) {
+  addEmails(emails, recipientId) {
+    emails.forEach((email) => {
+      if (email.toId === recipientId) this._addEmail(email);
+    });
+  }
+
+  _addEmail(email) {
     this._emails.push(email);
   }
 
+  _isFiltered(person) {
+    const filteredJobTitles = store.getters["dataset/filteredJobTitles"];
+    let isFilteredByJobTitle = filteredJobTitles.includes(person.jobTitle);
+    let filtered = isFilteredByJobTitle || person.isSelectedInEmailFilter;
+
+    return filtered;
+  }
+
   get fillColor() {
-    if (this._emails.length === 0) {
-      return "#b8e0f6";
-    } else {
-      return "#df848f";
+    if (
+      this._isFiltered(this.sender) ||
+      this._isFiltered(this.recipient) ||
+      (!store.getters["dataset/thereAreAddressesSelectedInTheEmailFilter"] &&
+        store.getters["dataset/filteredJobTitles"].length <= 0)
+    ) {
+      if (this._emails.length !== 0) {
+        return "#df848f";
+      }
     }
+    return "#b8e0f6";
   }
 
   get weight() {

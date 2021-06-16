@@ -42,6 +42,12 @@ export default {
   getInspectorData(state) {
     return state.inspectorData;
   },
+  getSortedMatrixData(state) {
+    return state.sortedMatrixData;
+  },
+  getMatrixDataForSorting(state) {
+    return state.matrixData;
+  },
   jobTitles(state) {
     return state.jobTitles;
   },
