@@ -62,9 +62,11 @@ export default {
     let marginScale = 1 - (2 * margin) / this.size;
     let translation = `translate(${margin},${margin}) scale(${marginScale},${marginScale})`;
 
-    this.zoom = d3.zoom().scaleExtent([this.zoomVals.min, this.zoomVals.max]);
-    //.on("zoom", this.zoomed);
-    // TODO: remove/add zoom based on {interactionMode}
+    this.zoom = d3
+      .zoom()
+      .scaleExtent([this.zoomVals.min, this.zoomVals.max])
+      .filter(() => this.interactionMode === "inspect") // Only zoom in Inspection Mode
+      .on("zoom", this.zoomed);
 
     this.g = d3
       .select("#" + this.id)
@@ -123,7 +125,6 @@ export default {
       this.zoom.translateExtent([topLeft, bottomRight]);
       this.g.attr("transform", event.transform);
     },
-    notZoomed(event) {},
     createDropDownItemsList() {
       var list = [];
       for (const key of Object.keys(visualisations)) {

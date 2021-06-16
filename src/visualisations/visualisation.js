@@ -2,9 +2,8 @@ import * as d3 from "d3";
 import store from "@/store";
 
 export class Visualisation {
-  constructor(HTMLSelector, name) {
+  constructor(HTMLSelector) {
     this.HTMLSelector = HTMLSelector;
-    this.name = name;
     this.width = 500;
     this.height = 500;
     this.svg = this._getSVG();

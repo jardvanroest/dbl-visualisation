@@ -35,6 +35,8 @@ export class NodeLink extends Visualisation {
   }
 
   toggleInteractionMode(interactionMode) {
+    Visualisation.prototype.toggleInteractionMode.call(this);
+
     this._toggleBrush(interactionMode);
   }
 
