@@ -6,6 +6,9 @@ export default {
     state.inspectorData = -1;
     state.jobTitles = [];
     state.filteredJobTitles = [];
+    state.filteredDates = {};
+    state.minDate = undefined;
+    state.maxDate = undefined;
   },
   addEmail(state, email) {
     state.emails.push(email);
@@ -25,13 +28,40 @@ export default {
   setFilteredPersons(state, persons) {
     state.filteredPersons = persons;
   },
+  setFilteredDates(state, payload) {
+    const from = payload.from;
+    const to = payload.to;
+
+    state.filteredDates = { from, to };
+  },
   newInspectorData(state, newData) {
     state.inspectorData = newData;
+  },
+  newSortedMatrixData(state, newData) {
+    state.sortedMatrixData = newData;
+  },
+  newMatrixData(state, newData) {
+    state.matrixData = newData;
   },
   setFilteredJobTitles(state, jobTitles) {
     state.filteredJobTitles = jobTitles;
   },
   updateDatasetID(state, id) {
     state.datasetID = id;
+  },
+  updateMinMaxDates(state, date) {
+    if (
+      state.maxDate === undefined ||
+      date.getTime() > state.maxDate.getTime()
+    ) {
+      state.maxDate = date;
+    }
+
+    if (
+      state.minDate === undefined ||
+      date.getTime() < state.minDate.getTime()
+    ) {
+      state.minDate = date;
+    }
   },
 };

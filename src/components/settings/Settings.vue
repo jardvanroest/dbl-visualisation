@@ -5,6 +5,9 @@
       <Setting name="Interaction Mode">
         <InteractionMode />
       </Setting>
+      <Setting name="Sorting algorithm">
+        <SortMatrix />
+      </Setting>
       <div class="filters-container">
         <Section title="Filters" fields="none" />
         <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
@@ -13,6 +16,9 @@
         </Setting>
         <Setting name="By job title">
           <JobtitleFilter ref="jobTitleFilter" />
+        </Setting>
+        <Setting name="By date">
+          <DateFilter ref="dateFilter" />
         </Setting>
       </div>
       <Section title="Layout" fields="none" />
@@ -31,6 +37,8 @@ import Section from "@/components/inspector/Section.vue";
 import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
+import SortMatrix from "@/components/settings/SortMatrix.vue";
+import DateFilter from "@/components/settings/DateFilter.vue";
 import Layout from "@/components/settings/Layout.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
 import InteractionMode from "@/components/settings/InteractionMode.vue";
@@ -43,9 +51,11 @@ export default {
     Inspector,
     Setting,
     EmailFilter,
-    Layout,
+    SortMatrix,
     JobtitleFilter,
     InteractionMode,
+    DateFilter,
+    Layout,
     Btn,
   },
   data() {
@@ -57,6 +67,7 @@ export default {
     applyFilters() {
       this.$refs.emailFilter.applyFilter();
       this.$refs.jobTitleFilter.applyFilter();
+      this.$refs.dateFilter.applyFilter();
     },
   },
 };

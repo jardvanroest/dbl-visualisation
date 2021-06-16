@@ -3,7 +3,7 @@
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
-      :selected="id.split('-')[0]"
+      :selected="type"
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
@@ -20,7 +20,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Visualisations",
-  props: ["id"],
+  props: ["id", "initialType"],
   components: {
     Spinner,
     DropDown,
@@ -31,17 +31,22 @@ export default {
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
+      type: this.initialType,
     };
   },
   computed: {
-    ...mapGetters("dataset", ["filteredEmails", "persons"]),
+    ...mapGetters("dataset", [
+      "filteredEmails",
+      "persons",
+      "getSortedMatrixData",
+    ]),
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
   watch: {
     filteredEmails: {
       deep: true,
       handler() {
-        this.showSpinnerDoFunctionHideSpinner(this.redraw);
+        this.spinnerFunctionality(this.redraw);
       },
     },
     selectedNodes: {
@@ -51,8 +56,14 @@ export default {
     },
     interactionMode: {
       handler() {
-        this.showSpinnerDoFunctionHideSpinner(this.toggleInteractionMode);
+        this.spinnerFunctionality(this.toggleInteractionMode);
       },
+    },
+    // Watch for new incoming {sortedMatrixData}
+    getSortedMatrixData() {
+      if (this.type === "AdjacencyMatrix") {
+        this.spinnerFunctionality(this.redrawForAdjacency);
+      }
     },
   },
   mounted() {
@@ -75,7 +86,7 @@ export default {
       .append("g")
       .attr("transform", translation);
 
-    this.createVisualisation(this.id);
+    this.createVisualisation(this.type);
     this.redraw();
   },
   methods: {
@@ -84,20 +95,18 @@ export default {
       this.visualisation = new visualisations[newType]("#" + this.id);
     },
     changeVisualisation(type) {
-      let newType = this.id.split("-")[0];
-      if (newType !== type) {
-        let myFunction = () => {
-          this.visualisation.resetVisualisation();
-          this.createVisualisation(type);
-          this.redraw();
-        };
-        this.showSpinnerDoFunctionHideSpinner(myFunction);
-      }
+      let myFunction = () => {
+        this.type = type;
+        this.visualisation.resetVisualisation();
+        this.createVisualisation(this.type);
+        this.redraw();
+      };
+      this.spinnerFunctionality(myFunction);
     },
     showSelection() {
       this.visualisation.showSelection(this.selectedNodes);
     },
-    showSpinnerDoFunctionHideSpinner(myFunction) {
+    spinnerFunctionality(myFunction) {
       this.showSpinner = true;
       new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -105,9 +114,6 @@ export default {
           resolve();
         }, 0);
       }).then(() => (this.showSpinner = false));
-    },
-    redraw() {
-      this.visualisation.redraw(this.filteredEmails, this.persons);
     },
     toggleInteractionMode() {
       this.visualisation.toggleInteractionMode(this.interactionMode);
@@ -131,6 +137,29 @@ export default {
         list.push({ value: key, name: this.visName(key) });
       }
       return list;
+    },
+    redraw() {
+      if (this.type === "AdjacencyMatrix") {
+        this.redrawForAdjacency();
+      } else {
+        this.visualisation.redraw(this.filteredEmails, this.persons);
+      }
+    },
+    redrawForAdjacency() {
+      let newData = this.getSortedMatrixData;
+      if (newData === "unsorted") {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          this.persons,
+          this.persons
+        );
+      } else {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          newData.personsRows,
+          newData.personsCols
+        );
+      }
     },
     visName(type) {
       switch (type) {
