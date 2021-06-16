@@ -2,6 +2,9 @@
   <div class="container-settings">
     <div class="settings">
       <Section title="General" fields="none" />
+      <Setting name="Sorting algorithm">
+        <SortMatrix />
+      </Setting>
       <div class="filters-container">
         <Section title="Filters" fields="none" />
         <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
@@ -31,6 +34,7 @@ import Section from "@/components/inspector/Section.vue";
 import Inspector from "@/components/inspector/Inspector.vue";
 import Setting from "@/components/settings/Setting.vue";
 import EmailFilter from "@/components/settings/EmailFilter.vue";
+import SortMatrix from "@/components/settings/SortMatrix.vue";
 import DateFilter from "@/components/settings/DateFilter.vue";
 import Layout from "@/components/settings/Layout.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
@@ -43,6 +47,7 @@ export default {
     Inspector,
     Setting,
     EmailFilter,
+    SortMatrix,
     JobtitleFilter,
     DateFilter,
     Layout,
