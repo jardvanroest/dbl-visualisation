@@ -49,15 +49,11 @@ export default {
         this.spinnerFunctionality(this.redraw);
       },
     },
-    selectedNodes: {
-      handler() {
-        this.showSelection();
-      },
+    selectedNodes() {
+      this.showSelection();
     },
-    interactionMode: {
-      handler() {
-        this.spinnerFunctionality(this.toggleInteractionMode);
-      },
+    interactionMode() {
+      this.spinnerFunctionality(this.toggleInteractionMode);
     },
     // Watch for new incoming {sortedMatrixData}
     getSortedMatrixData() {

@@ -15,7 +15,6 @@ export class NodeLink extends Visualisation {
       edgeNegative: "#e498a1",
       nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
-      nodeSelectedOutline: "#a585c1",
     };
 
     this.options = {
@@ -67,7 +66,7 @@ export class NodeLink extends Visualisation {
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
-      this.colors.nodeSelectedOutline
+      this.selectColor
     );
 
     // Toggle brush based on current {interactionMode}

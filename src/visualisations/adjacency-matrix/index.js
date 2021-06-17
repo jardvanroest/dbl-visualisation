@@ -16,18 +16,17 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   showSelection(selectedNodes) {
-    const selectColor = "#A585C1";
-
     const { selectedRows, selectedCols } = this._computeSelected(selectedNodes);
 
+    const that = this;
     this.drawnRows.attr("stroke", function (d, i) {
       const selected = selectedRows.includes(i);
-      if (selected) return selectColor;
+      if (selected) return that.selectColor;
     });
 
     this.drawnColumns.attr("stroke", function (d, i) {
       const selected = selectedCols.includes(i);
-      if (selected) return selectColor;
+      if (selected) return that.selectColor;
     });
   }
 
@@ -165,8 +164,7 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("fill", function (d) {
         return "transparent";
       })
-      .on("click", this.updateInspectorData.bind(this))
-      .classed("adj-mat-rows", true);
+      .on("click", this.updateInspectorData.bind(this));
   }
 
   _getPositionFromIndex(d, i) {

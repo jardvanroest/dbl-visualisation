@@ -7,6 +7,8 @@ export class Visualisation {
     this.width = 500;
     this.height = 500;
     this.svg = this._getSVG();
+
+    this.selectColor = "#A585C1";
   }
 
   redraw() {
