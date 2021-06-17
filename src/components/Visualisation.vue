@@ -40,6 +40,7 @@ export default {
       "persons",
       "getSortedMatrixData",
     ]),
+    ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
   watch: {
     filteredEmails: {
@@ -47,6 +48,12 @@ export default {
       handler() {
         this.spinnerFunctionality(this.redraw);
       },
+    },
+    selectedNodes() {
+      this.showSelection();
+    },
+    interactionMode() {
+      this.spinnerFunctionality(this.toggleInteractionMode);
     },
     // Watch for new incoming {sortedMatrixData}
     getSortedMatrixData() {
@@ -65,6 +72,7 @@ export default {
     this.zoom = d3
       .zoom()
       .scaleExtent([this.zoomVals.min, this.zoomVals.max])
+      .filter(() => this.interactionMode === "inspect") // Only zoom in Inspection Mode
       .on("zoom", this.zoomed);
 
     this.g = d3
@@ -91,6 +99,9 @@ export default {
       };
       this.spinnerFunctionality(myFunction);
     },
+    showSelection() {
+      this.visualisation.showSelection(this.selectedNodes);
+    },
     spinnerFunctionality(myFunction) {
       this.showSpinner = true;
       new Promise((resolve, reject) => {
@@ -99,6 +110,9 @@ export default {
           resolve();
         }, 0);
       }).then(() => (this.showSpinner = false));
+    },
+    toggleInteractionMode() {
+      this.visualisation.toggleInteractionMode(this.interactionMode);
     },
     zoomed(event) {
       var box = this.g.node().getBBox();

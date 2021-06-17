@@ -15,6 +15,40 @@ export class AdjacencyMatrix extends Visualisation {
     this._generateVisualisation();
   }
 
+  showSelection(selectedNodes) {
+    const { selectedRows, selectedCols } = this._computeSelected(selectedNodes);
+
+    const that = this;
+    this.drawnRows.attr("stroke", function (d, i) {
+      const selected = selectedRows.includes(i);
+      if (selected) return that.selectColor;
+    });
+
+    this.drawnColumns.attr("stroke", function (d, i) {
+      const selected = selectedCols.includes(i);
+      if (selected) return that.selectColor;
+    });
+  }
+
+  // Computes rows and columns indices based on selectedNodes
+  _computeSelected(selectedNodes) {
+    let selectedRows = [];
+    let selectedCols = [];
+
+    const selectedNodesArr = Object.values(selectedNodes);
+
+    for (let index = 0; index < this.personsRows.length; index++) {
+      const rowPersonID = this.personsRows[index].id;
+      const colPersonID = this.personsCols[index].id;
+
+      if (selectedNodesArr.includes(rowPersonID)) selectedRows.push(index);
+
+      if (selectedNodesArr.includes(colPersonID)) selectedCols.push(index);
+    }
+
+    return { selectedRows, selectedCols };
+  }
+
   _generateVisualisation() {
     const svg = this._getSVG();
     const matrix = this._getMatrix();
@@ -52,14 +86,16 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _drawVisualisation(svg, matrix) {
-    let margin = 0.1;
+    let margin = 0.2;
     let nodeLength = this.width / this.personsRows.length;
 
     this.rectLength = (1 - margin) * nodeLength;
     this.rectMargin = margin * nodeLength;
 
-    const drawnRows = this._drawRows(svg, matrix);
-    const drawnCells = this._drawCells(drawnRows);
+    this.drawnRows = this._drawRows(svg, matrix);
+    this._drawCells(this.drawnRows);
+    this.drawnColumns = this._drawColumns(svg, matrix);
+    this._drawTransparentCells(this.drawnColumns);
   }
 
   _drawRows(svg, matrix) {
@@ -71,9 +107,29 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("transform", this._getRowTranslation.bind(this));
   }
 
+  _drawColumns(svg, matrix) {
+    // Transpose matrix
+    const transpMatrix = [...matrix].map((_, colIndex) =>
+      matrix.map((row) => row[colIndex])
+    );
+
+    return svg
+      .append("g")
+      .selectAll("g")
+      .data(transpMatrix)
+      .enter()
+      .append("g")
+      .attr("transform", this._getColumnTranslation.bind(this));
+  }
+
   _getRowTranslation(_, i) {
     const y = this._getPositionFromIndex(_, i);
     return `translate(0, ${y})`;
+  }
+
+  _getColumnTranslation(_, i) {
+    const x = this._getPositionFromIndex(_, i);
+    return `translate(${x}, 0)`;
   }
 
   _drawCells(rows) {
@@ -88,12 +144,27 @@ export class AdjacencyMatrix extends Visualisation {
       .attr("width", this.rectLength)
       .attr("height", this.rectLength)
       .attr("stroke-width", this.rectMargin)
-      .attr("stroke", "white")
       .attr("fill", function (d) {
         return d.fillColor;
+      });
+  }
+
+  _drawTransparentCells(columns) {
+    return columns
+      .selectAll("g")
+      .data(function (d) {
+        return d;
       })
-      .on("click", this.updateInspectorData.bind(this))
-      .classed("adj-mat-rows", true);
+      .enter()
+      .append("rect")
+      .attr("y", this._getPositionFromIndex.bind(this))
+      .attr("width", this.rectLength)
+      .attr("height", this.rectLength)
+      .attr("stroke-width", this.rectMargin)
+      .attr("fill", function (d) {
+        return "transparent";
+      })
+      .on("click", this.updateInspectorData.bind(this));
   }
 
   _getPositionFromIndex(d, i) {

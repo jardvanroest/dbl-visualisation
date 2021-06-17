@@ -2,6 +2,9 @@
   <div class="container-settings">
     <div class="settings">
       <Section title="General" fields="none" />
+      <Setting name="Interaction Mode">
+        <InteractionMode />
+      </Setting>
       <Setting name="Sorting algorithm">
         <SortMatrix />
       </Setting>
@@ -38,6 +41,7 @@ import SortMatrix from "@/components/settings/SortMatrix.vue";
 import DateFilter from "@/components/settings/DateFilter.vue";
 import Layout from "@/components/settings/Layout.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
+import InteractionMode from "@/components/settings/InteractionMode.vue";
 import Btn from "@/components/buttons/Btn.vue";
 
 export default {
@@ -49,6 +53,7 @@ export default {
     EmailFilter,
     SortMatrix,
     JobtitleFilter,
+    InteractionMode,
     DateFilter,
     Layout,
     Btn,
