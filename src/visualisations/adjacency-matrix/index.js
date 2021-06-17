@@ -110,16 +110,14 @@ export class AdjacencyMatrix extends Visualisation {
 
   _drawColumns(svg, matrix) {
     // Transpose matrix
-    matrix.map((_, colIndex) => matrix.map((row) => row[colIndex]));
-    // TODO: not sure why we would transpose the matrix ?
-
-    // TODO: column drawing fucks up on click behaviour, since the data is transposed
-    // currently, the on click event is appended to the transparent cells
+    const transpMatrix = [...matrix].map((_, colIndex) =>
+      matrix.map((row) => row[colIndex])
+    );
 
     return svg
       .append("g")
       .selectAll("g")
-      .data(matrix)
+      .data(transpMatrix)
       .enter()
       .append("g")
       .attr("transform", this._getColumnTranslation.bind(this));
