@@ -5,4 +5,7 @@ export default {
   updateInteractionMode(state, newInteractionMode) {
     state.interactionMode = newInteractionMode;
   },
+  updateInspectedElement(state, newInspectedElement) {
+    state.inspectedElement = newInspectedElement;
+  },
 };

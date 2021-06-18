@@ -92,6 +92,21 @@ export class Visualisation {
     }
   }
 
+  resetInspectedElement(target) {
+    if (target.getAttribute("default-stroke") != null)
+      target.setAttribute("stroke", target.getAttribute("default-stroke"));
+    else target.setAttribute("stroke", "#00000000");
+    console.log(target.getAttribute("default-stroke"));
+  }
+
+  _changeInspectedElement(target) {
+    let inspectedElement = store.getters["brush_and_link/inspectedElement"];
+    if (inspectedElement != undefined)
+      this.resetInspectedElement(inspectedElement);
+    target.setAttribute("stroke", "#000000FF");
+    store.dispatch("brush_and_link/updateInspectedElement", target);
+  }
+
   _isFiltered(person) {
     const filteredJobTitles = store.getters["dataset/filteredJobTitles"];
     let isFilteredByJobTitle = filteredJobTitles.includes(person.jobTitle);

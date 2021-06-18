@@ -122,6 +122,7 @@ export class NodeLink extends Visualisation {
       .data(nodes)
       .join("circle")
       .attr("stroke", that.colors.nodeOutline)
+      .attr("default-stroke", that.colors.nodeOutline)
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
@@ -204,6 +205,8 @@ export class NodeLink extends Visualisation {
   }
 
   nodeClick(event, cell) {
+    this._changeInspectedElement(event.target);
+
     const persons = store.getters["dataset/persons"];
     const person = persons.find((p) => p.id === cell.id);
 

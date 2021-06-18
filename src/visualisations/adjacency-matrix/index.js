@@ -173,6 +173,7 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   updateInspectorData(event, data) {
+    this._changeInspectedElement(event.target);
     let sender = data.sender;
     let recipient = data.recipient;
     let emails = data._emails;

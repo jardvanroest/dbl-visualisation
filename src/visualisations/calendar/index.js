@@ -171,13 +171,16 @@ export class CalendarVisualisation extends Visualisation {
       .attr("x", (d) => this.___getXposCellDate(d))
       .attr("y", (d) => this.___getYposCellDate(d))
       .attr("fill", (d) => d.fillColor)
-      .attr("opacity", (d) => d.opacity)
+      .attr("fill-opacity", (d) => d.opacity)
+      .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
       });
   }
 
   updateInspectorData(event, cellData) {
+    this._changeInspectedElement(event.target);
+
     let inspectorData = {};
     let _date = cellData.date;
 
