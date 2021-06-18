@@ -96,7 +96,6 @@ export class Visualisation {
     if (target.getAttribute("default-stroke") != null)
       target.setAttribute("stroke", target.getAttribute("default-stroke"));
     else target.setAttribute("stroke", "#00000000");
-    console.log(target.getAttribute("default-stroke"));
   }
 
   _changeInspectedElement(target) {
