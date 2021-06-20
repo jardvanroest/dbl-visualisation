@@ -9,6 +9,8 @@ export class Visualisation {
     this.svg = this._getSVG();
 
     this.selectColor = "#A585C1";
+    this.inspectColor = "#000000FF";
+    this.transparentColor = "#00000000";
   }
 
   redraw() {
@@ -95,14 +97,14 @@ export class Visualisation {
   resetInspectedElement(target) {
     if (target.getAttribute("default-stroke") != null)
       target.setAttribute("stroke", target.getAttribute("default-stroke"));
-    else target.setAttribute("stroke", "#00000000");
+    else target.setAttribute("stroke", this.transparentColor);
   }
 
   _changeInspectedElement(target) {
     let inspectedElement = store.getters["brush_and_link/inspectedElement"];
     if (inspectedElement != undefined)
       this.resetInspectedElement(inspectedElement);
-    target.setAttribute("stroke", "#000000FF");
+    target.setAttribute("stroke", this.inspectColor);
     store.dispatch("brush_and_link/updateInspectedElement", target);
   }
 

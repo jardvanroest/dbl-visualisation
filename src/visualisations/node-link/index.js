@@ -112,8 +112,6 @@ export class NodeLink extends Visualisation {
   }
 
   _drawNodes(svg, nodes, simulation) {
-    const that = this;
-
     return svg
       .append("g")
       .attr("stroke", this.colors.nodeOutline)
@@ -121,8 +119,8 @@ export class NodeLink extends Visualisation {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("stroke", that.colors.nodeOutline)
-      .attr("default-stroke", that.colors.nodeOutline)
+      .attr("stroke", this.colors.nodeOutline)
+      .attr("default-stroke", this.colors.nodeOutline)
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
