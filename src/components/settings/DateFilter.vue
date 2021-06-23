@@ -36,6 +36,7 @@ export default {
   computed: {
     ...mapGetters("dataset", ["minDate", "maxDate"]),
     minDateAsString() {
+      console.log(this.toString(this.minDate));
       return this.toString(this.minDate);
     },
     maxDateAsString() {

@@ -17,6 +17,7 @@ import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
 import * as d3 from "d3";
 import { mapGetters, mapActions } from "vuex";
+import { passesDateFilter } from "@/store/modules/dataset/filtering.js";
 
 export default {
   name: "Visualisations",
@@ -82,6 +83,11 @@ export default {
       .append("g")
       .attr("transform", translation);
 
+    this.filteredDates = {
+      from: new Date(Date.parse("1998-11-12")),
+      to: new Date(Date.parse("1999-11-12")),
+    };
+
     this.createVisualisation(this.type);
     this.redraw();
   },
@@ -90,6 +96,7 @@ export default {
       let newType = type.split("-")[0];
       this.visualisation = new visualisations[newType]("#" + this.id);
     },
+
     changeVisualisation(type) {
       let myFunction = () => {
         this.type = type;
@@ -98,6 +105,11 @@ export default {
         this.redraw();
       };
       this.spinnerFunctionality(myFunction);
+    },
+    filterEmails(emails, filteredDates) {
+      return emails.filter((email) => {
+        return passesDateFilter(email, filteredDates);
+      });
     },
     showSelection() {
       this.visualisation.showSelection(this.selectedNodes);
@@ -135,10 +147,11 @@ export default {
       return list;
     },
     redraw() {
+      var emails = this.filterEmails(this.filteredEmails, this.filteredDates);
       if (this.type === "AdjacencyMatrix") {
         this.redrawForAdjacency();
       } else {
-        this.visualisation.redraw(this.filteredEmails, this.persons);
+        this.visualisation.redraw(emails, this.persons);
       }
     },
     redrawForAdjacency() {
