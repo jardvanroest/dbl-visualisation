@@ -41,7 +41,7 @@ export default {
       showSpinner: false,
       tooltipVisibility: false,
       tooltipPosition: { top: 0, left: 0 },
-      tooltipData: { kurvi: "mnogo", belo: "obilno" },
+      tooltipData: {},
     };
   },
   computed: {
