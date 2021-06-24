@@ -8,6 +8,7 @@ export class Visualisation {
     this.height = 500;
     this.svg = this._getSVG();
 
+    this.transparentColor = "#00000000";
     this.selectColor = "#A585C1";
   }
 

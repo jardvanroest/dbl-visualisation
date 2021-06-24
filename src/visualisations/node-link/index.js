@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
-import { Brush } from "@/visualisations/node-link/brush.js";
+import { Brush } from "@/visualisations/brush.js";
 import store from "@/store";
 
 export class NodeLink extends Visualisation {

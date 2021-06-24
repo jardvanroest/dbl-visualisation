@@ -1,5 +1,7 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
+import { Brush } from "@/visualisations/brush.js";
+import * as d3 from "d3";
 import store from "@/store";
 
 export class AdjacencyMatrix extends Visualisation {
@@ -28,6 +30,12 @@ export class AdjacencyMatrix extends Visualisation {
       const selected = selectedCols.includes(i);
       if (selected) return that.selectColor;
     });
+  }
+
+  toggleInteractionMode(interactionMode) {
+    Visualisation.prototype.toggleInteractionMode.call(this);
+
+    this._toggleBrush(interactionMode);
   }
 
   // Computes rows and columns indices based on selectedNodes
@@ -96,6 +104,31 @@ export class AdjacencyMatrix extends Visualisation {
     this._drawCells(this.drawnRows);
     this.drawnColumns = this._drawColumns(svg, matrix);
     this._drawTransparentCells(this.drawnColumns);
+
+    // Compute rects with emails
+    const brushableRects = svg.selectAll("rect").filter(function () {
+      return d3.select(this).attr("fill") == "#df848f";
+      // TODO: the fill color is hard-coded, idk how to change it
+    });
+
+    // Create brush object
+    this.brush = new Brush(
+      svg,
+      brushableRects,
+      this.width,
+      this.height,
+      this.transparentColor,
+      this.selectColor
+    );
+
+    // Toggle brush based on current {interactionMode}
+    const interactionMode = store.getters["brush_and_link/interactionMode"];
+    this._toggleBrush(interactionMode);
+  }
+
+  _toggleBrush(interactionMode) {
+    if (interactionMode === "select") this.brush.appendBrush();
+    else this.brush.removeBrush();
   }
 
   _drawRows(svg, matrix) {
