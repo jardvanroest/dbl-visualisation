@@ -10,9 +10,9 @@ export class NodeLink extends Visualisation {
     super(HTMLselector);
 
     this.colors = {
-      edgePositive: "#b4ecb4",
-      edgeNeutral: "#cfcfc4",
-      edgeNegative: "#e498a1",
+      edgePositive: "#b4ecb499",
+      edgeNeutral: "#cfcfc499",
+      edgeNegative: "#e498a199",
       nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
@@ -92,23 +92,29 @@ export class NodeLink extends Visualisation {
   }
 
   _drawLinks(svg, links) {
-    const that = this;
+    var that = this;
 
     return svg
       .append("g")
-      .attr("stroke-opacity", this.options.edgeOpacity)
       .selectAll("line")
       .data(links)
       .join("line")
       .attr("stroke", function (d) {
-        // Color edges based on average sentiment
-        if (d.avgSentiment < -that.options.sentimentThreshold)
-          return that.colors.edgeNegative;
-        if (d.avgSentiment > that.options.sentimentThreshold)
-          return that.colors.edgePositive;
-        return that.colors.edgeNeutral;
+        return that._getLinkColor(d);
+      })
+      .attr("default-stroke", function (d) {
+        return that._getLinkColor(d);
       })
       .on("click", this.edgeClick.bind(this));
+  }
+
+  _getLinkColor(d) {
+    // Color based on average sentiment
+    if (d.avgSentiment < -this.options.sentimentThreshold)
+      return this.colors.edgeNegative;
+    if (d.avgSentiment > this.options.sentimentThreshold)
+      return this.colors.edgePositive;
+    return this.colors.edgeNeutral;
   }
 
   _drawNodes(svg, nodes, simulation) {
@@ -164,6 +170,8 @@ export class NodeLink extends Visualisation {
   }
 
   edgeClick(event, cell) {
+    this._changeInspectedElement(event.target);
+
     const persons = store.getters["dataset/persons"];
     const personA = persons.find((p) => p.id === cell.target.id);
     const personB = persons.find((p) => p.id === cell.source.id);
