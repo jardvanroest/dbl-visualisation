@@ -137,7 +137,7 @@ export class NodeLink extends Visualisation {
   }
 
   _dataTooltip(v, e, d) {
-    console.log(e);
+    //console.log(e);
     if (v)
       return {
         visible: v,

@@ -203,7 +203,7 @@ export class CalendarVisualisation extends Visualisation {
     return {
       date: this.___parseDate(d.date),
       emails: d.weight,
-      avg_s: this._getAvgSentiment(d.emails),
+      sentiment: this._getAvgSentiment(d.emails),
     };
   }
   ___parseDate(date) {

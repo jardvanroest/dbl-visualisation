@@ -99,7 +99,10 @@ export default {
   methods: {
     createVisualisation(type) {
       let newType = type.split("-")[0];
-      this.visualisation = new visualisations[newType]("#" + this.id);
+      this.visualisation = new visualisations[newType](
+        "#" + this.id,
+        this.tooltipUpdate
+      );
     },
     changeVisualisation(type) {
       let myFunction = () => {

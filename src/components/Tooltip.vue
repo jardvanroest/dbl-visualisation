@@ -51,7 +51,7 @@ export default {
   color: white;
 }
 .index {
-  color: var(--accent-color);
+  color: #4ee6e0;
 }
 @keyframes fadeIn {
   0% {
