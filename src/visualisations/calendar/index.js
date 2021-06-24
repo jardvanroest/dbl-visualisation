@@ -176,23 +176,53 @@ export class CalendarVisualisation extends Visualisation {
       })
       .on("mousemove", (e, d) => {
         let pos = {
-          top: this.___getYposCellDate(d) + e.screenX / 4,
+          top: e.layerY - 100,
           //e.pageY - document.getElementById(this.HTMLSelector).offset().top,
-          left: this.___getYposCellDate(d) * 2 + 50,
+          left: e.layerX - 100,
           //e.pageX - document.getElementById(this.HTMLSelector).offset().left,
         };
         // wtf?????
-        vm.updateTooltips({
-          visible: true,
-          pos: pos,
-          data: { test: "test" },
-        });
+        vm.updateTooltips(this._dataTooltip(true, e, d));
       })
       .on("mouseout", (e) => {
-        vm.updateTooltips({ visible: false });
+        vm.updateTooltips(this._dataTooltip(false));
       });
   }
 
+  _dataTooltip(v, e, d) {
+    console.log(e);
+    if (v)
+      return {
+        visible: v,
+        pos: this.__positionTooltip(e),
+        data: this.__tooltipContent(d),
+      };
+    return { visible: v };
+  }
+  __tooltipContent(d) {
+    return {
+      date: this.___parseDate(d.date),
+      emails: d.weight,
+      avg_s: this._getAvgSentiment(d.emails),
+    };
+  }
+  ___parseDate(date) {
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  }
+  __positionTooltip(e) {
+    return {
+      top: this.___styleTop(e.layerY),
+      left: this.___styleLeft(e.layerX),
+    };
+  }
+  ___styleTop(layerY) {
+    if (layerY > 80) return layerY - 80;
+    return layerY + 30;
+  }
+  ___styleLeft(layerX) {
+    if (layerX > 150) return layerX - 150;
+    return layerX + 30;
+  }
   updateInspectorData(event, cellData) {
     let inspectorData = {};
     let _date = cellData.date;

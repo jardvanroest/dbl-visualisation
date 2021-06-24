@@ -98,22 +98,51 @@ export class NodeLink extends Visualisation {
       .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
       .on("click", this.nodeClick.bind(this))
       .on("mousemove", (e, d) => {
-        //console.log(e);
-        let pos = {
-          top: e.clientY,
-          left: e.clientX,
-        };
-        this.updateTooltips({
-          visible: true,
-          pos: pos,
-          data: { test: "test" },
-        });
+        console.log(d);
+        this.updateTooltips(this._dataTooltip(true, e, d));
       })
       .on("mouseout", (e, d) => {
-        this.updateTooltips({ visible: false });
+        this.updateTooltips(false);
       });
   }
 
+  _dataTooltip(v, e, d) {
+    console.log(e);
+    if (v)
+      return {
+        visible: v,
+        pos: this.__positionTooltip(e),
+        data: this.__tooltipContent(d),
+      };
+    return { visible: v };
+  }
+  __tooltipContent(d) {
+    const persons = store.getters["dataset/persons"];
+    const person = persons.find((p) => p.id === d.id);
+    console.log(person);
+    return {
+      person: person.emailAddress,
+      sent: person.sendEmails.length,
+      received: person.receivedEmails.length,
+    };
+  }
+  ___parseDate(date) {
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  }
+  __positionTooltip(e) {
+    return {
+      top: this.___styleTop(e.layerY),
+      left: this.___styleLeft(e.layerX),
+    };
+  }
+  ___styleTop(layerY) {
+    if (layerY > 100) return layerY - 80;
+    return layerY;
+  }
+  ___styleLeft(layerX) {
+    if (layerX > 200) return layerX - 250;
+    return layerX + 30;
+  }
   _handleMouseDragOnNode(simulation) {
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).restart();

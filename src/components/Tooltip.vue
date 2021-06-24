@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="tp"
     v-if="visible"
     id="tooltip"
     :style="{
@@ -9,7 +10,7 @@
   >
     <div v-for="(item, index) in data" :key="index">
       <p>
-        <b class="asd">{{ index }}: </b> {{ item }}
+        <b class="index">{{ index }}: </b> {{ item }}
       </p>
     </div>
   </div>
@@ -19,13 +20,15 @@
 export default {
   name: "Tooltip",
   props: ["visible", "pos", "data"],
+  data() {
+    return {};
+  },
   computed: {
     styleTop() {
       return this.pos.top;
     },
     styleLeft() {
-      //console.log(this.visible);
-      return this.pos.left - 0;
+      return this.pos.left;
     },
   },
   methods: {},
@@ -36,16 +39,19 @@ export default {
 #tooltip {
   animation: fadeIn 0.3s;
   position: absolute;
-  // visibility: hidden;
-  //top: var(--);
+  font-size: 0.75rem;
   background-color: rgba(0, 0, 0, 0.75);
-  border: solid;
+  border: transparent;
   border-width: 1px;
   border-radius: 5px;
   padding: 10px;
+  max-width: 220px;
 }
 #tooltip p {
   color: white;
+}
+.index {
+  color: var(--accent-color);
 }
 @keyframes fadeIn {
   0% {

@@ -1,5 +1,5 @@
 <template>
-  <div class="visualisation">
+  <div class="visualisation" ref="vis">
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"

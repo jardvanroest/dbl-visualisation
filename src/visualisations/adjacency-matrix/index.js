@@ -69,20 +69,46 @@ export class AdjacencyMatrix extends Visualisation {
       })
       .on("click", this.updateInspectorData.bind(this))
       .on("mousemove", (e, d) => {
-        //console.log(e);
-        let pos = {
-          top: e.clientY,
-          left: e.clientX,
-        };
-        this.updateTooltips({
-          visible: true,
-          pos: pos,
-          data: { test: "test" },
-        });
+        if (d.weight > 0) this.updateTooltips(this._dataTooltip(true, e, d));
       })
       .on("mouseout", (e, d) => {
-        this.updateTooltips({ visible: false });
+        this.updateTooltips(this._dataTooltip(false));
       });
+  }
+
+  _dataTooltip(v, e, d) {
+    console.log(d);
+    if (v)
+      return {
+        visible: v,
+        pos: this.__positionTooltip(e),
+        data: this.__tooltipContent(d),
+      };
+    return { visible: v };
+  }
+  __tooltipContent(d) {
+    return {
+      from: d.sender.emailAddress,
+      to: d.recipient.emailAddress,
+      emails: d.weight,
+    };
+  }
+  ___parseDate(date) {
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  }
+  __positionTooltip(e) {
+    return {
+      top: this.___styleTop(e.layerY),
+      left: this.___styleLeft(e.layerX),
+    };
+  }
+  ___styleTop(layerY) {
+    if (layerY > 100) return layerY - 100;
+    return layerY + 30;
+  }
+  ___styleLeft(layerX) {
+    if (layerX > 230) return layerX - 250;
+    return layerX + 20;
   }
 
   _getPositionFromIndex(d, i) {
