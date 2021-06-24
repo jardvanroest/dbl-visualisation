@@ -1,17 +1,34 @@
+import {
+  passesDateFilter,
+  passesJobTitleFilter,
+  passesEmailFilter,
+} from "./filtering";
+
 export default {
   emails(state) {
     return state.emails;
   },
   filteredEmails(state, getters) {
-    if (!getters.thereAreAddressesSelectedInTheEmailFilter) return state.emails;
+    const filteredEmailAddresses = getters.filteredEmailAddresses;
+    const filteredJobTitles = getters.filteredJobTitles;
+    const filteredDates = getters.filteredDates;
 
-    const persons = state.filteredPersons;
-
-    const filteredEmails = persons.flatMap((person) =>
-      person.sendEmails.concat(person.receivedEmails)
-    );
-
-    return makeUnique(filteredEmails);
+    return getters.emails.filter((email) => {
+      return (
+        passesEmailFilter(email, filteredEmailAddresses) &&
+        passesJobTitleFilter(email, filteredJobTitles) &&
+        passesDateFilter(email, filteredDates)
+      );
+    });
+  },
+  filteredEmailAddresses(state) {
+    return state.filteredPersons.map((person) => person.emailAddress);
+  },
+  filteredJobTitles(state) {
+    return state.filteredJobTitles;
+  },
+  filteredDates(state) {
+    return state.filteredDates;
   },
   persons(state) {
     return Object.values(state.persons);
@@ -25,6 +42,15 @@ export default {
   getInspectorData(state) {
     return state.inspectorData;
   },
+  getSortedMatrixData(state) {
+    return state.sortedMatrixData;
+  },
+  getMatrixDataForSorting(state) {
+    return state.matrixData;
+  },
+  jobTitles(state) {
+    return state.jobTitles;
+  },
   getDatasetID(state) {
     return state.datasetID;
   },
@@ -37,8 +63,10 @@ export default {
       state.datasetID
     );
   },
+  minDate(state) {
+    return state.minDate;
+  },
+  maxDate(state) {
+    return state.maxDate;
+  },
 };
-
-function makeUnique(array) {
-  return [...new Set(array)];
-}

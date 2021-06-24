@@ -3,7 +3,7 @@
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
-      :selected="id"
+      :selected="type"
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
@@ -27,7 +27,7 @@ import Tooltip from "./Tooltip.vue";
 
 export default {
   name: "Visualisations",
-  props: ["id"],
+  props: ["id", "initialType"],
   components: {
     Spinner,
     DropDown,
@@ -35,6 +35,7 @@ export default {
   },
   data() {
     return {
+      type: this.initialType,
       size: 500,
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
@@ -45,14 +46,31 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("dataset", ["filteredEmails", "persons"]),
+    ...mapGetters("dataset", [
+      "filteredEmails",
+      "persons",
+      "getSortedMatrixData",
+    ]),
+    ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
   watch: {
     filteredEmails: {
       deep: true,
       handler() {
-        this.showSpinnerDoFunctionHideSpinner(this.redraw);
+        this.spinnerFunctionality(this.redraw);
       },
+    },
+    selectedNodes() {
+      this.showSelection();
+    },
+    interactionMode() {
+      this.spinnerFunctionality(this.toggleInteractionMode);
+    },
+    // Watch for new incoming {sortedMatrixData}
+    getSortedMatrixData() {
+      if (this.type === "AdjacencyMatrix") {
+        this.spinnerFunctionality(this.redrawForAdjacency);
+      }
     },
   },
   mounted() {
@@ -65,6 +83,7 @@ export default {
     this.zoom = d3
       .zoom()
       .scaleExtent([this.zoomVals.min, this.zoomVals.max])
+      .filter(() => this.interactionMode === "inspect") // Only zoom in Inspection Mode
       .on("zoom", this.zoomed);
 
     this.g = d3
@@ -74,26 +93,27 @@ export default {
       .append("g")
       .attr("transform", translation);
 
-    this.createVisualisation(this.id);
+    this.createVisualisation(this.type);
     this.redraw();
   },
   methods: {
     createVisualisation(type) {
-      this.visualisation = new visualisations[type](
-        "#" + this.id,
-        this.tooltipUpdate
-      );
-      //console.log(element.getBoundingClientRect());
+      let newType = type.split("-")[0];
+      this.visualisation = new visualisations[newType]("#" + this.id);
     },
     changeVisualisation(type) {
       let myFunction = () => {
+        this.type = type;
         this.visualisation.resetVisualisation();
-        this.createVisualisation(type);
+        this.createVisualisation(this.type);
         this.redraw();
       };
-      this.showSpinnerDoFunctionHideSpinner(myFunction);
+      this.spinnerFunctionality(myFunction);
     },
-    showSpinnerDoFunctionHideSpinner(myFunction) {
+    showSelection() {
+      this.visualisation.showSelection(this.selectedNodes);
+    },
+    spinnerFunctionality(myFunction) {
       this.showSpinner = true;
       new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -102,8 +122,8 @@ export default {
         }, 0);
       }).then(() => (this.showSpinner = false));
     },
-    redraw() {
-      this.visualisation.redraw(this.filteredEmails, this.persons);
+    toggleInteractionMode() {
+      this.visualisation.toggleInteractionMode(this.interactionMode);
     },
     zoomed(event) {
       var box = this.g.node().getBBox();
@@ -125,6 +145,29 @@ export default {
       }
       return list;
     },
+    redraw() {
+      if (this.type === "AdjacencyMatrix") {
+        this.redrawForAdjacency();
+      } else {
+        this.visualisation.redraw(this.filteredEmails, this.persons);
+      }
+    },
+    redrawForAdjacency() {
+      let newData = this.getSortedMatrixData;
+      if (newData === "unsorted") {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          this.persons,
+          this.persons
+        );
+      } else {
+        this.visualisation.redraw(
+          this.filteredEmails,
+          newData.personsRows,
+          newData.personsCols
+        );
+      }
+    },
     visName(type) {
       switch (type) {
         case "AdjacencyMatrix":
@@ -133,8 +176,6 @@ export default {
           return "Node-link diagram";
         case "CalendarVisualisation":
           return "Calendar matrix";
-        case "CalendarVisulasation":
-          return "Calendar visualisation";
         default:
           return "No name for vis";
       }

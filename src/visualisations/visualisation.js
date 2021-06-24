@@ -1,12 +1,14 @@
 import * as d3 from "d3";
+import store from "@/store";
 
 export class Visualisation {
-  constructor(HTMLSelector, name) {
+  constructor(HTMLSelector) {
     this.HTMLSelector = HTMLSelector;
-    this.name = name;
     this.width = 500;
     this.height = 500;
     this.svg = this._getSVG();
+
+    this.selectColor = "#A585C1";
   }
 
   redraw() {
@@ -16,6 +18,10 @@ export class Visualisation {
   resetVisualisation() {
     d3.select(this.HTMLSelector).selectChild("g").selectAll("*").remove();
   }
+
+  showSelection() {}
+
+  toggleInteractionMode(interactionMode) {}
 
   _getSVG() {
     return d3.select(this.HTMLSelector).selectChild("g");
@@ -91,5 +97,13 @@ export class Visualisation {
     function _formatDate(date) {
       return date.toDateString().split(" ").slice(1).join(" ");
     }
+  }
+
+  _isFiltered(person) {
+    const filteredJobTitles = store.getters["dataset/filteredJobTitles"];
+    let isFilteredByJobTitle = filteredJobTitles.includes(person.jobTitle);
+    let filtered = isFilteredByJobTitle || person.isSelectedInEmailFilter;
+
+    return filtered;
   }
 }

@@ -6,7 +6,12 @@ export default {
   changeInspectorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
-
+  changeSortedMatrixData(context, newData) {
+    context.commit("newSortedMatrixData", newData);
+  },
+  changeMatrixData(context, newData) {
+    context.commit("newMatrixData", newData);
+  },
   saveData(context, { data: data, isDefault: isDefault }) {
     if (!isDefault) {
       // upload dataset if it is not default
@@ -25,10 +30,19 @@ export default {
       context.commit("addPerson", sendingPerson);
       context.commit("addPerson", receivingPerson);
       context.commit("addEmail", email);
+      context.commit("addJobtitle", sendingPerson.jobTitle);
+      context.commit("addJobtitle", receivingPerson.jobTitle);
+      context.commit("updateMinMaxDates", email.date);
     });
   },
   setFilteredPersons(context, persons) {
     context.commit("setFilteredPersons", persons);
+  },
+  setFilteredJobTitles(context, jobTitles) {
+    context.commit("setFilteredJobTitles", jobTitles);
+  },
+  setFilteredDates(context, payload) {
+    context.commit("setFilteredDates", payload);
   },
 };
 

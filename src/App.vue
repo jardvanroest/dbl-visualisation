@@ -29,7 +29,6 @@
 
   --hdr-size: 3.125rem;
   --stt-width: 300px;
-  --grd-dir: column;
 }
 
 #app {
@@ -41,18 +40,19 @@
 }
 
 /* Scroll bar styling */
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-  background-color: #00000015;
+::-webkit-scrollbar {
+  width: 12px;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #ebebeb;
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: var(--accent-color-light);
+  border: 2px solid #ebebeb;
 }
 
 /* Prevent user-selection of elements listed below by giving them class of no_highlight*/
@@ -63,11 +63,5 @@ header,
   -moz-user-select: none;
   -o-user-select: none;
   user-select: none;
-}
-
-@media (max-width: 1000px) {
-  :root {
-    --grd-dir: row;
-  }
 }
 </style>

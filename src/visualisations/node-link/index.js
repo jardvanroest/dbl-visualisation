@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
+import { Brush } from "@/visualisations/node-link/brush.js";
 import store from "@/store";
 
 export class NodeLink extends Visualisation {
@@ -32,6 +33,12 @@ export class NodeLink extends Visualisation {
     this._generateVis(emails);
   }
 
+  toggleInteractionMode(interactionMode) {
+    Visualisation.prototype.toggleInteractionMode.call(this);
+
+    this._toggleBrush(interactionMode);
+  }
+
   _generateVis(emails) {
     const { nodes, links } = this._parseData(emails);
     const svg = this._getSVG();
@@ -51,6 +58,25 @@ export class NodeLink extends Visualisation {
     this.drawnNodes = this._drawNodes(svg, nodes, simulation);
 
     simulation.on("tick", this._handleSimulationTick.bind(this));
+
+    // Create brush object
+    this.brush = new Brush(
+      svg,
+      this.drawnNodes,
+      this.options.width,
+      this.options.height,
+      this.colors.nodeOutline,
+      this.selectColor
+    );
+
+    // Toggle brush based on current {interactionMode}
+    const interactionMode = store.getters["brush_and_link/interactionMode"];
+    this._toggleBrush(interactionMode);
+  }
+
+  _toggleBrush(interactionMode) {
+    if (interactionMode === "select") this.brush.appendBrush();
+    else this.brush.removeBrush();
   }
 
   _getSimulation(nodes, links) {
@@ -86,6 +112,8 @@ export class NodeLink extends Visualisation {
   }
 
   _drawNodes(svg, nodes, simulation) {
+    const that = this;
+
     return svg
       .append("g")
       .attr("stroke", this.colors.nodeOutline)
@@ -93,6 +121,8 @@ export class NodeLink extends Visualisation {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
+      .attr("stroke", that.colors.nodeOutline)
+      .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
       .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
@@ -196,14 +226,14 @@ export class NodeLink extends Visualisation {
         email: personA.emailAddress,
         id: personA.id,
         title: personA.jobTitle,
-        included_in_filter: personA.isSelectedInEmailFilter,
+        included_in_filter: this._isFiltered(personA),
         sent_emails: sent_by_a,
       },
       person_2: {
         email: personB.emailAddress,
         id: personB.id,
         title: personB.jobTitle,
-        included_in_filter: personB.isSelectedInEmailFilter,
+        included_in_filter: this._isFiltered(personB),
         sent_emails: sent_by_b,
       },
     };
@@ -226,7 +256,7 @@ export class NodeLink extends Visualisation {
         email: person.emailAddress,
         id: person.id,
         title: person.jobTitle,
-        included_in_filter: person.isSelectedInEmailFilter,
+        included_in_filter: this._isFiltered(person),
       },
       sent_emails: { number: person.sendEmails.length },
       received_emails: { number: person.receivedEmails.length },

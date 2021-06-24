@@ -1,5 +1,5 @@
 <template>
-  <p @click="importExampleDataset">Or view an example instead</p>
+  <p @click="importExampleDataset">or view an example instead</p>
 </template>
 
 <script>
