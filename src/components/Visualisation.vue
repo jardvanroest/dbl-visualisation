@@ -78,12 +78,12 @@ export default {
       .filter(() => this.interactionMode === "inspect") // Only zoom in Inspection Mode
       .on("zoom", this.zoomed);
 
-    this.g = d3
+    this.svg = d3
       .select("#" + this.id)
       .attr("viewBox", "0 0 " + this.size + " " + this.size)
-      .call(this.zoom)
-      .append("g")
-      .attr("transform", translation);
+      .call(this.zoom);
+
+    this.g = this.svg.append("g").attr("transform", translation);
 
     this.createVisualisation(this.type);
     this.redraw();
@@ -173,10 +173,10 @@ export default {
       }
     },
     zoomIn() {
-      this.zoom.scaleBy(this.g.transition().duration(750), 1.4);
+      this.zoom.scaleBy(this.svg.transition().duration(250), 1.6);
     },
     zoomOut() {
-      this.zoom.scaleBy(this.g.transition().duration(750), 0.6);
+      this.zoom.scaleBy(this.svg.transition().duration(250), 1 / 1.6);
     },
   },
 };
