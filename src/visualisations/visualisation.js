@@ -99,7 +99,7 @@ export class Visualisation {
       target.setAttribute("stroke", this.selectColor);
     else if (target.getAttribute("default-stroke") != null)
       target.setAttribute("stroke", target.getAttribute("default-stroke"));
-    else target.setAttribute("stroke", this.selectColor);
+    else target.setAttribute("stroke", this.transparentColor);
   }
 
   _changeInspectedElement(target) {
