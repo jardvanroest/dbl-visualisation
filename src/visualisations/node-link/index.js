@@ -102,8 +102,8 @@ export class NodeLink extends Visualisation {
       .attr("stroke", function (d) {
         return that._getLinkColor(d);
       })
-      .attr("default-stroke", function (d) {
-        return that._getLinkColor(d);
+      .attr("default-stroke", function () {
+        return this.getAttribute("stroke");
       })
       .on("click", this.edgeClick.bind(this));
   }
@@ -170,8 +170,6 @@ export class NodeLink extends Visualisation {
   }
 
   edgeClick(event, cell) {
-    this._changeInspectedElement(event.target);
-
     const persons = store.getters["dataset/persons"];
     const personA = persons.find((p) => p.id === cell.target.id);
     const personB = persons.find((p) => p.id === cell.source.id);
@@ -208,6 +206,8 @@ export class NodeLink extends Visualisation {
     };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
+
+    this._changeInspectedElement(event.target);
   }
 
   nodeClick(event, cell) {

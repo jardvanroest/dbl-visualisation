@@ -17,7 +17,6 @@ export class AdjacencyMatrix extends Visualisation {
 
   showSelection(selectedNodes) {
     const { selectedRows, selectedCols } = this._computeSelected(selectedNodes);
-
     const that = this;
     this.drawnRows.attr("stroke", function (d, i) {
       const selected = selectedRows.includes(i);

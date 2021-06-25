@@ -95,9 +95,11 @@ export class Visualisation {
   }
 
   resetInspectedElement(target) {
-    if (target.getAttribute("default-stroke") != null)
+    if (target.getAttribute("selected") == "true")
+      target.setAttribute("stroke", this.selectColor);
+    else if (target.getAttribute("default-stroke") != null)
       target.setAttribute("stroke", target.getAttribute("default-stroke"));
-    else target.setAttribute("stroke", this.transparentColor);
+    else target.setAttribute("stroke", this.selectColor);
   }
 
   _changeInspectedElement(target) {
