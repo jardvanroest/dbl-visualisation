@@ -19,6 +19,7 @@ export class Brush {
       height: height,
     };
 
+    console.log(brushObjects);
     this.brush = this._createBrush();
   }
 
@@ -52,8 +53,10 @@ export class Brush {
     // Set stroke based on whether or not the element is in selection
     this.brushObjects.attr("stroke", function (d) {
       // Check if data element is selected using its coordinates
-      const selected = x0 <= d.x && x1 >= d.x && y0 <= d.y && y1 >= d.y;
+      const x = d.x,
+        y = d.y;
 
+      const selected = x0 <= x && x1 >= x && y0 <= y && y1 >= y;
       if (selected) {
         that._selectedObjects.push(d.id);
         return that.colors.selected;

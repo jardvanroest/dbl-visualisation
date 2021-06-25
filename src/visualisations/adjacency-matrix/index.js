@@ -111,6 +111,11 @@ export class AdjacencyMatrix extends Visualisation {
       // TODO: the fill color is hard-coded, idk how to change it
     });
 
+    // TODO: looks like .filter() still keeps the unfiltered objects?
+    // It makes the brush slow
+    // TODO: the AdjMat row/col selection doesn't change the stroke
+    // of {brushableRects} WTF!
+
     // Create brush object
     this.brush = new Brush(
       svg,
@@ -166,9 +171,17 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _drawCells(rows) {
+    const that = this;
     return rows
       .selectAll("g")
-      .data(function (d) {
+      .data(function (d, i) {
+        d.forEach((element, index) => {
+          element.coords = {
+            x: (that.rectLength + that.rectMargin) * index,
+            y: (that.rectLength + that.rectMargin) * i,
+          };
+        });
+
         return d;
       })
       .enter()

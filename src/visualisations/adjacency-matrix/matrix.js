@@ -52,6 +52,9 @@ class Cell {
     this.sender = sender;
     this.recipient = recipient;
     this._emails = [];
+
+    this.x = 0;
+    this.y = 0;
   }
 
   addEmails(emails, recipientId) {
@@ -70,6 +73,11 @@ class Cell {
     let filtered = isFilteredByJobTitle || person.isSelectedInEmailFilter;
 
     return filtered;
+  }
+
+  set coords({ x, y }) {
+    this.x = x;
+    this.y = y;
   }
 
   get fillColor() {
