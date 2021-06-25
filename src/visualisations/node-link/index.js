@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
-import { Brush } from "@/visualisations/brush.js";
+import { NodeBrush } from "@/visualisations/brushes/node-brush.js";
 import store from "@/store";
 
 export class NodeLink extends Visualisation {
@@ -39,6 +39,10 @@ export class NodeLink extends Visualisation {
     this._toggleBrush(interactionMode);
   }
 
+  onEdgeSelection(selectedEdges) {
+    console.log(selectedEdges);
+  }
+
   _generateVis(emails) {
     const { nodes, links } = this._parseData(emails);
     const svg = this._getSVG();
@@ -60,7 +64,7 @@ export class NodeLink extends Visualisation {
     simulation.on("tick", this._handleSimulationTick.bind(this));
 
     // Create brush object
-    this.brush = new Brush(
+    this.brush = new NodeBrush(
       svg,
       this.drawnNodes,
       this.options.width,

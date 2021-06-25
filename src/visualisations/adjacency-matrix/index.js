@@ -1,6 +1,6 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
-import { Brush } from "@/visualisations/brush.js";
+import { RectBrush } from "@/visualisations/brushes/rect-brush.js";
 import * as d3 from "d3";
 import store from "@/store";
 
@@ -17,7 +17,7 @@ export class AdjacencyMatrix extends Visualisation {
     this._generateVisualisation();
   }
 
-  showSelection(selectedNodes) {
+  onNodeSelection(selectedNodes) {
     const { selectedRows, selectedCols } = this._computeSelected(selectedNodes);
 
     const that = this;
@@ -114,16 +114,16 @@ export class AdjacencyMatrix extends Visualisation {
     // TODO: looks like .filter() still keeps the unfiltered objects?
     // It makes the brush slow
     // TODO: the AdjMat row/col selection doesn't change the stroke
-    // of {brushableRects} WTF!
+    // of ?some? {brushableRects} WTF! (only rows)
 
     // Create brush object
-    this.brush = new Brush(
+    this.brush = new RectBrush(
       svg,
       brushableRects,
       this.width,
       this.height,
       this.transparentColor,
-      this.selectColor
+      "#1D2F6F"
     );
 
     // Toggle brush based on current {interactionMode}
@@ -180,6 +180,10 @@ export class AdjacencyMatrix extends Visualisation {
             x: (that.rectLength + that.rectMargin) * index,
             y: (that.rectLength + that.rectMargin) * i,
           };
+
+          const recipient = element.recipient;
+          const sender = element.sender;
+          element.id = { recipient, sender };
         });
 
         return d;

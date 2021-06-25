@@ -20,7 +20,9 @@ export class Visualisation {
     d3.select(this.HTMLSelector).selectChild("g").selectAll("*").remove();
   }
 
-  showSelection() {}
+  onNodeSelection(selectedNodes) {}
+
+  onEdgeSelection(selectedEdges) {}
 
   toggleInteractionMode(interactionMode) {}
 
