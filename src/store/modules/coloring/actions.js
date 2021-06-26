@@ -1,5 +1,5 @@
 export default {
-  updateInteractionMode(context, data) {
+  updateColoringMode(context, data) {
     context.commit("updateColoringMode", data);
   },
 };

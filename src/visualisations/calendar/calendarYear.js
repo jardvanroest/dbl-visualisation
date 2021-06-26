@@ -56,7 +56,7 @@ class CellDate {
   get opacity() {
     return this.weight / 7;
   }
-  get fillColor() {
+  get fillColor_ByDate() {
     // dif type of vis
     // return (
     //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
@@ -68,6 +68,21 @@ class CellDate {
       /*this.weight / 1.4 */ 98 +
       "," +
       /*this.weight / 5 */ 98 +
+      ")"
+    );
+  }
+  get fillColor_BySentiment() {
+    // dif type of vis
+    // return (
+    //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
+    // );
+    return (
+      "rgb(" +
+      this.weight / 0.5 +
+      ", " +
+      /*this.weight / 1.4 */ 0 +
+      "," +
+      /*this.weight / 5 */ 0 +
       ")"
     );
   }

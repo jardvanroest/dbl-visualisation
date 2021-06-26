@@ -52,9 +52,16 @@ export default {
       "getSortedMatrixData",
     ]),
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
+    ...mapGetters("coloring", ["coloringMode"]),
   },
   watch: {
     filteredEmails: {
+      deep: true,
+      handler() {
+        this.spinnerFunctionality(this.redraw);
+      },
+    },
+    coloringMode: {
       deep: true,
       handler() {
         this.spinnerFunctionality(this.redraw);

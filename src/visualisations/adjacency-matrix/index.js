@@ -175,7 +175,6 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _dataTooltip(v, e, d) {
-    console.log(d);
     if (v)
       return {
         visible: v,

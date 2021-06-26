@@ -1,5 +1,5 @@
 export default {
-    coloringMode(state) {
+  coloringMode(state) {
     return state.mode;
   },
 };
