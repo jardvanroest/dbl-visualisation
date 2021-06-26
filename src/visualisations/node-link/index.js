@@ -40,7 +40,34 @@ export class NodeLink extends Visualisation {
   }
 
   onEdgeSelection(selectedEdges) {
-    console.log(selectedEdges);
+    const selectedEdgesArr = this._computeSelectedEdges(selectedEdges);
+
+    const that = this;
+    this.drawnLinks.attr("stroke", function (d) {
+      const selected =
+        selectedEdgesArr.filter(
+          (e) =>
+            (e.recipientID == d.target.id && e.senderID == d.source.id) ||
+            (e.recipientID == d.source.id && e.senderID == d.target.id)
+        ).length > 0;
+
+      if (selected) return that.edgeSelectColor;
+      else return that._getLinkColor(d.sentimentType);
+    });
+
+    // TODO: finish implementing this
+    // currently selected edges go transparent
+    // u have to be able to go back to the original line stroke
+    // might need to change stuff in the brushing logic (not sure tho)
+  }
+
+  _computeSelectedEdges(selectedEdges) {
+    let selectedEdgesArr = [];
+    selectedEdges.forEach((element) => {
+      selectedEdgesArr.push(Object.assign({}, element));
+    });
+
+    return selectedEdgesArr;
   }
 
   _generateVis(emails) {
@@ -50,7 +77,7 @@ export class NodeLink extends Visualisation {
   }
 
   _parseData(emails) {
-    const graph = new Graph(emails);
+    const graph = new Graph(emails, this.options.sentimentThreshold);
     const { nodes, links } = graph.parse();
     return { nodes, links };
   }
@@ -70,7 +97,7 @@ export class NodeLink extends Visualisation {
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
-      this.selectColor
+      this.nodeSelectColor
     );
 
     // Toggle brush based on current {interactionMode}
@@ -106,13 +133,15 @@ export class NodeLink extends Visualisation {
       .join("line")
       .attr("stroke", function (d) {
         // Color edges based on average sentiment
-        if (d.avgSentiment < -that.options.sentimentThreshold)
-          return that.colors.edgeNegative;
-        if (d.avgSentiment > that.options.sentimentThreshold)
-          return that.colors.edgePositive;
-        return that.colors.edgeNeutral;
+        return that._getLinkColor(d.sentimentType);
       })
       .on("click", this.edgeClick.bind(this));
+  }
+
+  _getLinkColor(sentimentType) {
+    if (sentimentType === -1) return this.colors.edgeNegative;
+    if (sentimentType === 1) return this.colors.edgePositive;
+    return this.colors.edgeNeutral;
   }
 
   _drawNodes(svg, nodes, simulation) {

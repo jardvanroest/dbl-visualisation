@@ -9,7 +9,8 @@ export class Visualisation {
     this.svg = this._getSVG();
 
     this.transparentColor = "#00000000";
-    this.selectColor = "#A585C1";
+    this.nodeSelectColor = "#A585C1";
+    this.edgeSelectColor = "#1D2F6F";
   }
 
   redraw() {

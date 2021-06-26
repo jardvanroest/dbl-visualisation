@@ -23,12 +23,12 @@ export class AdjacencyMatrix extends Visualisation {
     const that = this;
     this.drawnRows.attr("stroke", function (d, i) {
       const selected = selectedRows.includes(i);
-      if (selected) return that.selectColor;
+      if (selected) return that.nodeSelectColor;
     });
 
     this.drawnColumns.attr("stroke", function (d, i) {
       const selected = selectedCols.includes(i);
-      if (selected) return that.selectColor;
+      if (selected) return that.nodeSelectColor;
     });
   }
 
@@ -111,9 +111,9 @@ export class AdjacencyMatrix extends Visualisation {
       // TODO: the fill color is hard-coded, idk how to change it
     });
 
-    // TODO: looks like .filter() still keeps the unfiltered objects?
+    // TOFIX: looks like .filter() still keeps the unfiltered objects?
     // It makes the brush slow
-    // TODO: the AdjMat row/col selection doesn't change the stroke
+    // TOFIX: the AdjMat row/col selection doesn't change the stroke
     // of ?some? {brushableRects} WTF! (only rows)
 
     // Create brush object
@@ -123,7 +123,7 @@ export class AdjacencyMatrix extends Visualisation {
       this.width,
       this.height,
       this.transparentColor,
-      "#1D2F6F"
+      this.edgeSelectColor
     );
 
     // Toggle brush based on current {interactionMode}
@@ -181,9 +181,9 @@ export class AdjacencyMatrix extends Visualisation {
             y: (that.rectLength + that.rectMargin) * i,
           };
 
-          const recipient = element.recipient;
-          const sender = element.sender;
-          element.id = { recipient, sender };
+          const recipientID = element.recipient.id;
+          const senderID = element.sender.id;
+          element.id = { recipientID, senderID };
         });
 
         return d;
