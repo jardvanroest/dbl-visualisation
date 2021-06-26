@@ -128,7 +128,6 @@ export class NodeLink extends Visualisation {
       .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
       .on("click", this.nodeClick.bind(this))
       .on("mousemove", (e, d) => {
-        console.log(d);
         this.updateTooltips(this._dataTooltip(true, e, d));
       })
       .on("mouseout", (e, d) => {

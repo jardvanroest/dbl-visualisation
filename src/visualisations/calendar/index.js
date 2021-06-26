@@ -175,12 +175,6 @@ export class CalendarVisualisation extends Visualisation {
         vm.updateInspectorData(e, d);
       })
       .on("mousemove", (e, d) => {
-        let pos = {
-          top: e.layerY - 100,
-          //e.pageY - document.getElementById(this.HTMLSelector).offset().top,
-          left: e.layerX - 100,
-          //e.pageX - document.getElementById(this.HTMLSelector).offset().left,
-        };
         // wtf?????
         vm.updateTooltips(this._dataTooltip(true, e, d));
       })
