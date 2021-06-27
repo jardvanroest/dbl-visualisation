@@ -54,11 +54,6 @@ export class NodeLink extends Visualisation {
       if (selected) return that.edgeSelectColor;
       else return that._getLinkColor(d.sentimentType);
     });
-
-    // TODO: finish implementing this
-    // currently selected edges go transparent
-    // u have to be able to go back to the original line stroke
-    // might need to change stuff in the brushing logic (not sure tho)
   }
 
   _computeSelectedEdges(selectedEdges) {

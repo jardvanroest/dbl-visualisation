@@ -106,13 +106,13 @@ export class AdjacencyMatrix extends Visualisation {
     this._drawTransparentCells(this.drawnColumns);
 
     // Compute rects with emails
-    const brushableRects = svg.selectAll("rect").filter(function () {
-      return d3.select(this).attr("fill") == "#df848f";
-      // TODO: the fill color is hard-coded, idk how to change it
-    });
+    const brushableRects = this.drawnRows
+      .selectAll("rect")
+      .filter(function (d) {
+        return d3.select(this).attr("fill") != "#b8e0f6";
+        // TODO: the fill color is hard-coded, idk how to change it
+      });
 
-    // TOFIX: looks like .filter() still keeps the unfiltered objects?
-    // It makes the brush slow
     // TOFIX: the AdjMat row/col selection doesn't change the stroke
     // of ?some? {brushableRects} WTF! (only rows)
 
