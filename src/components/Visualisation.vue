@@ -1,5 +1,6 @@
 <template>
   <div class="visualisation">
+    <VisualisationSettings class="settings" />
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
@@ -7,14 +8,17 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
+    <TimeBar class="timebar" />
     <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
 
 <script>
 import Spinner from "@/components/Spinner.vue";
-import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
+import TimeBar from "@/components/TimeBar.vue";
+import VisualisationSettings from "@/components/VisualisationSettings.vue";
+import * as visualisations from "@/visualisations";
 import * as d3 from "d3";
 import { mapGetters, mapActions } from "vuex";
 import { passesDateFilter } from "@/store/modules/dataset/filtering.js";
@@ -25,6 +29,8 @@ export default {
   components: {
     Spinner,
     DropDown,
+    VisualisationSettings,
+    TimeBar,
   },
   data() {
     return {
@@ -207,6 +213,17 @@ export default {
   position: absolute;
   top: 1%;
   left: 1%;
+}
+
+.settings {
+  position: absolute;
+  top: 1%;
+  right: 1%;
+}
+
+.timebar {
+  position: absolute;
+  bottom: 1%;
 }
 
 .vis-svg {
