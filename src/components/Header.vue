@@ -2,7 +2,12 @@
   <header>
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
-        <img src="@/assets/icons/logo.svg" alt="logo" />
+        <img
+          v-if="darkModeIsEnabled"
+          src="@/assets/icons/logo-dark.svg"
+          alt="logo"
+        />
+        <img v-else src="@/assets/icons/logo.svg" alt="logo" />
         <span>MailVis</span>
       </div>
       <div class="nav_icons">
@@ -23,6 +28,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Visualisation",
   components: {},
@@ -30,6 +37,9 @@ export default {
     return {
       rotSett: false,
     };
+  },
+  computed: {
+    ...mapGetters("dark_mode", ["darkModeIsEnabled"]),
   },
   methods: {
     redirectToHome() {
@@ -57,7 +67,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   transition: all ease-in-out 200ms;
 }
@@ -131,6 +141,12 @@ export default {
 
 .nav_icons li:hover img {
   filter: invert(1);
+}
+
+[data-theme="dark"] {
+  .nav_icons li img {
+    filter: invert(1);
+  }
 }
 
 .nav_icons li img {

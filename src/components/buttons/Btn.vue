@@ -18,7 +18,7 @@ button {
   border: 2px solid;
   border-radius: 0.25rem;
   cursor: pointer;
-
+  color: var(--text-color);
   padding: 0.5em 1em;
   transition: 500ms;
 }

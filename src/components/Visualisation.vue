@@ -203,4 +203,11 @@ export default {
   background-color: rgb(235, 235, 235);
   background-blend-mode: screen;
 }
+
+[data-theme="dark"] {
+  .vis-svg {
+    background-image: url("../assets/icons/tileable-hex-dark.png");
+    background-blend-mode: normal;
+  }
+}
 </style>

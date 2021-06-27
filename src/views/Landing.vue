@@ -1,7 +1,12 @@
 <template>
   <div class="landing">
     <div class="home">
-      <img src="@/assets/icons/logo.svg" alt="logo" />
+      <img
+        v-if="darkModeIsEnabled"
+        src="@/assets/icons/logo-dark.svg"
+        alt="logo"
+      />
+      <img v-else src="@/assets/icons/logo.svg" alt="logo" />
       <h1 class="title">MailVis</h1>
       <p class="introduction">A tool to analyze e-mail traffic.</p>
       <ImportDataSetBtn />
@@ -13,12 +18,19 @@
 <script>
 import ImportDataSetBtn from "@/components/buttons/ImportDataSetBtn.vue";
 import ViewExampleDataSetBtn from "@/components/buttons/ViewExampleDataSetBtn.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Landing",
   components: {
     ImportDataSetBtn,
     ViewExampleDataSetBtn,
+  },
+  computed: {
+    ...mapGetters("dark_mode", ["darkModeIsEnabled"]),
+  },
+  mounted() {
+    console.log(this.darkModeIsEnabled);
   },
 };
 </script>
@@ -35,6 +47,13 @@ export default {
   background-blend-mode: screen;
 
   animation: animatedBackground 50s linear infinite;
+}
+
+[data-theme="dark"] {
+  .landing {
+    background-image: url("../assets/icons/tileable-hex-dark.png");
+    background-blend-mode: normal;
+  }
 }
 
 .home {

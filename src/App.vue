@@ -4,6 +4,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    document.documentElement.setAttribute("data-theme", "dark");
+  },
+};
+</script>
+
 <style lang="scss">
 /* Normalize css */
 @import "~normalize.css";
@@ -13,6 +21,7 @@
 
 /* Global variables to be used troughout the whole site */
 :root {
+  --text-color: #000;
   --accent-color: #38ada9;
   --accent-color-light: #38ada993;
   --accent-color-2: #067572;
@@ -31,12 +40,32 @@
   --stt-width: 300px;
 }
 
+[data-theme="dark"] {
+  --text-color: #999999;
+  --accent-color: #328380;
+  --accent-color-light: #2d8a87;
+  --accent-color-2: #2d8a87;
+  --link-color: #0000ff;
+  --error-color: #ff0000;
+  --background-color: #1d1d1d;
+  --background-color-2: #000000;
+  --border-color: #292929;
+  --settings-border: var(--brdr-size) solid var(--border-color);
+  --box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
 #app {
   font-family: "Open Sans", Avenir, Helvetica, Arial, sans-serif;
+  color: var(--text-color);
 
   /* Mozilla Firefox scrollbar */
   scrollbar-color: var(--accent-color-light) #ebebeb;
   scrollbar-width: thin;
+}
+
+select {
+  color: var(--text-color);
 }
 
 /* Scroll bar styling */
