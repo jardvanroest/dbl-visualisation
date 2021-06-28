@@ -1,5 +1,6 @@
 <template>
   <div class="visualisation">
+    <svg class="vis-svg" :id="id"></svg>
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
@@ -7,7 +8,6 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
-    <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
 
@@ -208,6 +208,7 @@ export default {
   .vis-svg {
     background-image: url("../assets/icons/tileable-hex-dark.png");
     background-blend-mode: normal;
+    filter: saturate(200%);
   }
 }
 </style>

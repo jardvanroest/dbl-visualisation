@@ -3,7 +3,7 @@
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
         <img
-          v-if="darkModeIsEnabled"
+          v-if="theme === 'dark'"
           src="@/assets/icons/logo-dark.svg"
           alt="logo"
         />
@@ -12,6 +12,12 @@
       </div>
       <div class="nav_icons">
         <ul>
+          <li @click="switchColorTheme">
+            <img
+              src="@/assets/icons/color-theme.svg"
+              alt="switch color theme"
+            />
+          </li>
           <li @click="rotateSettings($event)">
             <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
@@ -28,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Visualisation",
@@ -39,7 +45,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("dark_mode", ["darkModeIsEnabled"]),
+    ...mapGetters("dark_mode", ["theme"]),
   },
   methods: {
     redirectToHome() {
@@ -63,6 +69,7 @@ export default {
       // Emit corresponding event
       this.$emit("toggle-settings");
     },
+    ...mapActions("dark_mode", ["switchColorTheme"]),
   },
 };
 </script>

@@ -5,9 +5,20 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
+  methods: {
+    ...mapActions("dark_mode", ["setColorTheme"]),
+  },
   mounted() {
-    document.documentElement.setAttribute("data-theme", "dark");
+    const storedTheme = localStorage.getItem("theme");
+
+    if (storedTheme === undefined) {
+      this.setColorTheme("light");
+    } else {
+      this.setColorTheme(storedTheme);
+    }
   },
 };
 </script>
@@ -60,7 +71,7 @@ export default {
   color: var(--text-color);
 
   /* Mozilla Firefox scrollbar */
-  scrollbar-color: var(--accent-color-light) #ebebeb;
+  scrollbar-color: var(--accent-color-light) var(--background-color-2);
   scrollbar-width: thin;
 }
 
@@ -75,13 +86,13 @@ select {
 
 ::-webkit-scrollbar-track {
   border-radius: 10px;
-  background-color: #ebebeb;
+  background-color: var(--background-color-2);
 }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: var(--accent-color-light);
-  border: 2px solid #ebebeb;
+  border: 2px solid var(--background-color-2);
 }
 
 /* Prevent user-selection of elements listed below by giving them class of no_highlight*/

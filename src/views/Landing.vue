@@ -2,7 +2,7 @@
   <div class="landing">
     <div class="home">
       <img
-        v-if="darkModeIsEnabled"
+        v-if="theme === 'dark'"
         src="@/assets/icons/logo-dark.svg"
         alt="logo"
       />
@@ -27,10 +27,10 @@ export default {
     ViewExampleDataSetBtn,
   },
   computed: {
-    ...mapGetters("dark_mode", ["darkModeIsEnabled"]),
+    ...mapGetters("dark_mode", ["theme"]),
   },
   mounted() {
-    console.log(this.darkModeIsEnabled);
+    console.log(this.theme);
   },
 };
 </script>

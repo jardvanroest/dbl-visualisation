@@ -1,6 +1,5 @@
 export default {
-  darkModeIsEnabled(state) {
-    console.log("called");
-    return state.isEnabled;
+  theme(state) {
+    return state.theme;
   },
 };
