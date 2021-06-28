@@ -1,6 +1,9 @@
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 import store from "@/store";
+import * as d3 from "d3";
+import { hydrate } from "vue";
+import { addEmitHelper } from "typescript";
 
 export class AdjacencyMatrix extends Visualisation {
   constructor(HTMLSelector) {
@@ -21,11 +24,19 @@ export class AdjacencyMatrix extends Visualisation {
     this.drawnRows.attr("stroke", function (d, i) {
       const selected = selectedRows.includes(i);
       if (selected) return that.selectColor;
+      else return that.transparentColor;
     });
 
     this.drawnColumns.attr("stroke", function (d, i) {
       const selected = selectedCols.includes(i);
       if (selected) return that.selectColor;
+      else return that.transparentColor;
+    });
+
+    this.drawnColumns.each(function (d, i) {
+      if (selectedCols.includes(i))
+        d3.select(this).selectAll("rect").attr("selected", "true");
+      else d3.select(this).selectAll("rect").attr("selected", "false");
     });
   }
 
