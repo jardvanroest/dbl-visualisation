@@ -1,11 +1,15 @@
 <template>
   <div class="vis-sett-cont">
-    <Btn @click="toggleMenu" text="YAYYY" class="btn-local-sett" />
+    <Btn @click="toggleMenu" text="x" class="btn-local-sett" />
     <div v-if="showLocalSettings" class="vis-settings">
       <Section title="Local Filters" fields="none" />
       <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
       <Setting name="By date">
-        <DateFilter ref="dateFilter" />
+        <LocalDateFilter
+          ref="dateFilter"
+          :dates="dates"
+          @setFilteredDates="setFilteredDates"
+        />
       </Setting>
     </div>
   </div>
@@ -16,19 +20,24 @@ import { mapGetters } from "vuex";
 import Btn from "@/components/buttons/Btn.vue";
 import Section from "@/components/inspector/Section.vue";
 import Setting from "@/components/settings/Setting.vue";
-import DateFilter from "@/components/settings/DateFilter.vue";
+import LocalDateFilter from "@/components/settings/LocalDateFilter.vue";
 
 export default {
   name: "VisualisationSettings",
+  props: ["dates"],
   components: {
     Btn,
     Section,
     Setting,
-    DateFilter,
+    LocalDateFilter,
   },
   data() {
     return {
       showLocalSettings: false,
+      filteredDates: {
+        from: new Date(Date.parse("1998-11-12")),
+        to: new Date(Date.parse("1999-11-12")),
+      },
     };
   },
   computed: {
@@ -37,6 +46,12 @@ export default {
   methods: {
     toggleMenu() {
       this.showLocalSettings = !this.showLocalSettings;
+    },
+    applyFilters() {
+      this.$emit("apply", this.filteredDates);
+    },
+    setFilteredDates(filteredDates) {
+      this.filteredDates = filteredDates;
     },
   },
 };

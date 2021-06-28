@@ -27,6 +27,7 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  props: ["dates"],
   data() {
     return {
       fromDate: undefined,
@@ -43,18 +44,31 @@ export default {
     },
   },
   mounted() {
-    this.fromDate = this.minDateAsString;
-    this.toDate = this.maxDateAsString;
+    this.fromDate = this.toString(this.dates["from"]);
+    this.toDate = this.toString(this.dates["to"]);
+  },
+  watch: {
+    fromDate: {
+      deep: true,
+      handler(value) {
+        this.changed();
+      },
+    },
+    toDate: {
+      deep: true,
+      handler(value) {
+        this.changed();
+      },
+    },
   },
   methods: {
-    ...mapActions("dataset", ["setFilteredDates"]),
     toString(date) {
       return date.toISOString().split("T")[0];
     },
-    applyFilter() {
+    changed() {
       const fromDate = new Date(Date.parse(this.fromDate));
       const toDate = new Date(Date.parse(this.toDate));
-      this.setFilteredDates({ from: fromDate, to: toDate });
+      this.$emit("setFilteredDates", { from: fromDate, to: toDate });
     },
   },
 };

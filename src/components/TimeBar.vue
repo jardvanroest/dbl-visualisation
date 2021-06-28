@@ -5,6 +5,15 @@
 <script>
 export default {
   name: "TimeBar",
+  props: ["dates"],
+  watch: {
+    dates: {
+      deep: true,
+      handler(value) {
+        console.log("dates!");
+      },
+    },
+  },
 };
 </script>
 

@@ -1,6 +1,10 @@
 <template>
   <div class="visualisation">
-    <VisualisationSettings class="settings" />
+    <VisualisationSettings
+      class="settings"
+      @apply="changeDates"
+      :dates="filteredDates"
+    />
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
@@ -8,7 +12,7 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
-    <TimeBar class="timebar" />
+    <TimeBar class="timebar" :dates="filteredDates" />
     <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
@@ -39,6 +43,7 @@ export default {
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
       type: this.initialType,
+      filteredDates: this.globalFilteredDates,
     };
   },
   computed: {
@@ -47,6 +52,13 @@ export default {
       "persons",
       "getSortedMatrixData",
     ]),
+    ...mapGetters("dataset", ["minDate", "maxDate"]),
+    globalFilteredDates() {
+      return {
+        from: this.minDate,
+        to: this.maxDate,
+      };
+    },
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
   watch: {
@@ -89,10 +101,8 @@ export default {
       .append("g")
       .attr("transform", translation);
 
-    this.filteredDates = {
-      from: new Date(Date.parse("1998-11-12")),
-      to: new Date(Date.parse("1999-11-12")),
-    };
+    this.filteredDates = this.globalFilteredDates;
+    this.emails = this.filteredEmails;
 
     this.createVisualisation(this.type);
     this.redraw();
@@ -102,7 +112,17 @@ export default {
       let newType = type.split("-")[0];
       this.visualisation = new visualisations[newType]("#" + this.id);
     },
-
+    toString(date) {
+      return date.toISOString().split("T")[0];
+    },
+    changeDates(dates) {
+      this.filteredDates = dates;
+      this.emails = this.filterEmails(this.filteredEmails, this.filteredDates);
+      let myFunction = () => {
+        this.redraw();
+      };
+      this.spinnerFunctionality(myFunction);
+    },
     changeVisualisation(type) {
       let myFunction = () => {
         this.type = type;
@@ -153,24 +173,19 @@ export default {
       return list;
     },
     redraw() {
-      var emails = this.filterEmails(this.filteredEmails, this.filteredDates);
       if (this.type === "AdjacencyMatrix") {
         this.redrawForAdjacency();
       } else {
-        this.visualisation.redraw(emails, this.persons);
+        this.visualisation.redraw(this.emails, this.persons);
       }
     },
     redrawForAdjacency() {
       let newData = this.getSortedMatrixData;
       if (newData === "unsorted") {
-        this.visualisation.redraw(
-          this.filteredEmails,
-          this.persons,
-          this.persons
-        );
+        this.visualisation.redraw(this.emails, this.persons, this.persons);
       } else {
         this.visualisation.redraw(
-          this.filteredEmails,
+          this.emails,
           newData.personsRows,
           newData.personsCols
         );
