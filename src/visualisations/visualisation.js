@@ -9,7 +9,7 @@ export class Visualisation {
     this.svg = this._getSVG();
 
     this.selectColor = "#A585C1";
-    this.inspectColor = "#000000FF";
+    this.inspectColor = "#123456";
     this.transparentColor = "#00000000";
   }
 
