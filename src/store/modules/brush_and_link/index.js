@@ -8,6 +8,7 @@ export default {
     return {
       selectedNodes: [],
       interactionMode: "inspect",
+      inspectedElement: undefined,
     };
   },
   getters,

@@ -5,4 +5,7 @@ export default {
   updateInteractionMode(context, data) {
     context.commit("updateInteractionMode", data);
   },
+  updateInspectedElement(context, data) {
+    context.commit("updateInspectedElement", data);
+  },
 };
