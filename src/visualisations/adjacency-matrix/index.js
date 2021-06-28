@@ -40,6 +40,14 @@ export class AdjacencyMatrix extends Visualisation {
     });
   }
 
+  toggleInteractionMode(interactionMode) {
+    Visualisation.prototype.toggleInteractionMode.call(this);
+
+    if (interactionMode == "select") {
+      this.drawnTransparentCells.attr("stroke", null);
+    }
+  }
+
   // Computes rows and columns indices based on selectedNodes
   _computeSelected(selectedNodes) {
     let selectedRows = [];
@@ -105,7 +113,7 @@ export class AdjacencyMatrix extends Visualisation {
     this.drawnRows = this._drawRows(svg, matrix);
     this._drawCells(this.drawnRows);
     this.drawnColumns = this._drawColumns(svg, matrix);
-    this._drawTransparentCells(this.drawnColumns);
+    this.drawnTransparentCells = this._drawTransparentCells(this.drawnColumns);
   }
 
   _drawRows(svg, matrix) {
