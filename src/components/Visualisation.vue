@@ -43,7 +43,11 @@ export default {
       "persons",
       "getSortedMatrixData",
     ]),
-    ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
+    ...mapGetters("brush_and_link", [
+      "selectedNodes",
+      "selectedEdges",
+      "interactionMode",
+    ]),
   },
   watch: {
     filteredEmails: {
@@ -53,7 +57,10 @@ export default {
       },
     },
     selectedNodes() {
-      this.showSelection();
+      this.showNodeSelection();
+    },
+    selectedEdges() {
+      this.showEdgeSelection();
     },
     interactionMode() {
       this.spinnerFunctionality(this.toggleInteractionMode);
@@ -102,8 +109,11 @@ export default {
       };
       this.spinnerFunctionality(myFunction);
     },
-    showSelection() {
-      this.visualisation.showSelection(this.selectedNodes);
+    showNodeSelection() {
+      this.visualisation.onNodeSelection(this.selectedNodes);
+    },
+    showEdgeSelection() {
+      this.visualisation.onEdgeSelection(this.selectedEdges);
     },
     spinnerFunctionality(myFunction) {
       this.showSpinner = true;
