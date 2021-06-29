@@ -78,11 +78,7 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _getMatrix() {
-    let matrix = new Matrix(
-      this.personsRows,
-      this.colors.emails,
-      this.colors.noEmails
-    );
+    let matrix = new Matrix(this.personsRows, this.colors);
 
     // Set {MatrixData} the first time when loading the matrix // NOT WORKING
     if (store.getters["dataset/getMatrixDataForSorting"] === -1) {

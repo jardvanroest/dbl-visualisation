@@ -8,7 +8,6 @@ export class Visualisation {
     this.height = 500;
     this.svg = this._getSVG();
 
-    this.transparentColor = "#00000000";
     this.nodeSelectColor = "#A585C1";
     this.edgeSelectColor = "#1D2F6F";
     this.inspectColor = "#123456";

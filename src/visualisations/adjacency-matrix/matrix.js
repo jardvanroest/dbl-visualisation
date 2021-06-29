@@ -1,14 +1,11 @@
 import store from "@/store";
 
 export class Matrix {
-  constructor(persons, emailsColor, noEmailsColor) {
+  constructor(persons, colors) {
     this.persons = persons;
     this.matrixData = this._createMatrixData();
 
-    this.colors = {
-      emails: emailsColor,
-      noEmails: noEmailsColor,
-    };
+    this.colors = colors;
   }
 
   getMatrixData() {
