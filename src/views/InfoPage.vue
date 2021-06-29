@@ -200,7 +200,7 @@
         <img
           style="width: 25ch"
           src="@/assets/info_page/inspector.png"
-          alt="calendar matrix"
+          alt="Inspector menu"
         />
       </div>
       <div id="tooltips" class="section">
@@ -211,7 +211,18 @@
           They display the most important information about an element like
           sender, recipient, average sentiment or date.
         </p>
-        <!-- INSERT IMAGE OR GIF -->
+        <div class="multiple-media">
+          <img
+            style="height: 7ch"
+            src="@/assets/info_page/tooltip_1.png"
+            alt="tooltip example"
+          />
+          <img
+            style="height: 7ch"
+            src="@/assets/info_page/tooltip_2.png"
+            alt="another tooltip"
+          />
+        </div>
       </div>
       <div id="dataset-link" class="section">
         <h2>Dataset link</h2>
@@ -279,7 +290,7 @@
           </div>
           <div class="person">
             <img
-              src="@/assets/info_page/about_us/error.svg"
+              src="@/assets/info_page/about_us/tudor.jpeg"
               alt="Photo of Tudor Macovei"
             />
             <h3>Tudor Macovei</h3>
