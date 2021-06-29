@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { Visualisation } from "@/visualisations/visualisation.js";
 import { Graph } from "@/visualisations/node-link/graph.js";
 import { Simulator } from "@/visualisations/node-link/simulator.js";
-import { Brush } from "@/visualisations/node-link/brush.js";
+import { NodeBrush } from "@/visualisations/brushes/node-brush.js";
 import store from "@/store";
 
 export class NodeLink extends Visualisation {
@@ -10,9 +10,9 @@ export class NodeLink extends Visualisation {
     super(HTMLselector);
     this.updateTooltips = tooltipsUpdate;
     this.colors = {
-      edgePositive: "#b4ecb4",
-      edgeNeutral: "#cfcfc4",
-      edgeNegative: "#e498a1",
+      edgePositive: "#b4ecb499",
+      edgeNeutral: "#cfcfc499",
+      edgeNegative: "#e498a199",
       nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
@@ -39,6 +39,37 @@ export class NodeLink extends Visualisation {
     this._toggleBrush(interactionMode);
   }
 
+  onEdgeSelection(selectedEdges) {
+    const selectedEdgesArr = this._computeSelectedEdges(selectedEdges);
+
+    const that = this;
+    this.drawnLinks.attr("stroke", function (d) {
+      const selected =
+        selectedEdgesArr.filter(
+          (e) =>
+            (e.recipientID == d.target.id && e.senderID == d.source.id) ||
+            (e.recipientID == d.source.id && e.senderID == d.target.id)
+        ).length > 0;
+
+      if (selected) {
+        d3.select(this).attr("selected", "true");
+        return that.edgeSelectColor;
+      } else {
+        d3.select(this).attr("selected", "false");
+        return that._getLinkColor(d.sentimentType);
+      }
+    });
+  }
+
+  _computeSelectedEdges(selectedEdges) {
+    let selectedEdgesArr = [];
+    selectedEdges.forEach((element) => {
+      selectedEdgesArr.push(Object.assign({}, element));
+    });
+
+    return selectedEdgesArr;
+  }
+
   _generateVis(emails) {
     const { nodes, links } = this._parseData(emails);
     const svg = this._getSVG();
@@ -46,7 +77,7 @@ export class NodeLink extends Visualisation {
   }
 
   _parseData(emails) {
-    const graph = new Graph(emails);
+    const graph = new Graph(emails, this.options.sentimentThreshold);
     const { nodes, links } = graph.parse();
     return { nodes, links };
   }
@@ -60,13 +91,13 @@ export class NodeLink extends Visualisation {
     simulation.on("tick", this._handleSimulationTick.bind(this));
 
     // Create brush object
-    this.brush = new Brush(
+    this.brush = new NodeBrush(
       svg,
       this.drawnNodes,
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
-      this.selectColor
+      this.nodeSelectColor
     );
 
     // Toggle brush based on current {interactionMode}
@@ -92,28 +123,31 @@ export class NodeLink extends Visualisation {
   }
 
   _drawLinks(svg, links) {
-    const that = this;
+    var that = this;
 
     return svg
       .append("g")
-      .attr("stroke-opacity", this.options.edgeOpacity)
       .selectAll("line")
       .data(links)
       .join("line")
       .attr("stroke", function (d) {
         // Color edges based on average sentiment
-        if (d.avgSentiment < -that.options.sentimentThreshold)
-          return that.colors.edgeNegative;
-        if (d.avgSentiment > that.options.sentimentThreshold)
-          return that.colors.edgePositive;
-        return that.colors.edgeNeutral;
+        return that._getLinkColor(d.sentimentType);
       })
+      .attr("default-stroke", function () {
+        return this.getAttribute("stroke");
+      })
+      .attr("select-stroke", this.edgeSelectColor)
       .on("click", this.edgeClick.bind(this));
   }
 
-  _drawNodes(svg, nodes, simulation) {
-    const that = this;
+  _getLinkColor(sentimentType) {
+    if (sentimentType === -1) return this.colors.edgeNegative;
+    if (sentimentType === 1) return this.colors.edgePositive;
+    return this.colors.edgeNeutral;
+  }
 
+  _drawNodes(svg, nodes, simulation) {
     return svg
       .append("g")
       .attr("stroke", this.colors.nodeOutline)
@@ -121,7 +155,9 @@ export class NodeLink extends Visualisation {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("stroke", that.colors.nodeOutline)
+      .attr("stroke", this.colors.nodeOutline)
+      .attr("default-stroke", this.colors.nodeOutline)
+      .attr("select-stroke", this.nodeSelectColor)
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
@@ -242,9 +278,13 @@ export class NodeLink extends Visualisation {
     };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
+
+    this._changeInspectedElement(event.target);
   }
 
   nodeClick(event, cell) {
+    this._changeInspectedElement(event.target);
+
     const persons = store.getters["dataset/persons"];
     const person = persons.find((p) => p.id === cell.id);
 

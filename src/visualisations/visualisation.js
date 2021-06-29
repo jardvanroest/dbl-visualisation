@@ -8,7 +8,9 @@ export class Visualisation {
     this.height = 500;
     this.svg = this._getSVG();
 
-    this.selectColor = "#A585C1";
+    this.nodeSelectColor = "#A585C1";
+    this.edgeSelectColor = "#1D2F6F";
+    this.inspectColor = "#123456";
   }
 
   redraw() {
@@ -19,7 +21,9 @@ export class Visualisation {
     d3.select(this.HTMLSelector).selectChild("g").selectAll("*").remove();
   }
 
-  showSelection() {}
+  onNodeSelection(selectedNodes) {}
+
+  onEdgeSelection(selectedEdges) {}
 
   toggleInteractionMode(interactionMode) {}
 
@@ -97,6 +101,22 @@ export class Visualisation {
     function _formatDate(date) {
       return date.toDateString().split(" ").slice(1).join(" ");
     }
+  }
+
+  resetInspectedElement(target) {
+    if (target.getAttribute("selected") == "true")
+      target.setAttribute("stroke", target.getAttribute("select-stroke"));
+    else if (target.getAttribute("default-stroke") != null)
+      target.setAttribute("stroke", target.getAttribute("default-stroke"));
+    else target.setAttribute("stroke", null);
+  }
+
+  _changeInspectedElement(target) {
+    let inspectedElement = store.getters["brush_and_link/inspectedElement"];
+    if (inspectedElement != undefined)
+      this.resetInspectedElement(inspectedElement);
+    target.setAttribute("stroke", this.inspectColor);
+    store.dispatch("brush_and_link/updateInspectedElement", target);
   }
 
   _isFiltered(person) {

@@ -168,8 +168,8 @@ export class CalendarVisualisation extends Visualisation {
       .attr("y", (d) => this.___getYposCellDate(d))
       // coloring and opacity
       .attr("fill", (d) => d.fillColor)
-      .attr("opacity", (d) => d.opacity)
-      // hooks
+      .attr("fill-opacity", (d) => d.opacity)
+      .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
       })
@@ -215,6 +215,8 @@ export class CalendarVisualisation extends Visualisation {
     return layerX + 30;
   }
   updateInspectorData(event, cellData) {
+    this._changeInspectedElement(event.target);
+
     let inspectorData = {};
     let _date = cellData.date;
 
