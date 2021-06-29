@@ -1,7 +1,7 @@
 <template>
   <div class="vis-sett-cont">
     <Btn @click="toggleMenu" text="x" class="btn-local-sett" />
-    <div v-if="showLocalSettings" class="vis-settings">
+    <div class="vis-settings" :style="{ display: display }">
       <Section title="Local Filters" fields="none" />
       <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
       <Setting name="By date">
@@ -34,10 +34,8 @@ export default {
   data() {
     return {
       showLocalSettings: false,
-      filteredDates: {
-        from: new Date(Date.parse("1998-11-12")),
-        to: new Date(Date.parse("1999-11-12")),
-      },
+      filteredDates: this.dates,
+      display: "none",
     };
   },
   computed: {
@@ -46,6 +44,8 @@ export default {
   methods: {
     toggleMenu() {
       this.showLocalSettings = !this.showLocalSettings;
+      if (this.showLocalSettings) this.display = "inline";
+      else this.display = "none";
     },
     applyFilters() {
       this.$emit("apply", this.filteredDates);

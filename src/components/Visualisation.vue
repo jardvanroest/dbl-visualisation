@@ -3,7 +3,7 @@
     <VisualisationSettings
       class="settings"
       @apply="changeDates"
-      :dates="filteredDates"
+      :dates="localFilteredDates"
     />
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
@@ -12,7 +12,7 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
-    <TimeBar class="timebar" :dates="filteredDates" />
+    <TimeBar class="timebar" :dates="localFilteredDates" />
     <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
@@ -43,21 +43,18 @@ export default {
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
       type: this.initialType,
-      filteredDates: this.globalFilteredDates,
+      localFilteredDates: this.initialFilteredDates,
     };
   },
   computed: {
     ...mapGetters("dataset", [
       "filteredEmails",
+      "filteredDates",
       "persons",
       "getSortedMatrixData",
     ]),
-    ...mapGetters("dataset", ["minDate", "maxDate"]),
-    globalFilteredDates() {
-      return {
-        from: this.minDate,
-        to: this.maxDate,
-      };
+    initialFilteredDates() {
+      return this.filteredDates;
     },
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
@@ -101,7 +98,7 @@ export default {
       .append("g")
       .attr("transform", translation);
 
-    this.filteredDates = this.globalFilteredDates;
+    this.localFilteredDates = this.filteredDates;
     this.emails = this.filteredEmails;
 
     this.createVisualisation(this.type);
@@ -116,8 +113,11 @@ export default {
       return date.toISOString().split("T")[0];
     },
     changeDates(dates) {
-      this.filteredDates = dates;
-      this.emails = this.filterEmails(this.filteredEmails, this.filteredDates);
+      this.localFilteredDates = dates;
+      this.emails = this.filterEmails(
+        this.filteredEmails,
+        this.localFilteredDates
+      );
       let myFunction = () => {
         this.redraw();
       };

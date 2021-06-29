@@ -35,12 +35,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("dataset", ["minDate", "maxDate"]),
+    ...mapGetters("dataset", ["filteredDates"]),
     minDateAsString() {
-      return this.toString(this.minDate);
+      return this.toString(this.filteredDates.from);
     },
     maxDateAsString() {
-      return this.toString(this.maxDate);
+      return this.toString(this.filteredDates.to);
     },
   },
   mounted() {
@@ -48,6 +48,17 @@ export default {
     this.toDate = this.toString(this.dates["to"]);
   },
   watch: {
+    filteredDates: {
+      deep: true,
+      handler(value) {
+        if (
+          value.from.getTime() > new Date(Date.parse(this.fromDate)).getTime()
+        )
+          this.fromDate = this.toString(value.from);
+        if (value.to.getTime() < new Date(Date.parse(this.toDate)).getTime())
+          this.toDate = this.toString(value.to);
+      },
+    },
     fromDate: {
       deep: true,
       handler(value) {
