@@ -72,9 +72,9 @@ class CellDate {
     );
   }
   get avgSentiment() {
+    // fix -- another branch
     return (
-      this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0) /
-      this.emails.length
+      this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0) / this.weight
     );
   }
   get weight() {

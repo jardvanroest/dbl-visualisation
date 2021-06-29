@@ -1,6 +1,7 @@
 export class Graph {
-  constructor(emails) {
+  constructor(emails, sentimentThreshold) {
     this.emails = emails;
+    this.sentimentThreshold = sentimentThreshold;
   }
 
   parse() {
@@ -57,13 +58,19 @@ export class Graph {
 
     // Compute {links} from {edgesCount} because Maps are stupid in JS
     for (let i = 0; i < edgesCount.length; i++) {
+      const avgSentiment =
+        edgesCount[i]["sentiment"].reduce((a, b) => a + b, 0) /
+        edgesCount[i]["sentiment"].length;
+      let sentimentType = 0;
+      if (avgSentiment < -this.sentimentThreshold) sentimentType = -1;
+      if (avgSentiment > this.sentimentThreshold) sentimentType = 1;
+
       links.push({
         source: edgesCount[i]["source"],
         target: edgesCount[i]["target"],
         weight: edgesCount[i]["index"].length,
-        avgSentiment:
-          edgesCount[i]["sentiment"].reduce((a, b) => a + b, 0) /
-          edgesCount[i]["sentiment"].length,
+        avgSentiment: avgSentiment,
+        sentimentType: sentimentType,
       });
     }
 

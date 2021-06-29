@@ -6,10 +6,7 @@ export default {
   namespaced: true,
   state() {
     return {
-      selectedNodes: [],
-      selectedEdges: [],
-      interactionMode: "inspect",
-      inspectedElement: undefined,
+      mode: "byDate",
     };
   },
   getters,

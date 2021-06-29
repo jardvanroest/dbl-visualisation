@@ -2,13 +2,12 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
 import store from "@/store";
 import * as d3 from "d3";
-import { rgb } from "d3";
 
 export class CalendarVisualisation extends Visualisation {
-  constructor(HTMLSelector) {
+  constructor(HTMLSelector, tooltipsUpdate) {
     super(HTMLSelector);
+    this.updateTooltips = tooltipsUpdate;
     //this.changeInspectorData = changeInspectorData;
-
     this.width = 500;
     this.height = 500;
     this.cellSize = this.width * 0.017;
@@ -147,16 +146,13 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   __getText_KeyMonths(year) {
-    return (
-      year
-        .append("g")
-        .selectAll("g")
-        //.data(() => range)
-        .data((d) =>
-          d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
-        )
-        .join("g")
-    );
+    return year
+      .append("g")
+      .selectAll("g")
+      .data((d) =>
+        d3.utcMonths(new Date("1-1-" + d[0]), new Date("12-12-" + d[0]))
+      )
+      .join("g");
   }
 
   _drawDateCells(year) {
@@ -170,14 +166,56 @@ export class CalendarVisualisation extends Visualisation {
       .attr("height", this.cellSize - 1)
       .attr("x", (d) => this.___getXposCellDate(d))
       .attr("y", (d) => this.___getYposCellDate(d))
+      // coloring and opacity
       .attr("fill", (d) => d.fillColor)
       .attr("fill-opacity", (d) => d.opacity)
       .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
+      })
+      .on("mousemove", (e, d) => {
+        vm.updateTooltips(this._dataTooltip(true, e, d));
+      })
+      .on("mouseout", (e) => {
+        vm.updateTooltips(this._dataTooltip(false));
       });
   }
 
+  _dataTooltip(v, e, d) {
+    if (v)
+      return {
+        visible: v,
+        pos: this.__positionTooltip(e),
+        data: this.__tooltipContent(d),
+      };
+    return { visible: v };
+  }
+  __tooltipContent(d) {
+    return {
+      date: this.___parseDate(d.date),
+      emails: d.weight,
+      sentiment: this._getAvgSentiment(d.emails),
+    };
+  }
+  ___parseDate(date) {
+    return (
+      date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+    );
+  }
+  __positionTooltip(e) {
+    return {
+      top: this.___styleTop(e.layerY),
+      left: this.___styleLeft(e.layerX),
+    };
+  }
+  ___styleTop(layerY) {
+    if (layerY > 80) return layerY - 80;
+    return layerY + 30;
+  }
+  ___styleLeft(layerX) {
+    if (layerX > 150) return layerX - 150;
+    return layerX + 30;
+  }
   updateInspectorData(event, cellData) {
     this._changeInspectedElement(event.target);
 
