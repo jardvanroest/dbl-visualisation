@@ -10,9 +10,9 @@ export class NodeLink extends Visualisation {
     super(HTMLselector);
 
     this.colors = {
-      edgePositive: "#b4ecb4",
-      edgeNeutral: "#cfcfc4",
-      edgeNegative: "#e498a1",
+      edgePositive: "#b4ecb499",
+      edgeNeutral: "#cfcfc499",
+      edgeNegative: "#e498a199",
       nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
@@ -92,28 +92,32 @@ export class NodeLink extends Visualisation {
   }
 
   _drawLinks(svg, links) {
-    const that = this;
+    var that = this;
 
     return svg
       .append("g")
-      .attr("stroke-opacity", this.options.edgeOpacity)
       .selectAll("line")
       .data(links)
       .join("line")
       .attr("stroke", function (d) {
-        // Color edges based on average sentiment
-        if (d.avgSentiment < -that.options.sentimentThreshold)
-          return that.colors.edgeNegative;
-        if (d.avgSentiment > that.options.sentimentThreshold)
-          return that.colors.edgePositive;
-        return that.colors.edgeNeutral;
+        return that._getLinkColor(d);
+      })
+      .attr("default-stroke", function () {
+        return this.getAttribute("stroke");
       })
       .on("click", this.edgeClick.bind(this));
   }
 
-  _drawNodes(svg, nodes, simulation) {
-    const that = this;
+  _getLinkColor(d) {
+    // Color based on average sentiment
+    if (d.avgSentiment < -this.options.sentimentThreshold)
+      return this.colors.edgeNegative;
+    if (d.avgSentiment > this.options.sentimentThreshold)
+      return this.colors.edgePositive;
+    return this.colors.edgeNeutral;
+  }
 
+  _drawNodes(svg, nodes, simulation) {
     return svg
       .append("g")
       .attr("stroke", this.colors.nodeOutline)
@@ -121,7 +125,8 @@ export class NodeLink extends Visualisation {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("stroke", that.colors.nodeOutline)
+      .attr("stroke", this.colors.nodeOutline)
+      .attr("default-stroke", this.colors.nodeOutline)
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
@@ -201,9 +206,13 @@ export class NodeLink extends Visualisation {
     };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
+
+    this._changeInspectedElement(event.target);
   }
 
   nodeClick(event, cell) {
+    this._changeInspectedElement(event.target);
+
     const persons = store.getters["dataset/persons"];
     const person = persons.find((p) => p.id === cell.id);
 
