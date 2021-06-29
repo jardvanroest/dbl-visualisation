@@ -36,10 +36,14 @@ export default {
       showLocalSettings: false,
       filteredDates: this.dates,
       display: "none",
+      doDateFilter: true,
     };
   },
   computed: {
     ...mapGetters("dataset", ["getDatasetLink"]),
+  },
+  mounted() {
+    console.log("dates: " + this.dates);
   },
   methods: {
     toggleMenu() {
@@ -52,6 +56,9 @@ export default {
     },
     setFilteredDates(filteredDates) {
       this.filteredDates = filteredDates;
+    },
+    toggleDateFilter() {
+      this.doDateFilter = !this.doDateFilter;
     },
   },
 };

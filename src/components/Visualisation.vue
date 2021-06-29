@@ -43,7 +43,7 @@ export default {
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
       type: this.initialType,
-      localFilteredDates: this.initialFilteredDates,
+      localFilteredDates: this.filteredDates,
     };
   },
   computed: {
@@ -53,9 +53,6 @@ export default {
       "persons",
       "getSortedMatrixData",
     ]),
-    initialFilteredDates() {
-      return this.filteredDates;
-    },
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
   },
   watch: {

@@ -43,11 +43,14 @@ export default {
       return this.toString(this.filteredDates.to);
     },
   },
-  mounted() {
-    this.fromDate = this.toString(this.dates["from"]);
-    this.toDate = this.toString(this.dates["to"]);
-  },
   watch: {
+    dates: {
+      deep: true,
+      handler(value) {
+        this.fromDate = this.toString(value["from"]);
+        this.toDate = this.toString(value["to"]);
+      },
+    },
     filteredDates: {
       deep: true,
       handler(value) {
