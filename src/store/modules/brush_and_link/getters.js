@@ -8,4 +8,7 @@ export default {
   interactionMode(state) {
     return state.interactionMode;
   },
+  inspectedElement(state) {
+    return state.inspectedElement;
+  },
 };

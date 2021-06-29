@@ -10,9 +10,9 @@ export class NodeLink extends Visualisation {
     super(HTMLselector);
 
     this.colors = {
-      edgePositive: "#b4ecb4",
-      edgeNeutral: "#cfcfc4",
-      edgeNegative: "#e498a1",
+      edgePositive: "#b4ecb499",
+      edgeNeutral: "#cfcfc499",
+      edgeNegative: "#e498a199",
       nodeBody: "#b8e0f6",
       nodeOutline: "#fff",
     };
@@ -51,8 +51,13 @@ export class NodeLink extends Visualisation {
             (e.recipientID == d.source.id && e.senderID == d.target.id)
         ).length > 0;
 
-      if (selected) return that.edgeSelectColor;
-      else return that._getLinkColor(d.sentimentType);
+      if (selected) {
+        d3.select(this).attr("selected", "true");
+        return that.edgeSelectColor;
+      } else {
+        d3.select(this).attr("selected", "false");
+        return that._getLinkColor(d.sentimentType);
+      }
     });
   }
 
@@ -118,11 +123,10 @@ export class NodeLink extends Visualisation {
   }
 
   _drawLinks(svg, links) {
-    const that = this;
+    var that = this;
 
     return svg
       .append("g")
-      .attr("stroke-opacity", this.options.edgeOpacity)
       .selectAll("line")
       .data(links)
       .join("line")
@@ -130,6 +134,10 @@ export class NodeLink extends Visualisation {
         // Color edges based on average sentiment
         return that._getLinkColor(d.sentimentType);
       })
+      .attr("default-stroke", function () {
+        return this.getAttribute("stroke");
+      })
+      .attr("select-stroke", this.edgeSelectColor)
       .on("click", this.edgeClick.bind(this));
   }
 
@@ -140,8 +148,6 @@ export class NodeLink extends Visualisation {
   }
 
   _drawNodes(svg, nodes, simulation) {
-    const that = this;
-
     return svg
       .append("g")
       .attr("stroke", this.colors.nodeOutline)
@@ -149,7 +155,9 @@ export class NodeLink extends Visualisation {
       .selectAll("circle")
       .data(nodes)
       .join("circle")
-      .attr("stroke", that.colors.nodeOutline)
+      .attr("stroke", this.colors.nodeOutline)
+      .attr("default-stroke", this.colors.nodeOutline)
+      .attr("select-stroke", this.nodeSelectColor)
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
@@ -229,9 +237,13 @@ export class NodeLink extends Visualisation {
     };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
+
+    this._changeInspectedElement(event.target);
   }
 
   nodeClick(event, cell) {
+    this._changeInspectedElement(event.target);
+
     const persons = store.getters["dataset/persons"];
     const person = persons.find((p) => p.id === cell.id);
 

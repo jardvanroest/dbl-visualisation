@@ -9,6 +9,7 @@ export default {
       selectedNodes: [],
       selectedEdges: [],
       interactionMode: "inspect",
+      inspectedElement: undefined,
     };
   },
   getters,

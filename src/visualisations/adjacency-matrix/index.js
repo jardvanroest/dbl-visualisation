@@ -3,6 +3,8 @@ import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 import { RectBrush } from "@/visualisations/brushes/rect-brush.js";
 import * as d3 from "d3";
 import store from "@/store";
+import { hydrate } from "vue";
+import { addEmitHelper } from "typescript";
 
 export class AdjacencyMatrix extends Visualisation {
   constructor(HTMLSelector) {
@@ -24,7 +26,6 @@ export class AdjacencyMatrix extends Visualisation {
 
   onNodeSelection(selectedNodes) {
     const { selectedRows, selectedCols } = this._computeSelected(selectedNodes);
-
     const that = this;
     this.drawnRows.attr("stroke", function (d, i) {
       const selected = selectedRows.includes(i);
@@ -33,7 +34,11 @@ export class AdjacencyMatrix extends Visualisation {
 
     this.drawnColumns.attr("stroke", function (d, i) {
       const selected = selectedCols.includes(i);
-      if (selected) return that.nodeSelectColor;
+      if (selected) {
+        d3.select(this).selectAll("rect").attr("selected", "true");
+
+        return that.nodeSelectColor;
+      } else d3.select(this).selectAll("rect").attr("selected", "false");
     });
   }
 
@@ -41,6 +46,9 @@ export class AdjacencyMatrix extends Visualisation {
     Visualisation.prototype.toggleInteractionMode.call(this);
 
     this._toggleBrush(interactionMode);
+    if (interactionMode == "select") {
+      this.drawnTransparentCells.attr("stroke", null);
+    }
   }
 
   // Computes rows and columns indices based on selectedNodes
@@ -112,7 +120,7 @@ export class AdjacencyMatrix extends Visualisation {
     this.drawnRows = this._drawRows(svg, matrix);
     this._drawCells(this.drawnRows);
     this.drawnColumns = this._drawColumns(svg, matrix);
-    this._drawTransparentCells(this.drawnColumns);
+    this.drawnTransparentCells = this._drawTransparentCells(this.drawnColumns);
 
     // Compute rects with emails
     const that = this;
@@ -229,6 +237,7 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   updateInspectorData(event, data) {
+    this._changeInspectedElement(event.target);
     let sender = data.sender;
     let recipient = data.recipient;
     let emails = data._emails;

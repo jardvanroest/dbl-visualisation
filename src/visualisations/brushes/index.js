@@ -46,17 +46,17 @@ export class Brush {
 
     this._selectedObjects = [];
     // Set stroke based on whether or not the element is in selection
+    this.brushObjects.attr("selected", function (d) {
+      // Check if data element is selected using its coordinates
+      return x0 <= d.x && x1 >= d.x && y0 <= d.y && y1 >= d.y;
+    });
+
     this.brushObjects.attr("stroke", function (d) {
       // Check if data element is selected using its coordinates
-      const x = d.x,
-        y = d.y;
-
-      const selected = x0 <= x && x1 >= x && y0 <= y && y1 >= y;
-      if (selected) {
+      if (this.getAttribute("selected") == "true") {
         that._selectedObjects.push(d.id);
         return that.colors.selected;
       }
-
       return that.colors.normal;
     });
 

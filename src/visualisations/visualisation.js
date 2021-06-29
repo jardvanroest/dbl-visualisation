@@ -11,6 +11,7 @@ export class Visualisation {
     this.transparentColor = "#00000000";
     this.nodeSelectColor = "#A585C1";
     this.edgeSelectColor = "#1D2F6F";
+    this.inspectColor = "#123456";
   }
 
   redraw() {
@@ -94,6 +95,22 @@ export class Visualisation {
       const AvgVal = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
       return AvgVal(array);
     }
+  }
+
+  resetInspectedElement(target) {
+    if (target.getAttribute("selected") == "true")
+      target.setAttribute("stroke", target.getAttribute("select-stroke"));
+    else if (target.getAttribute("default-stroke") != null)
+      target.setAttribute("stroke", target.getAttribute("default-stroke"));
+    else target.setAttribute("stroke", null);
+  }
+
+  _changeInspectedElement(target) {
+    let inspectedElement = store.getters["brush_and_link/inspectedElement"];
+    if (inspectedElement != undefined)
+      this.resetInspectedElement(inspectedElement);
+    target.setAttribute("stroke", this.inspectColor);
+    store.dispatch("brush_and_link/updateInspectedElement", target);
   }
 
   _isFiltered(person) {
