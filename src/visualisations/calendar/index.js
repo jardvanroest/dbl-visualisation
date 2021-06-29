@@ -61,7 +61,6 @@ export class CalendarVisualisation extends Visualisation {
   _generateYear(svg, data) {
     return svg
       .selectAll("g")
-      .attr("id", "laina")
       .data(data)
       .join("g")
       .attr("transform", (d, i) => this._transformYear(i));
@@ -175,7 +174,6 @@ export class CalendarVisualisation extends Visualisation {
         vm.updateInspectorData(e, d);
       })
       .on("mousemove", (e, d) => {
-        // wtf?????
         vm.updateTooltips(this._dataTooltip(true, e, d));
       })
       .on("mouseout", (e) => {
@@ -184,7 +182,6 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   _dataTooltip(v, e, d) {
-    console.log(e);
     if (v)
       return {
         visible: v,

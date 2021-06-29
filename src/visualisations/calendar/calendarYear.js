@@ -72,7 +72,7 @@ class CellDate {
     );
   }
   get avgSentiment() {
-    console.log(this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0));
+    // fix -- another branch
     return (
       this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0) / this.weight
     );

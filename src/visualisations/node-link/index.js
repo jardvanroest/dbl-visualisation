@@ -136,7 +136,6 @@ export class NodeLink extends Visualisation {
   }
 
   _dataTooltip(v, e, d) {
-    //console.log(e);
     if (v)
       return {
         visible: v,
@@ -148,7 +147,6 @@ export class NodeLink extends Visualisation {
   __tooltipContent(d) {
     const persons = store.getters["dataset/persons"];
     const person = persons.find((p) => p.id === d.id);
-    console.log(person);
     return {
       person: person.emailAddress,
       sent: person.sendEmails.length,

@@ -8,7 +8,7 @@
       left: `${styleLeft}px`,
     }"
   >
-    <div v-for="(item, index) in data" :key="index">
+    <div class="txt" v-for="(item, index) in data" :key="index">
       <p>
         <b class="index">{{ index }}: </b> {{ item }}
       </p>
@@ -20,9 +20,6 @@
 export default {
   name: "Tooltip",
   props: ["visible", "pos", "data"],
-  data() {
-    return {};
-  },
   computed: {
     styleTop() {
       return this.pos.top;
@@ -31,7 +28,6 @@ export default {
       return this.pos.left;
     },
   },
-  methods: {},
 };
 </script>
 
@@ -49,10 +45,12 @@ export default {
 }
 #tooltip p {
   color: white;
+  margin: 2px;
 }
 .index {
   color: #4ee6e0;
 }
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

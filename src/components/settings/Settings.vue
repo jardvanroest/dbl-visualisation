@@ -8,9 +8,10 @@
       <Setting name="Sorting algorithm">
         <SortMatrix />
       </Setting>
+      <!-- ANOTHER BRANCH 
       <Setting name="Color by">
         <ColoringByParameter />
-      </Setting>
+      </Setting> -->
       <div class="filters-container">
         <Section title="Filters" fields="none" />
         <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
@@ -46,7 +47,7 @@ import Layout from "@/components/settings/Layout.vue";
 import JobtitleFilter from "@/components/settings/JobtitleFilter.vue";
 import InteractionMode from "@/components/settings/InteractionMode.vue";
 import Btn from "@/components/buttons/Btn.vue";
-import ColoringByParameter from "@/components/settings/ColoringByParameter.vue";
+//import ColoringByParameter from "@/components/settings/ColoringByParameter.vue";
 
 export default {
   name: "Settings",
@@ -61,7 +62,7 @@ export default {
     DateFilter,
     Layout,
     Btn,
-    ColoringByParameter,
+    //ColoringByParameter,
   },
   data() {
     return {

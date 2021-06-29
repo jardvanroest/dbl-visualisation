@@ -175,7 +175,6 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _dataTooltip(v, e, d) {
-    console.log(d);
     if (v)
       return {
         visible: v,
@@ -201,11 +200,11 @@ export class AdjacencyMatrix extends Visualisation {
     };
   }
   ___styleTop(layerY) {
-    if (layerY > 100) return layerY - 100;
+    if (layerY > 100) return layerY - 90;
     return layerY + 30;
   }
   ___styleLeft(layerX) {
-    if (layerX > 230) return layerX - 250;
+    if (layerX > 190) return layerX - 190;
     return layerX + 20;
   }
 
