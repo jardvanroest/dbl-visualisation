@@ -7,6 +7,11 @@ import store from "@/store";
 export class AdjacencyMatrix extends Visualisation {
   constructor(HTMLSelector) {
     super(HTMLSelector);
+
+    this.colors = {
+      emails: "#df848f",
+      noEmails: "#b8e0f6",
+    };
   }
 
   redraw(emails, personsRows, personsCols) {
@@ -65,7 +70,11 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   _getMatrix() {
-    let matrix = new Matrix(this.personsRows);
+    let matrix = new Matrix(
+      this.personsRows,
+      this.colors.emails,
+      this.colors.noEmails
+    );
 
     // Set {MatrixData} the first time when loading the matrix // NOT WORKING
     if (store.getters["dataset/getMatrixDataForSorting"] === -1) {
@@ -106,15 +115,12 @@ export class AdjacencyMatrix extends Visualisation {
     this._drawTransparentCells(this.drawnColumns);
 
     // Compute rects with emails
+    const that = this;
     const brushableRects = this.drawnRows
       .selectAll("rect")
       .filter(function (d) {
-        return d3.select(this).attr("fill") != "#b8e0f6";
-        // TODO: the fill color is hard-coded, idk how to change it
+        return d3.select(this).attr("fill") != that.colors.noEmails;
       });
-
-    // TOFIX: the AdjMat row/col selection doesn't change the stroke
-    // of ?some? {brushableRects} WTF! (only rows)
 
     // Create brush object
     this.brush = new RectBrush(
@@ -122,7 +128,7 @@ export class AdjacencyMatrix extends Visualisation {
       brushableRects,
       this.width,
       this.height,
-      this.transparentColor,
+      null,
       this.edgeSelectColor
     );
 
