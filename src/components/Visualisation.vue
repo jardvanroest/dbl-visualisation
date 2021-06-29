@@ -3,6 +3,7 @@
     <VisualisationSettings
       class="settings"
       @apply="changeDates"
+      @setDateFilter="setDateFilter"
       :dates="localFilteredDates"
     />
     <Spinner :show="showSpinner" offset="0.5rem" />
@@ -12,7 +13,11 @@
       :items="dropdownItems"
       @changed="changeVisualisation"
     />
-    <TimeBar class="timebar" :dates="localFilteredDates" />
+    <TimeBar
+      class="timebar"
+      :dates="localFilteredDates"
+      :doLocalFilter="doDateFilter"
+    />
     <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
@@ -44,6 +49,7 @@ export default {
       showSpinner: false,
       type: this.initialType,
       localFilteredDates: this.filteredDates,
+      doDateFilter: false,
     };
   },
   computed: {
@@ -108,6 +114,10 @@ export default {
     },
     toString(date) {
       return date.toISOString().split("T")[0];
+    },
+    setDateFilter(doFilter) {
+      this.doDateFilter = doFilter;
+      if (!doFilter) this.changeDates(this.filteredDates);
     },
     changeDates(dates) {
       this.localFilteredDates = dates;

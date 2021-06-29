@@ -1,5 +1,10 @@
 <template>
-  <div class="container">
+  <div
+    class="container"
+    :style="{
+      display: displayLocalFilter,
+    }"
+  >
     <div class="total"></div>
     <div
       class="global"
@@ -7,7 +12,10 @@
     ></div>
     <div
       class="local"
-      :style="{ left: localMin + '%', width: localWidth + '%' }"
+      :style="{
+        left: localMin + '%',
+        width: localWidth + '%',
+      }"
     ></div>
   </div>
 </template>
@@ -17,13 +25,14 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "TimeBar",
-  props: ["dates"],
+  props: ["dates", "doLocalFilter"],
   data() {
     return {
       globalMin: 20,
       globalWidth: 70,
       localMin: 30,
       localWidth: 30,
+      displayLocalFilter: "none",
     };
   },
   computed: {
@@ -57,6 +66,13 @@ export default {
           ((value.from.getTime() - this.minTime) / this.totalTime) * 100;
         this.localWidth =
           ((value.to.getTime() - value.from.getTime()) / this.totalTime) * 100;
+      },
+    },
+    doLocalFilter: {
+      deep: true,
+      handler(value) {
+        if (value) this.displayLocalFilter = "inline";
+        else this.displayLocalFilter = "none";
       },
     },
     filteredDates: {

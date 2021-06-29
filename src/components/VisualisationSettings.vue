@@ -5,7 +5,9 @@
       <Section title="Local Filters" fields="none" />
       <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
       <Setting name="By date">
+        <Btn class="apply-filters" text="Enable" @click="toggleDateFilter" />
         <LocalDateFilter
+          :style="{ display: displayDateFilter }"
           ref="dateFilter"
           :dates="dates"
           @setFilteredDates="setFilteredDates"
@@ -36,14 +38,12 @@ export default {
       showLocalSettings: false,
       filteredDates: this.dates,
       display: "none",
-      doDateFilter: true,
+      doDateFilter: false,
+      displayDateFilter: "none",
     };
   },
   computed: {
     ...mapGetters("dataset", ["getDatasetLink"]),
-  },
-  mounted() {
-    console.log("dates: " + this.dates);
   },
   methods: {
     toggleMenu() {
@@ -59,6 +59,9 @@ export default {
     },
     toggleDateFilter() {
       this.doDateFilter = !this.doDateFilter;
+      if (this.doDateFilter) this.displayDateFilter = "inline";
+      else this.displayDateFilter = "none";
+      this.$emit("setDateFilter", this.doDateFilter);
     },
   },
 };
