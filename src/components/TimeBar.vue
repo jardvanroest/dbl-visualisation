@@ -38,6 +38,17 @@ export default {
       return this.maxDate.getTime() - this.minDate.getTime();
     },
   },
+  mounted() {
+    this.globalMin =
+      ((this.filteredDates.from.getTime() - this.minTime) / this.totalTime) *
+      100;
+    this.globalWidth =
+      ((this.filteredDates.to.getTime() - this.filteredDates.from.getTime()) /
+        this.totalTime) *
+      100;
+    this.localMin = this.globalMin;
+    this.localWidth = this.globalWidth;
+  },
   watch: {
     dates: {
       deep: true,
