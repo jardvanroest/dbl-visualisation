@@ -1,5 +1,6 @@
 <template>
-  <div class="visualisation" ref="vis">
+  <div class="visualisation">
+    <ZoomBtns class="zoom-btns" @zoomIn="zoomIn" @zoomOut="zoomOut" />
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+import ZoomBtns from "@/components/buttons/ZoomBtns.vue";
 import Spinner from "@/components/Spinner.vue";
 import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
@@ -29,6 +31,7 @@ export default {
   name: "Visualisations",
   props: ["id", "initialType"],
   components: {
+    ZoomBtns,
     Spinner,
     DropDown,
     Tooltip,
@@ -53,6 +56,11 @@ export default {
     ]),
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
     ...mapGetters("coloring", ["coloringMode"]),
+    ...mapGetters("brush_and_link", [
+      "selectedNodes",
+      "selectedEdges",
+      "interactionMode",
+    ]),
   },
   watch: {
     filteredEmails: {
@@ -68,7 +76,10 @@ export default {
       },
     },
     selectedNodes() {
-      this.showSelection();
+      this.showNodeSelection();
+    },
+    selectedEdges() {
+      this.showEdgeSelection();
     },
     interactionMode() {
       this.spinnerFunctionality(this.toggleInteractionMode);
@@ -93,12 +104,12 @@ export default {
       .filter(() => this.interactionMode === "inspect") // Only zoom in Inspection Mode
       .on("zoom", this.zoomed);
 
-    this.g = d3
+    this.svg = d3
       .select("#" + this.id)
       .attr("viewBox", "0 0 " + this.size + " " + this.size)
-      .call(this.zoom)
-      .append("g")
-      .attr("transform", translation);
+      .call(this.zoom);
+
+    this.g = this.svg.append("g").attr("transform", translation);
 
     this.createVisualisation(this.type);
     this.redraw();
@@ -120,8 +131,11 @@ export default {
       };
       this.spinnerFunctionality(myFunction);
     },
-    showSelection() {
-      this.visualisation.showSelection(this.selectedNodes);
+    showNodeSelection() {
+      this.visualisation.onNodeSelection(this.selectedNodes);
+    },
+    showEdgeSelection() {
+      this.visualisation.onEdgeSelection(this.selectedEdges);
     },
     spinnerFunctionality(myFunction) {
       this.showSpinner = true;
@@ -205,6 +219,12 @@ export default {
     hideTooltip() {
       this.tooltipVisibility = false;
     },
+    zoomIn() {
+      this.zoom.scaleBy(this.svg.transition().duration(250), 1.6);
+    },
+    zoomOut() {
+      this.zoom.scaleBy(this.svg.transition().duration(250), 1 / 1.6);
+    },
   },
 };
 </script>
@@ -224,6 +244,12 @@ export default {
       rgba(50, 50, 93, 0.25) 2px 4px 5px -1px,
       rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
   }
+}
+
+.zoom-btns {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .dropdown {

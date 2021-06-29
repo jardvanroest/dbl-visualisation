@@ -20,9 +20,6 @@
 export default {
   name: "Tooltip",
   props: ["visible", "pos", "data"],
-  data() {
-    return {};
-  },
   computed: {
     styleTop() {
       return this.pos.top;
@@ -31,7 +28,6 @@ export default {
       return this.pos.left;
     },
   },
-  methods: {},
 };
 </script>
 
@@ -49,6 +45,7 @@ export default {
 }
 #tooltip p {
   color: white;
+  margin: 2px;
 }
 .index {
   color: #4ee6e0;

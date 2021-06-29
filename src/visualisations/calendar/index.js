@@ -168,14 +168,13 @@ export class CalendarVisualisation extends Visualisation {
       .attr("x", (d) => this.___getXposCellDate(d))
       .attr("y", (d) => this.___getYposCellDate(d))
       // coloring and opacity
-      .attr("fill", (d) => this.___getColoringMode(d))
-      .attr("opacity", (d) => d.opacity)
-      // hooks
+      .attr("fill", (d) => d.fillColor)
+      .attr("fill-opacity", (d) => d.opacity)
+      .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
       })
       .on("mousemove", (e, d) => {
-        // wtf?????
         vm.updateTooltips(this._dataTooltip(true, e, d));
       })
       .on("mouseout", (e) => {
@@ -184,7 +183,6 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   _dataTooltip(v, e, d) {
-    console.log(e);
     if (v)
       return {
         visible: v,
@@ -201,7 +199,9 @@ export class CalendarVisualisation extends Visualisation {
     };
   }
   ___parseDate(date) {
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+    return (
+      date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
+    );
   }
   __positionTooltip(e) {
     return {
@@ -224,6 +224,8 @@ export class CalendarVisualisation extends Visualisation {
     return d.fillColor_BySentiment;
   }
   updateInspectorData(event, cellData) {
+    this._changeInspectedElement(event.target);
+
     let inspectorData = {};
     let _date = cellData.date;
 
