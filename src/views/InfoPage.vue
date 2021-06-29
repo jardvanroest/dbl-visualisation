@@ -232,7 +232,96 @@
       <div id="about-us" class="section">
         <h2>About us</h2>
         <hr />
-        <p>Yep, its me. Your boy.</p>
+        <div class="about-us-cont">
+          <div class="person">
+            <img
+              src="@/assets/info_page/about_us/error.svg"
+              alt="Photo of Frederik de Graaf"
+            />
+            <h3>Frederik de Graaf</h3>
+            <ul>
+              <div>Worked on:</div>
+              <li>Panning and zooming</li>
+              <li>Optimized selection</li>
+              <li>Local settings</li>
+              <li>Buttons, dropdown menu</li>
+              <li>Adjacency matrix</li>
+            </ul>
+          </div>
+          <div class="person">
+            <img
+              src="@/assets/info_page/about_us/error.svg"
+              alt="Photo of Jard van Roest"
+            />
+            <h3>Jard van Roest</h3>
+            <ul>
+              <div>Worked on:</div>
+              <li>Landing page</li>
+              <li>All Filters</li>
+              <li>Dark mode</li>
+              <li>Major refactoring</li>
+              <li>Default dataset</li>
+            </ul>
+          </div>
+          <div class="person">
+            <img
+              src="@/assets/info_page/about_us/error.svg"
+              alt="Photo of Sanziana Tudose"
+            />
+            <h3>Sanziana Tudose</h3>
+            <ul>
+              <div>Worked on:</div>
+              <li>Node-link diagram</li>
+              <li>Adjacency matrix</li>
+              <li>Selection mode</li>
+              <li>Sorting</li>
+            </ul>
+          </div>
+          <div class="person">
+            <img
+              src="@/assets/info_page/about_us/error.svg"
+              alt="Photo of Tudor Macovei"
+            />
+            <h3>Tudor Macovei</h3>
+            <ul>
+              <div>Worked on:</div>
+              <li>Backend</li>
+              <li>Dataset link</li>
+              <li>MailVis video</li>
+              <li>Server</li>
+            </ul>
+          </div>
+          <div class="person">
+            <img
+              src="@/assets/info_page/about_us/velyan.jpg"
+              alt="Photo of Velyan Kolev"
+            />
+            <h3>Velyan Kolev</h3>
+            <ul>
+              <div>Worked on:</div>
+              <li>Landing and info page</li>
+              <li>Header</li>
+              <li>Settings menu UI</li>
+              <li>Inspector menu</li>
+              <li>Layout</li>
+              <li>Adjacency matrix</li>
+            </ul>
+          </div>
+          <div class="person">
+            <img
+              src="@/assets/info_page/about_us/error.svg"
+              alt="Photo of Zdravko Zdravkov"
+            />
+            <h3>Zdravko Zdravkov</h3>
+            <ul>
+              <div>Worked on:</div>
+              <li>Default dataset</li>
+              <li>Calendar matrix</li>
+              <li>Tooltips</li>
+              <li>Adjacency matrix</li>
+            </ul>
+          </div>
+        </div>
       </div>
       <br />
     </div>
@@ -328,6 +417,54 @@ p {
   justify-content: center;
 }
 
+.about-us-cont {
+  margin: 0 5%;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5em 0;
+
+  border-radius: var(--border-rad);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+  img {
+    border-radius: 50%;
+    padding: 0;
+    border: 4px solid var(--accent-color);
+  }
+
+  h3 {
+    color: var(--accent-color);
+    margin: 0.25em 0 1em 0;
+  }
+
+  ul {
+    padding: 0;
+    font-size: 1rem;
+    list-style: none;
+    text-align: left;
+    width: 80%;
+
+    div {
+      margin-bottom: 0.25em;
+      font-size: 1.25em;
+    }
+
+    li::before {
+      content: "\2b21  ";
+      color: var(--accent-color);
+    }
+  }
+}
+
 .yt-vid {
   width: min(var(--width-ic), 75ch);
   height: calc(var(--width-ic) / 1.77);
@@ -398,6 +535,13 @@ hr {
   border-top: 1px solid var(--accent-color);
 }
 
+@media (max-width: 1300px) {
+  .about-us-cont {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 10%;
+  }
+}
+
 @media (max-width: 930px) {
   .info-container {
     --width-ic: 90vw;
@@ -429,6 +573,10 @@ hr {
       margin: 0 0.5ch 0.5ch 0;
     }
   }
+
+  .about-us-cont {
+    margin: 0 15%;
+  }
 }
 
 @media (max-width: 700px) {
@@ -437,8 +585,13 @@ hr {
     -webkit-columns: 3;
     -moz-columns: 3;
   }
+
   .multiple-media {
     flex-direction: column;
+  }
+
+  .about-us-cont {
+    margin: 0 5%;
   }
 }
 
@@ -446,16 +599,24 @@ hr {
   p {
     width: 100%;
   }
+
   h2 {
     font-size: 2rem;
   }
+
   .content-panel ul {
     columns: 2;
     -webkit-columns: 2;
     -moz-columns: 2;
   }
+
   .info-container {
     margin-top: 14rem;
+  }
+
+  .about-us-cont {
+    grid-template-columns: repeat(1, 1fr);
+    margin: 0 15%;
   }
 }
 
@@ -466,15 +627,22 @@ hr {
       -webkit-columns: 1;
       -moz-columns: 1;
     }
+
     div {
       margin-top: 3.5rem;
     }
   }
+
   .button {
     left: 0;
   }
+
   .info-container {
     margin-top: 23rem;
+  }
+
+  .about-us-cont {
+    margin: 0 5%;
   }
 }
 </style>
