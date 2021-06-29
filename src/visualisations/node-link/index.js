@@ -6,9 +6,9 @@ import { NodeBrush } from "@/visualisations/brushes/node-brush.js";
 import store from "@/store";
 
 export class NodeLink extends Visualisation {
-  constructor(HTMLselector) {
+  constructor(HTMLselector, tooltipsUpdate) {
     super(HTMLselector);
-
+    this.updateTooltips = tooltipsUpdate;
     this.colors = {
       edgePositive: "#b4ecb499",
       edgeNeutral: "#cfcfc499",
@@ -162,9 +162,50 @@ export class NodeLink extends Visualisation {
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
       .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
-      .on("click", this.nodeClick.bind(this));
+      .on("click", this.nodeClick.bind(this))
+      .on("mousemove", (e, d) => {
+        this.updateTooltips(this._dataTooltip(true, e, d));
+      })
+      .on("mouseout", (e, d) => {
+        this.updateTooltips(false);
+      });
   }
 
+  _dataTooltip(v, e, d) {
+    if (v)
+      return {
+        visible: v,
+        pos: this.__positionTooltip(e),
+        data: this.__tooltipContent(d),
+      };
+    return { visible: v };
+  }
+  __tooltipContent(d) {
+    const persons = store.getters["dataset/persons"];
+    const person = persons.find((p) => p.id === d.id);
+    return {
+      person: person.emailAddress,
+      sent: person.sendEmails.length,
+      received: person.receivedEmails.length,
+    };
+  }
+  ___parseDate(date) {
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  }
+  __positionTooltip(e) {
+    return {
+      top: this.___styleTop(e.layerY),
+      left: this.___styleLeft(e.layerX),
+    };
+  }
+  ___styleTop(layerY) {
+    if (layerY > 100) return layerY - 80;
+    return layerY;
+  }
+  ___styleLeft(layerX) {
+    if (layerX > 200) return layerX - 250;
+    return layerX + 30;
+  }
   _handleMouseDragOnNode(simulation) {
     function dragstarted(event, d) {
       if (!event.active) simulation.alphaTarget(0.3).restart();
