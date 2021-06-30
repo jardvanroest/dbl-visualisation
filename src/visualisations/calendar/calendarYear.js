@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import store from "@/store";
 import * as logic from "../../logic/componentsLogic";
+import getters from "../../store/modules/coloring/getters";
 
 export class CalendarYear {
   constructor(data) {
@@ -70,12 +71,10 @@ class CellDate {
   get opacity() {
     return this.weight / (store.getters["dataset/maxEmailsDay"] / 20);
   }
+  get opacity_BySentiment() {
+    return this.weight / (store.getters["dataset/maxEmailsDay"] / 20);
+  }
   get fillColor_ByEmails() {
-    // dif type of vis
-    // return (
-    //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
-    // );
-    //console.log(logic.getVariance(this.emails, "sentiment"));
     return (
       "rgb(" +
       this.weight * (255 / store.getters["dataset/maxEmailsDay"]) +
@@ -87,18 +86,11 @@ class CellDate {
     );
   }
   get fillColor_BySentiment() {
-    //console.log(store.getters["dataset/sampleVarianceSentiment"]);
-    let avg_s = this.avgSentiment;
-    let R, G, B;
-    if (avg_s >= 0) {
-      G = 255;
-      R = 255 / avg_s;
-      B = R;
-    } else {
-      R = 255;
-      G = 255 / avg_s;
-      B = G;
-    }
+    let zScore = this.calculateZscore();
+    let B = 130; // Blue
+    let R = 127 - Math.round(3000 * zScore);
+    let G = 127 + Math.round(3000 * zScore);
+    console.log("rgb(" + R + ", " + G + "," + B + ")");
     return "rgb(" + R + ", " + G + "," + B + ")";
   }
   get avgSentiment() {
@@ -106,5 +98,13 @@ class CellDate {
   }
   get weight() {
     return this.emails.length;
+  }
+
+  calculateZscore() {
+    return (
+      (logic.getAvg(this.emails, "sentiment") -
+        store.getters["dataset/meanSentiment"]) /
+      store.getters["dataset/sampleVarianceSentiment"]
+    );
   }
 }

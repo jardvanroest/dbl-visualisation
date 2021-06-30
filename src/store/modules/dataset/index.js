@@ -20,7 +20,7 @@ export default {
       maxDate: undefined,
       maxEmailsDay_Filtered: undefined,
       meanSentiment_Filtered: undefined,
-      variance_Filtered: undefined,
+      sampleVarianceSentiment_Filtered: undefined,
     };
   },
   getters,
