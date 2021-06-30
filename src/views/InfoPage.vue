@@ -258,11 +258,10 @@
             <h3>Frederik de Graaf</h3>
             <ul>
               <div>Worked on:</div>
+              <li>Visualisation component</li>
+              <li>Local filter settings</li>
               <li>Panning and zooming</li>
-              <li>Optimized selection</li>
-              <li>Local settings</li>
-              <li>Buttons, dropdown menu</li>
-              <li>Adjacency matrix</li>
+              <li>Improvements to selection</li>
             </ul>
           </div>
           <div class="person">
