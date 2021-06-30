@@ -145,10 +145,10 @@
         <hr />
         <p>
           There are three filtering options: email address, job title and date.
-          The first two are global filters that apply to all visualizations.
-          They filter each one based on which fields are checked or if none are
-          checked the unfiltered dataset is visualized. Clicking on the "Apply
-          filters" button applies all currently selected filters.
+          The first two are only global filters that apply to all
+          visualizations. They filter each one based on which fields are checked
+          or if none are checked the unfiltered dataset is visualized. Clicking
+          on the "Apply filters" button applies all currently selected filters.
         </p>
         <img
           style="width: 25ch"
@@ -156,11 +156,17 @@
           alt="calendar matrix"
         />
         <p>
-          The last one (by date) can be applied locally from the local settings
-          menu in the top right corner of each visualization. This is useful in
-          situations where you want to see how different time periods compare.
+          The last one (by date) can be applied globally or locally (from the
+          local settings menu in the top right corner of each visualization).
+          This is useful in situations where you want to see how different time
+          periods compare.
         </p>
-        <!-- INSERT IMAGE OR GIF -->
+        <img src="@/assets/info_page/loc_sett.png" alt="calendar matrix" />
+        <p>
+          There also is a time bar at the bottom of each visualization that
+          shows you the local <span class="green-lf">(green)</span> and global
+          <span class="grey-lf">(grey)</span> filter as time periods.
+        </p>
       </div>
       <div id="layout" class="section">
         <h2>Layout</h2>
@@ -246,7 +252,7 @@
         <div class="about-us-cont">
           <div class="person">
             <img
-              src="@/assets/info_page/about_us/error.svg"
+              src="@/assets/info_page/about_us/frederik.jpg"
               alt="Photo of Frederik de Graaf"
             />
             <h3>Frederik de Graaf</h3>
@@ -261,7 +267,7 @@
           </div>
           <div class="person">
             <img
-              src="@/assets/info_page/about_us/error.svg"
+              src="@/assets/info_page/about_us/jard.jpg"
               alt="Photo of Jard van Roest"
             />
             <h3>Jard van Roest</h3>
@@ -276,7 +282,7 @@
           </div>
           <div class="person">
             <img
-              src="@/assets/info_page/about_us/error.svg"
+              src="@/assets/info_page/about_us/ziana.jpeg"
               alt="Photo of Sanziana Tudose"
             />
             <h3>Sanziana Tudose</h3>
@@ -320,7 +326,7 @@
           </div>
           <div class="person">
             <img
-              src="@/assets/info_page/about_us/error.svg"
+              src="@/assets/info_page/about_us/zdravko.jpg"
               alt="Photo of Zdravko Zdravkov"
             />
             <h3>Zdravko Zdravkov</h3>
@@ -416,6 +422,10 @@ p {
   margin: auto;
 }
 
+#what-is h2 {
+  margin-top: 0;
+}
+
 .link-icon {
   width: 0.8em;
   height: 0.8em;
@@ -426,6 +436,14 @@ p {
   gap: 1em;
   align-items: center;
   justify-content: center;
+}
+
+.green-lf {
+  color: var(--accent-color);
+}
+
+.grey-lf {
+  color: #c9c9c9af;
 }
 
 .about-us-cont {
