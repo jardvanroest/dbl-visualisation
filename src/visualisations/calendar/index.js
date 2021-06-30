@@ -168,7 +168,7 @@ export class CalendarVisualisation extends Visualisation {
       .attr("x", (d) => this.___getXposCellDate(d))
       .attr("y", (d) => this.___getYposCellDate(d))
       // coloring and opacity
-      .attr("fill", (d) => d.fillColor)
+      .attr("fill", (d) => this.___getColoringMode(d))
       .attr("fill-opacity", (d) => d.opacity)
       .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
@@ -220,7 +220,7 @@ export class CalendarVisualisation extends Visualisation {
   ___getColoringMode(d) {
     const mode = store.getters["coloring/coloringMode"];
     console.log(mode);
-    if (mode == "byDate") return d.fillColor_ByDate;
+    if (mode == "byEmails") return d.fillColor_ByEmails;
     return d.fillColor_BySentiment;
   }
   updateInspectorData(event, cellData) {

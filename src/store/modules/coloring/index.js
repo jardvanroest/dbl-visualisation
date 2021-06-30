@@ -6,7 +6,7 @@ export default {
   namespaced: true,
   state() {
     return {
-      mode: "byDate",
+      mode: "byEmails",
     };
   },
   getters,

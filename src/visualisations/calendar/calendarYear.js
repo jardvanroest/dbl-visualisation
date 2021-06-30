@@ -56,7 +56,7 @@ class CellDate {
   get opacity() {
     return this.weight / 7;
   }
-  get fillColor_ByDate() {
+  get fillColor_ByEmails() {
     // dif type of vis
     // return (
     //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
@@ -72,25 +72,25 @@ class CellDate {
     );
   }
   get fillColor_BySentiment() {
-    // dif type of vis
-    // return (
-    //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
-    // );
-    return (
-      "rgb(" +
-      this.weight / 0.5 +
-      ", " +
-      /*this.weight / 1.4 */ 0 +
-      "," +
-      /*this.weight / 5 */ 0 +
-      ")"
-    );
+    let avg_s = this.avgSentiment;
+    let R, G, B;
+    if (avg_s >= 0) {
+      G = 255;
+      R = 255 / avg_s;
+      B = R;
+    } else {
+      R = 255;
+      G = 255 / avg_s;
+      B = G;
+    }
+    return "rgb(" + R + ", " + G + "," + B + ")";
   }
   get avgSentiment() {
-    console.log(this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0));
-    return (
-      this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0) / this.weight
-    );
+    let total = 0;
+    for (let i = 0; i < this.weight; i++) {
+      total += this.emails[i].sentiment;
+    }
+    return Math.round((total / this.weight) * 100000) / 100000;
   }
   get weight() {
     return this.emails.length;

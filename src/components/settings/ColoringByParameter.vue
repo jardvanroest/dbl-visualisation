@@ -2,7 +2,7 @@
   <div class="interaction-mode-container">
     <DropDown
       class="dropdown"
-      selected="byDate"
+      selected="byEmails"
       :items="dropdownItems"
       @changed="changeColoringMode"
     />
@@ -15,14 +15,13 @@ import { mapActions } from "vuex";
 
 export default {
   name: "ColoringByParameter",
-  computed: {},
   components: {
     DropDown,
   },
   data() {
     return {
       dropdownItems: [
-        { value: "byDate", name: "Date" },
+        { value: "byEmails", name: "Emails" },
         { value: "bySentiment", name: "Sentiment" },
       ],
     };
