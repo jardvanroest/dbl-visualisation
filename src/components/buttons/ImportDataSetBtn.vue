@@ -26,14 +26,19 @@ export default {
       this.$refs.fileInput.click();
     },
     importFile(event) {
+      this.$emit("newFile");
       const file = this.getFile(event.target);
-
-      parseFile(file)
-        .then((result) => {
-          this.saveData({ data: result, isDefault: false });
-        })
-        .then(this.goToVisualisationPage)
-        .catch(this.handleError);
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          parseFile(file)
+            .then((result) => {
+              this.saveData({ data: result, isDefault: false });
+            })
+            .then(this.goToVisualisationPage)
+            .catch(this.handleError);
+          resolve();
+        }, 0);
+      });
     },
     getFile(src) {
       return src.files[0];

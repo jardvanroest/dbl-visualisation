@@ -64,6 +64,7 @@ export default {
       tooltipVisibility: false,
       tooltipPosition: { top: 0, left: 0 },
       tooltipData: {},
+      emails: this.filteredEmails,
     };
   },
   computed: {
@@ -83,6 +84,7 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
+        this.emails = this.filteredEmails;
         this.spinnerFunctionality(this.redraw);
       },
     },
