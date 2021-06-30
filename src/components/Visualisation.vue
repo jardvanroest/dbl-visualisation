@@ -1,5 +1,11 @@
 <template>
   <div class="visualisation">
+    <VisualisationSettings
+      class="vis-sett-cont"
+      @apply="changeDates"
+      @setDateFilter="setDateFilter"
+      :dates="localFilteredDates"
+    />
     <ZoomBtns class="zoom-btns" @zoomIn="zoomIn" @zoomOut="zoomOut" />
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
@@ -7,6 +13,11 @@
       :selected="type"
       :items="dropdownItems"
       @changed="changeVisualisation"
+    />
+    <TimeBar
+      class="timebar"
+      :dates="localFilteredDates"
+      :doLocalFilter="doDateFilter"
     />
     <Tooltip
       :visible="tooltipVisibility"
@@ -21,11 +32,14 @@
 <script>
 import ZoomBtns from "@/components/buttons/ZoomBtns.vue";
 import Spinner from "@/components/Spinner.vue";
-import * as visualisations from "@/visualisations";
 import DropDown from "@/components/DropDown.vue";
+import TimeBar from "@/components/TimeBar.vue";
+import Tooltip from "@/components/Tooltip.vue";
+import VisualisationSettings from "@/components/VisualisationSettings.vue";
+import * as visualisations from "@/visualisations";
 import * as d3 from "d3";
 import { mapGetters, mapActions } from "vuex";
-import Tooltip from "./Tooltip.vue";
+import { passesDateFilter } from "@/store/modules/dataset/filtering.js";
 
 export default {
   name: "Visualisations",
@@ -34,6 +48,8 @@ export default {
     ZoomBtns,
     Spinner,
     DropDown,
+    VisualisationSettings,
+    TimeBar,
     Tooltip,
   },
   data() {
@@ -43,14 +59,18 @@ export default {
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
+      localFilteredDates: this.filteredDates,
+      doDateFilter: false,
       tooltipVisibility: false,
       tooltipPosition: { top: 0, left: 0 },
       tooltipData: {},
+      emails: this.filteredEmails,
     };
   },
   computed: {
     ...mapGetters("dataset", [
       "filteredEmails",
+      "filteredDates",
       "persons",
       "getSortedMatrixData",
     ]),
@@ -66,6 +86,7 @@ export default {
     filteredEmails: {
       deep: true,
       handler() {
+        this.emails = this.filteredEmails;
         this.spinnerFunctionality(this.redraw);
       },
     },
@@ -111,6 +132,9 @@ export default {
 
     this.g = this.svg.append("g").attr("transform", translation);
 
+    this.localFilteredDates = this.filteredDates;
+    this.emails = this.filteredEmails;
+
     this.createVisualisation(this.type);
     this.redraw();
   },
@@ -122,6 +146,24 @@ export default {
         this.tooltipUpdate
       );
     },
+    toString(date) {
+      return date.toISOString().split("T")[0];
+    },
+    setDateFilter(doFilter) {
+      this.doDateFilter = doFilter;
+      if (!doFilter) this.changeDates(this.filteredDates);
+    },
+    changeDates(dates) {
+      this.localFilteredDates = dates;
+      this.emails = this.filterEmails(
+        this.filteredEmails,
+        this.localFilteredDates
+      );
+      let myFunction = () => {
+        this.redraw();
+      };
+      this.spinnerFunctionality(myFunction);
+    },
     changeVisualisation(type) {
       let myFunction = () => {
         this.type = type;
@@ -130,6 +172,14 @@ export default {
         this.redraw();
       };
       this.spinnerFunctionality(myFunction);
+    },
+    filterEmails(emails, filteredDates) {
+      return emails.filter((email) => {
+        return passesDateFilter(email, filteredDates);
+      });
+    },
+    showSelection() {
+      this.visualisation.showSelection(this.selectedNodes);
     },
     showNodeSelection() {
       this.visualisation.onNodeSelection(this.selectedNodes);
@@ -173,20 +223,16 @@ export default {
       if (this.type === "AdjacencyMatrix") {
         this.redrawForAdjacency();
       } else {
-        this.visualisation.redraw(this.filteredEmails, this.persons);
+        this.visualisation.redraw(this.emails, this.persons);
       }
     },
     redrawForAdjacency() {
       let newData = this.getSortedMatrixData;
       if (newData === "unsorted") {
-        this.visualisation.redraw(
-          this.filteredEmails,
-          this.persons,
-          this.persons
-        );
+        this.visualisation.redraw(this.emails, this.persons, this.persons);
       } else {
         this.visualisation.redraw(
-          this.filteredEmails,
+          this.emails,
           newData.personsRows,
           newData.personsCols
         );
@@ -248,14 +294,28 @@ export default {
 
 .zoom-btns {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  bottom: calc(1% + 0.4em);
+  right: 1%;
 }
 
 .dropdown {
   position: absolute;
   top: 1%;
   left: 1%;
+}
+
+.vis-sett-cont {
+  z-index: 1;
+  position: absolute;
+  top: 1%;
+  right: 1%;
+}
+
+.timebar {
+  position: absolute;
+  bottom: 1%;
+  width: calc(100% - 0.4em);
+  opacity: 0.8;
 }
 
 .vis-svg {
