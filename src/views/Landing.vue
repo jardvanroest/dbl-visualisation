@@ -7,6 +7,9 @@
       <ImportDataSetBtn />
       <ViewExampleDataSetBtn />
     </div>
+    <div @click="redirectToInfo" class="info">
+      <img src="@/assets/icons/info.svg" alt="information" />
+    </div>
   </div>
 </template>
 
@@ -19,6 +22,11 @@ export default {
   components: {
     ImportDataSetBtn,
     ViewExampleDataSetBtn,
+  },
+  methods: {
+    redirectToInfo() {
+      this.$router.push({ path: "/info" });
+    },
   },
 };
 </script>
@@ -35,6 +43,15 @@ export default {
   background-blend-mode: screen;
 
   animation: animatedBackground 50s linear infinite;
+}
+
+.info img {
+  width: 5%;
+  height: 5%;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
 }
 
 .home {
