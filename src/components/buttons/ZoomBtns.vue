@@ -25,18 +25,20 @@ export default {
 
 <style scoped lang="scss">
 .btn {
-  width: 20px;
-  height: 20px;
   display: block;
   position: relative;
-  padding: 2px;
-  margin-bottom: 2px;
-  background: var(--background-color);
-  border: 1px solid var(--accent-color-2);
+
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0.1em;
+  margin-bottom: 0.1em;
+
+  background-color: var(--background-color);
+  border: var(--settings-border);
   border-radius: 10%;
 
   &:hover {
-    background: var(--background-color-2);
+    border-color: var(--accent-color);
     cursor: pointer;
   }
 }
@@ -49,13 +51,13 @@ export default {
   transform: translate(-50%, -50%);
 
   &--horizontal {
-    width: 10px;
-    height: 2px;
+    width: 0.725em;
+    height: 0.125em;
   }
 
   &--vertical {
-    width: 2px;
-    height: 10px;
+    width: 0.125em;
+    height: 0.725em;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="visualisation">
     <VisualisationSettings
-      class="settings"
+      class="vis-sett-cont"
       @apply="changeDates"
       @setDateFilter="setDateFilter"
       :dates="localFilteredDates"
@@ -34,12 +34,12 @@ import ZoomBtns from "@/components/buttons/ZoomBtns.vue";
 import Spinner from "@/components/Spinner.vue";
 import DropDown from "@/components/DropDown.vue";
 import TimeBar from "@/components/TimeBar.vue";
+import Tooltip from "@/components/Tooltip.vue";
 import VisualisationSettings from "@/components/VisualisationSettings.vue";
 import * as visualisations from "@/visualisations";
 import * as d3 from "d3";
 import { mapGetters, mapActions } from "vuex";
 import { passesDateFilter } from "@/store/modules/dataset/filtering.js";
-import Tooltip from "./Tooltip.vue";
 
 export default {
   name: "Visualisations",
@@ -284,8 +284,8 @@ export default {
 
 .zoom-btns {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  bottom: calc(1% + 0.4em);
+  right: 1%;
 }
 
 .dropdown {
@@ -294,7 +294,8 @@ export default {
   left: 1%;
 }
 
-.settings {
+.vis-sett-cont {
+  z-index: 1;
   position: absolute;
   top: 1%;
   right: 1%;
@@ -303,6 +304,8 @@ export default {
 .timebar {
   position: absolute;
   bottom: 1%;
+  width: calc(100% - 0.4em);
+  opacity: 0.8;
 }
 
 .vis-svg {

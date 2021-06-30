@@ -1,22 +1,18 @@
 <template>
-  <div
-    class="container"
-    :style="{
-      display: displayLocalFilter,
-    }"
-  >
-    <div class="total"></div>
+  <div class="timebar">
+    <div class="total" />
     <div
       class="global"
       :style="{ left: globalMin + '%', width: globalWidth + '%' }"
-    ></div>
+    />
     <div
       class="local"
       :style="{
         left: localMin + '%',
         width: localWidth + '%',
+        display: displayLocalFilter,
       }"
-    ></div>
+    />
   </div>
 </template>
 
@@ -104,32 +100,25 @@ export default {
 </script>
 
 <style>
-.container {
-  position: absolute;
-  width: 100%;
-  bottom: 2em;
-}
 .total {
   position: absolute;
   bottom: 0;
-  border-bottom: 6px solid var(--border-color);
   width: 100%;
+  border-bottom: 0.4em solid var(--background-color-2);
   border-radius: var(--border-rad);
 }
+
 .global {
   position: absolute;
   bottom: 0;
-  border-bottom: 6px solid var(--accent-color);
-  left: 50%;
-  width: 100%;
+  border-bottom: 0.4em solid #c9c9c9af;
   border-radius: var(--border-rad);
 }
+
 .local {
   position: absolute;
   bottom: 0;
-  border-bottom: 6px solid var(--accent-color-2);
-  left: 75%;
-  width: 100%;
+  border-bottom: 0.4em solid var(--accent-color);
   border-radius: var(--border-rad);
 }
 </style>

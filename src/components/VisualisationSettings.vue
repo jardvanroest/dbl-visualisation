@@ -1,13 +1,17 @@
 <template>
   <div class="vis-sett-cont">
-    <Btn @click="toggleMenu" text="x" class="btn-local-sett" />
+    <Btn @click="toggleMenu" text="Local Settings" class="btn-local-sett" />
     <div class="vis-settings" :style="{ display: display }">
       <Section title="Local Filters" fields="none" />
-      <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
-      <Setting name="By date">
-        <Btn class="apply-filters" text="Enable" @click="toggleDateFilter" />
+      <Btn class="enable-btn" :text="enableBtn" @click="toggleDateFilter" />
+      <Btn
+        class="apply-filters"
+        :style="{ display: displayDateFilter }"
+        text="Apply filters"
+        @click="applyFilters"
+      />
+      <Setting name="By date" :style="{ display: displayDateFilter }">
         <LocalDateFilter
-          :style="{ display: displayDateFilter }"
           ref="dateFilter"
           :dates="dates"
           @setFilteredDates="setFilteredDates"
@@ -39,6 +43,7 @@ export default {
       filteredDates: this.dates,
       display: "none",
       doDateFilter: false,
+      enableBtn: "Enable",
       displayDateFilter: "none",
     };
   },
@@ -59,8 +64,13 @@ export default {
     },
     toggleDateFilter() {
       this.doDateFilter = !this.doDateFilter;
-      if (this.doDateFilter) this.displayDateFilter = "inline";
-      else this.displayDateFilter = "none";
+      if (this.doDateFilter) {
+        this.displayDateFilter = "inline";
+        this.enableBtn = "Disable";
+      } else {
+        this.displayDateFilter = "none";
+        this.enableBtn = "Enable";
+      }
       this.$emit("setDateFilter", this.doDateFilter);
     },
   },
@@ -76,6 +86,7 @@ export default {
   --vs-padd: 1em;
   width: var(--stt-width);
   padding: var(--vs-padd);
+  padding-right: 0;
 
   background-color: var(--background-color);
   border: var(--settings-border);
@@ -87,8 +98,13 @@ export default {
   margin-left: 1em;
   position: absolute;
   right: var(--vs-padd);
-  top: var(--vs-padd);
+  top: calc(var(--vs-padd) - 2px);
   background-color: var(--background-color);
+}
+
+.enable-btn {
+  width: calc(100% - var(--vs-padd));
+  margin-top: 0.5em;
 }
 
 .btn-local-sett {
