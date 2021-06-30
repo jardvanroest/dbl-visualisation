@@ -11,8 +11,13 @@ export default {
   name: "ViewExampleDataSetBtn",
   methods: {
     importExampleDataset() {
-      this.saveData({ data: parseString(exampleDataSet), isDefault: true });
-      this.goToVisualisationPage();
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          this.saveData({ data: parseString(exampleDataSet), isDefault: true });
+          this.goToVisualisationPage();
+          resolve();
+        }, 0);
+      });
     },
     goToVisualisationPage() {
       this.$router.push({ path: "visualisation" });
