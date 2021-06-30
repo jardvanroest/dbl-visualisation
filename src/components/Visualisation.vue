@@ -6,6 +6,7 @@
       @setDateFilter="setDateFilter"
       :dates="localFilteredDates"
     />
+    <ZoomBtns class="zoom-btns" @zoomIn="zoomIn" @zoomOut="zoomOut" />
     <Spinner :show="showSpinner" offset="0.5rem" />
     <DropDown
       class="dropdown"
@@ -18,11 +19,18 @@
       :dates="localFilteredDates"
       :doLocalFilter="doDateFilter"
     />
+    <Tooltip
+      :visible="tooltipVisibility"
+      :data="tooltipData"
+      :pos="tooltipPosition"
+      @tooltipUpdate="tooltipUpdate"
+    />
     <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
 
 <script>
+import ZoomBtns from "@/components/buttons/ZoomBtns.vue";
 import Spinner from "@/components/Spinner.vue";
 import DropDown from "@/components/DropDown.vue";
 import TimeBar from "@/components/TimeBar.vue";
@@ -31,25 +39,31 @@ import * as visualisations from "@/visualisations";
 import * as d3 from "d3";
 import { mapGetters, mapActions } from "vuex";
 import { passesDateFilter } from "@/store/modules/dataset/filtering.js";
+import Tooltip from "./Tooltip.vue";
 
 export default {
   name: "Visualisations",
   props: ["id", "initialType"],
   components: {
+    ZoomBtns,
     Spinner,
     DropDown,
     VisualisationSettings,
     TimeBar,
+    Tooltip,
   },
   data() {
     return {
+      type: this.initialType,
       size: 500,
       zoomVals: { min: 1 / 2, max: 5, margin: 100 },
       dropdownItems: this.createDropDownItemsList(),
       showSpinner: false,
-      type: this.initialType,
       localFilteredDates: this.filteredDates,
       doDateFilter: false,
+      tooltipVisibility: false,
+      tooltipPosition: { top: 0, left: 0 },
+      tooltipData: {},
     };
   },
   computed: {
@@ -59,7 +73,11 @@ export default {
       "persons",
       "getSortedMatrixData",
     ]),
-    ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
+    ...mapGetters("brush_and_link", [
+      "selectedNodes",
+      "selectedEdges",
+      "interactionMode",
+    ]),
   },
   watch: {
     filteredEmails: {
@@ -69,7 +87,10 @@ export default {
       },
     },
     selectedNodes() {
-      this.showSelection();
+      this.showNodeSelection();
+    },
+    selectedEdges() {
+      this.showEdgeSelection();
     },
     interactionMode() {
       this.spinnerFunctionality(this.toggleInteractionMode);
@@ -94,12 +115,12 @@ export default {
       .filter(() => this.interactionMode === "inspect") // Only zoom in Inspection Mode
       .on("zoom", this.zoomed);
 
-    this.g = d3
+    this.svg = d3
       .select("#" + this.id)
       .attr("viewBox", "0 0 " + this.size + " " + this.size)
-      .call(this.zoom)
-      .append("g")
-      .attr("transform", translation);
+      .call(this.zoom);
+
+    this.g = this.svg.append("g").attr("transform", translation);
 
     this.localFilteredDates = this.filteredDates;
     this.emails = this.filteredEmails;
@@ -110,7 +131,10 @@ export default {
   methods: {
     createVisualisation(type) {
       let newType = type.split("-")[0];
-      this.visualisation = new visualisations[newType]("#" + this.id);
+      this.visualisation = new visualisations[newType](
+        "#" + this.id,
+        this.tooltipUpdate
+      );
     },
     toString(date) {
       return date.toISOString().split("T")[0];
@@ -146,6 +170,12 @@ export default {
     },
     showSelection() {
       this.visualisation.showSelection(this.selectedNodes);
+    },
+    showNodeSelection() {
+      this.visualisation.onNodeSelection(this.selectedNodes);
+    },
+    showEdgeSelection() {
+      this.visualisation.onEdgeSelection(this.selectedEdges);
     },
     spinnerFunctionality(myFunction) {
       this.showSpinner = true;
@@ -210,6 +240,27 @@ export default {
           return "No name for vis";
       }
     },
+    tooltipUpdate(d) {
+      if (d.visible) {
+        this.showTooltip(d.pos, d.data);
+      } else {
+        this.hideTooltip();
+      }
+    },
+    showTooltip(position, data) {
+      this.tooltipPosition = position;
+      this.tooltipData = data;
+      this.tooltipVisibility = true;
+    },
+    hideTooltip() {
+      this.tooltipVisibility = false;
+    },
+    zoomIn() {
+      this.zoom.scaleBy(this.svg.transition().duration(250), 1.6);
+    },
+    zoomOut() {
+      this.zoom.scaleBy(this.svg.transition().duration(250), 1 / 1.6);
+    },
   },
 };
 </script>
@@ -229,6 +280,12 @@ export default {
       rgba(50, 50, 93, 0.25) 2px 4px 5px -1px,
       rgba(0, 0, 0, 0.3) 2px 3px 3px -1px;
   }
+}
+
+.zoom-btns {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .dropdown {
