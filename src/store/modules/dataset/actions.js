@@ -1,16 +1,24 @@
 import axios from "axios";
-
+import { getSampleVariance } from "../../../logic/componentsLogic";
 import { Email, SendingPerson, ReceivingPerson } from "./dataStructures.js";
 
 export default {
   changeInspectorData(context, newData) {
     context.commit("newInspectorData", newData);
   },
+  updateMaxEmailsDay(context, newMax) {
+    context.commit("changeMaxEmailsDay", newMax);
+  },
   changeSortedMatrixData(context, newData) {
     context.commit("newSortedMatrixData", newData);
   },
   changeMatrixData(context, newData) {
     context.commit("newMatrixData", newData);
+  },
+  updateCalculationVariables(context, dataSet) {
+    let s_a = getSampleVariance(dataSet, "sentiment");
+    context.commit("updateSampleVarianceSentiment_Filtered", s_a[0]);
+    context.commit("updateMeanSentiment_Filtered", s_a[1]);
   },
   saveData(context, { data: data, isDefault: isDefault }) {
     if (!isDefault) {

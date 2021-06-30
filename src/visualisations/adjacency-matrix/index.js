@@ -18,6 +18,7 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   redraw(emails, personsRows, personsCols) {
+    store.dispatch("dataset/updateCalculationVariables", emails);
     this.emails = emails;
     this.personsRows = personsRows;
     this.personsCols = personsCols;
@@ -264,7 +265,7 @@ export class AdjacencyMatrix extends Visualisation {
     return layerY + 30;
   }
   ___styleLeft(layerX) {
-    if (layerX > 230) return layerX - 250;
+    if (layerX > 230) return layerX - 170;
     return layerX + 20;
   }
 

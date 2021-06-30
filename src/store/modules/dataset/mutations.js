@@ -9,6 +9,9 @@ export default {
     state.filteredDates = {};
     state.minDate = undefined;
     state.maxDate = undefined;
+    state.maxEmailsDay_Filtered = undefined;
+    state.meanSentiment_Filtered = undefined;
+    state.variance_Filtered = undefined;
   },
   addEmail(state, email) {
     state.emails.push(email);
@@ -63,5 +66,19 @@ export default {
     ) {
       state.minDate = date;
     }
+  },
+  changeMaxEmailsDay(state, number) {
+    if (
+      state.maxEmailsDay_Filtered === undefined ||
+      state.maxEmailsDay_Filtered < number
+    ) {
+      state.maxEmailsDay_Filtered = number;
+    }
+  },
+  updateSampleVarianceSentiment_Filtered(state, number) {
+    state.sampleVarianceSentiment_Filtered = number;
+  },
+  updateMeanSentiment_Filtered(state, number) {
+    state.meanSentiment_Filtered = number;
   },
 };

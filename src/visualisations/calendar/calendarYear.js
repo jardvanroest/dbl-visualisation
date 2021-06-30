@@ -1,4 +1,6 @@
 import * as d3 from "d3";
+import store from "@/store";
+import * as logic from "../../logic/componentsLogic";
 
 export class CalendarYear {
   constructor(data) {
@@ -6,15 +8,27 @@ export class CalendarYear {
   }
 
   _getData() {
+    this._updateMaxEmailsDay();
     return this.parsedData;
   }
 
   _parseData(set) {
+    store.dispatch("dataset/updateCalculationVariables", set);
     let group = d3.groups(set, (d) => d.date.getUTCFullYear()).sort();
     for (let i = 0; i < group.length; i++) {
       group[i][1] = this.__parseDates(group[i][1]);
     }
     return group;
+  }
+  _updateMaxEmailsDay() {
+    let max = 0;
+    for (let i = 0; i < this.parsedData.length; i++) {
+      for (let j = 0; j < this.parsedData[i][1].length; j++) {
+        if (this.parsedData[i][1][j].weight > max)
+          max = this.parsedData[i][1][j].weight;
+      }
+    }
+    store.dispatch("dataset/updateMaxEmailsDay", max);
   }
 
   __parseDates(arrDates) {
@@ -54,16 +68,17 @@ class CellDate {
     this.emails = emails;
   }
   get opacity() {
-    return this.weight / 7;
+    return this.weight / (store.getters["dataset/maxEmailsDay"] / 20);
   }
   get fillColor_ByEmails() {
     // dif type of vis
     // return (
     //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
     // );
+    //console.log(logic.getVariance(this.emails, "sentiment"));
     return (
       "rgb(" +
-      this.weight / 0.5 +
+      this.weight * (255 / store.getters["dataset/maxEmailsDay"]) +
       ", " +
       /*this.weight / 1.4 */ 98 +
       "," +
@@ -72,6 +87,7 @@ class CellDate {
     );
   }
   get fillColor_BySentiment() {
+    //console.log(store.getters["dataset/sampleVarianceSentiment"]);
     let avg_s = this.avgSentiment;
     let R, G, B;
     if (avg_s >= 0) {
@@ -86,11 +102,7 @@ class CellDate {
     return "rgb(" + R + ", " + G + "," + B + ")";
   }
   get avgSentiment() {
-    let total = 0;
-    for (let i = 0; i < this.weight; i++) {
-      total += this.emails[i].sentiment;
-    }
-    return Math.round((total / this.weight) * 100000) / 100000;
+    return logic.getAvg(this.emails, "sentiment");
   }
   get weight() {
     return this.emails.length;

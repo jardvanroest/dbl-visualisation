@@ -2,12 +2,12 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
 import store from "@/store";
 import * as d3 from "d3";
+import * as logic from "../../logic/componentsLogic";
 
 export class CalendarVisualisation extends Visualisation {
   constructor(HTMLSelector, tooltipsUpdate) {
     super(HTMLSelector);
     this.updateTooltips = tooltipsUpdate;
-    //this.changeInspectorData = changeInspectorData;
     this.width = 500;
     this.height = 500;
     this.cellSize = this.width * 0.017;
@@ -61,7 +61,6 @@ export class CalendarVisualisation extends Visualisation {
   _generateYear(svg, data) {
     return svg
       .selectAll("g")
-      .attr("id", "laina")
       .data(data)
       .join("g")
       .attr("transform", (d, i) => this._transformYear(i));
@@ -195,7 +194,7 @@ export class CalendarVisualisation extends Visualisation {
     return {
       date: this.___parseDate(d.date),
       emails: d.weight,
-      sentiment: this._getAvgSentiment(d.emails),
+      sentiment: d.avgSentiment,
     };
   }
   ___parseDate(date) {
@@ -219,7 +218,6 @@ export class CalendarVisualisation extends Visualisation {
   }
   ___getColoringMode(d) {
     const mode = store.getters["coloring/coloringMode"];
-    console.log(mode);
     if (mode == "byEmails") return d.fillColor_ByEmails;
     return d.fillColor_BySentiment;
   }
@@ -241,29 +239,10 @@ export class CalendarVisualisation extends Visualisation {
     delete inspectorData.emails.Date;
 
     inspectorData.additional_information = {
-      color: _RGBToHex(cellData.fillColor),
+      color: logic._RGBToHex(cellData.fillColor_ByEmails),
       opacity: Math.min(cellData.opacity.toPrecision(3), 1),
     };
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
-
-    // Functions //
-
-    function _RGBToHex(rgb) {
-      // Choose correct separator
-      let sep = rgb.indexOf(",") > -1 ? "," : " ";
-      // Turn "rgb(r,g,b)" into [r,g,b]
-      rgb = rgb.substr(4).split(")")[0].split(sep);
-
-      let r = Math.min(+rgb[0], 255).toString(16),
-        g = Math.min(+rgb[1], 255).toString(16),
-        b = Math.min(+rgb[2], 255).toString(16);
-
-      if (r.length == 1) r = "0" + r;
-      if (g.length == 1) g = "0" + g;
-      if (b.length == 1) b = "0" + b;
-
-      return "#" + r + g + b;
-    }
   }
 }
