@@ -32,7 +32,10 @@ export default {
     const from = payload.from;
     const to = payload.to;
 
-    state.filteredDates = { from, to };
+    state.filteredDates = { from: from, to: to };
+  },
+  setFilteredDatesToMinMax(state) {
+    state.filteredDates = { from: state.minDate, to: state.maxDate };
   },
   newInspectorData(state, newData) {
     state.inspectorData = newData;

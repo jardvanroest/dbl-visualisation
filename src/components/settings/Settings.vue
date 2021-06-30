@@ -13,7 +13,7 @@
         <ColoringByParameter />
       </Setting> -->
       <div class="filters-container">
-        <Section title="Filters" fields="none" />
+        <Section title="Global filters" fields="none" />
         <Btn class="apply-filters" text="Apply filters" @click="applyFilters" />
         <Setting name="By e-mail">
           <EmailFilter ref="emailFilter" />
