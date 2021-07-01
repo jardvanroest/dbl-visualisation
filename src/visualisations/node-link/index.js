@@ -34,9 +34,13 @@ export class NodeLink extends Visualisation {
     if (theme === "light") {
       this.colors.nodeOutline = "#fff";
       svg.selectAll(".nl-node").attr("stroke", "#fff");
+      svg.selectAll(".nl-node").attr("default-stroke", "#fff");
+      svg.selectAll(".nl-node").attr("select-stroke", "#A585C1");
     } else {
       this.colors.nodeOutline = "#1A1A1A";
       svg.selectAll(".nl-node").attr("stroke", "#1A1A1A");
+      svg.selectAll(".nl-node").attr("default-stroke", "#1A1A1A");
+      svg.selectAll(".nl-node").attr("select-stroke", "#e6ab45");
     }
   }
 
