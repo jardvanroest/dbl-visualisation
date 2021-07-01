@@ -3,6 +3,7 @@
     <VisualisationSettings
       class="vis-sett-cont"
       @apply="changeDates"
+      @color_change="changeColoringMode"
       @setDateFilter="setDateFilter"
       :dates="localFilteredDates"
     />
@@ -65,6 +66,7 @@ export default {
       tooltipPosition: { top: 0, left: 0 },
       tooltipData: {},
       emails: this.filteredEmails,
+      coloringMode: "byEmails",
     };
   },
   computed: {
@@ -75,7 +77,7 @@ export default {
       "getSortedMatrixData",
     ]),
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
-    ...mapGetters("coloring", ["coloringMode"]),
+    //...mapGetters("coloring", ["coloringMode"]),
     ...mapGetters("brush_and_link", [
       "selectedNodes",
       "selectedEdges",
@@ -143,7 +145,8 @@ export default {
       let newType = type.split("-")[0];
       this.visualisation = new visualisations[newType](
         "#" + this.id,
-        this.tooltipUpdate
+        this.tooltipUpdate,
+        this.getColoringMode
       );
     },
     toString(date) {
@@ -270,6 +273,14 @@ export default {
     },
     zoomOut() {
       this.zoom.scaleBy(this.svg.transition().duration(250), 1 / 1.6);
+    },
+    getColoringMode() {
+      console.log(1);
+      return this.coloringMode;
+    },
+    changeColoringMode(mode) {
+      console.log(2);
+      this.coloringMode = mode;
     },
   },
 };

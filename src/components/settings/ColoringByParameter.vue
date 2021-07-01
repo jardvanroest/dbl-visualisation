@@ -27,10 +27,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions("coloring", ["updateColoringMode"]),
+    //...mapActions("coloring", ["updateColoringMode"]),
     changeColoringMode(value) {
-      this.updateColoringMode(value);
+      console.log(4);
+      this.$emit("updateColor", value);
     },
+    //updateColoringMode(value)
   },
 };
 </script>

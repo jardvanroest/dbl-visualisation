@@ -2,6 +2,9 @@
   <div class="vis-sett-cont">
     <Btn @click="toggleMenu" text="Local Settings" class="btn-local-sett" />
     <div class="vis-settings" :style="{ display: display }">
+      <Setting v-if="vis_id == '' || vis_id == '' || true" name="Color by">
+        <ColoringByParameter @updateColor="updateColoringMode" />
+      </Setting>
       <Section title="Local Filters" fields="none" />
       <Btn class="enable-btn" :text="enableBtn" @click="toggleDateFilter" />
       <Btn
@@ -27,15 +30,16 @@ import Btn from "@/components/buttons/Btn.vue";
 import Section from "@/components/inspector/Section.vue";
 import Setting from "@/components/settings/Setting.vue";
 import LocalDateFilter from "@/components/settings/LocalDateFilter.vue";
-
+import ColoringByParameter from "@/components/settings/ColoringByParameter.vue";
 export default {
   name: "VisualisationSettings",
-  props: ["dates"],
+  props: ["dates", "vis_id"],
   components: {
     Btn,
     Section,
     Setting,
     LocalDateFilter,
+    ColoringByParameter,
   },
   data() {
     return {
@@ -59,6 +63,9 @@ export default {
     applyFilters() {
       this.$emit("apply", this.filteredDates);
     },
+    changeColoring() {
+      this.$emit("color_change", this.$refs.vi_coloring_dropdown.value);
+    },
     setFilteredDates(filteredDates) {
       this.filteredDates = filteredDates;
     },
@@ -72,6 +79,10 @@ export default {
         this.enableBtn = "Enable";
       }
       this.$emit("setDateFilter", this.doDateFilter);
+    },
+    updateColoringMode(val) {
+      console.log(3);
+      this.$emit("color_change", val);
     },
   },
 };

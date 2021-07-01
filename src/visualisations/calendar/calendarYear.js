@@ -102,8 +102,7 @@ class CellDate {
 
   calculateZscore() {
     return (
-      (logic.getAvg(this.emails, "sentiment") -
-        store.getters["dataset/meanSentiment"]) /
+      logic.getAvg(this.emails, "sentiment") / //store.getters["dataset/meanSentiment"]) /
       store.getters["dataset/sampleVarianceSentiment"]
     );
   }

@@ -5,9 +5,10 @@ import * as d3 from "d3";
 import * as logic from "../../logic/componentsLogic";
 
 export class CalendarVisualisation extends Visualisation {
-  constructor(HTMLSelector, tooltipsUpdate) {
+  constructor(HTMLSelector, tooltipsUpdate, colorMode) {
     super(HTMLSelector);
     this.updateTooltips = tooltipsUpdate;
+    this.coloringMode = colorMode;
     this.width = 500;
     this.height = 500;
     this.cellSize = this.width * 0.017;
@@ -217,7 +218,7 @@ export class CalendarVisualisation extends Visualisation {
     return layerX + 30;
   }
   ___getColoringMode(d) {
-    const mode = store.getters["coloring/coloringMode"];
+    const mode = this.coloringMode(); //store.getters["coloring/coloringMode"];
     if (mode == "byEmails") return d.fillColor_ByEmails;
     return d.fillColor_BySentiment;
   }
