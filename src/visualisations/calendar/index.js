@@ -45,21 +45,32 @@ export class CalendarVisualisation extends Visualisation {
     ];
 
     store.dispatch("dark_mode/onChange", this.updateColors.bind(this));
-    this.updateColors(store.getters["dark_mode/theme"]);
   }
 
   updateColors(theme) {
+    const svg = this._getSVG();
+
     if (theme === "light") {
-      console.log("Switching to light colors");
+      this.switchToLightTheme(svg);
     } else {
-      console.log("Switching to dark colors");
+      this.switchToDarkTheme(svg);
     }
+  }
+
+  switchToLightTheme(svg) {
+    svg.selectAll("text").attr("fill", "#000000");
+  }
+
+  switchToDarkTheme(svg) {
+    svg.selectAll("text").attr("fill", "#ffffff");
   }
 
   redraw(data) {
     this.resetVisualisation();
     const calendarData = new CalendarYear(data);
     this._generateVisualisation(calendarData._getData());
+
+    this.updateColors(store.getters["dark_mode/theme"]);
   }
 
   _generateVisualisation(parsedData) {
