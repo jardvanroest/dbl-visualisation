@@ -1,10 +1,20 @@
 import * as d3 from "d3";
+import store from "@/store";
 
 export class Brush {
-  constructor(brushArea, brushObjects, width, height, normalCol, selectedCol) {
+  constructor(
+    brushArea,
+    brushObjects,
+    width,
+    height,
+    normalCol,
+    selectedCol,
+    type
+  ) {
     this.brushArea = brushArea;
     this.brushObjects = brushObjects;
     this._selectedObjects = [];
+    this.type = type;
 
     this.colors = {
       selected: selectedCol,
@@ -17,6 +27,35 @@ export class Brush {
     };
 
     this.brush = this._createBrush();
+    store.dispatch("dark_mode/onChange", this.updateColors.bind(this));
+  }
+
+  updateColors(theme) {
+    if (theme === "light") {
+      if (this.type === "node-link") {
+        this.colors = {
+          selected: "#A585C1",
+          normal: "#fff",
+        };
+      } else {
+        this.colors = {
+          selected: "#1D2F6F",
+          normal: null,
+        };
+      }
+    } else {
+      if (this.type === "node-link") {
+        this.colors = {
+          selected: "#e6ab45",
+          normal: "#000",
+        };
+      } else {
+        this.colors = {
+          selected: "#ff00e2",
+          normal: null,
+        };
+      }
+    }
   }
 
   appendBrush() {

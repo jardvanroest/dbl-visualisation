@@ -2,12 +2,13 @@ import { Visualisation } from "@/visualisations/visualisation.js";
 import { CalendarYear } from "@/visualisations/calendar/calendarYear.js";
 import store from "@/store";
 import * as d3 from "d3";
+import * as logic from "../../logic/componentsLogic";
 
 export class CalendarVisualisation extends Visualisation {
-  constructor(HTMLSelector, tooltipsUpdate) {
+  constructor(HTMLSelector, tooltipsUpdate, colorMode) {
     super(HTMLSelector);
     this.updateTooltips = tooltipsUpdate;
-    //this.changeInspectorData = changeInspectorData;
+    this.coloringMode = colorMode;
     this.width = 500;
     this.height = 500;
     this.cellSize = this.width * 0.017;
@@ -68,6 +69,7 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   redraw(data) {
+    this.updateVisColors(store.getters["dark_mode/theme"]);
     this.resetVisualisation();
     const calendarData = new CalendarYear(data);
     this._generateVisualisation(calendarData._getData());
@@ -192,8 +194,10 @@ export class CalendarVisualisation extends Visualisation {
       .attr("x", (d) => this.___getXposCellDate(d))
       .attr("y", (d) => this.___getYposCellDate(d))
       // coloring and opacity
-      .attr("fill", (d) => d.fillColor)
-      .attr("fill-opacity", (d) => d.opacity)
+      .attr("fill", (d) => this.___getColoringMode(d))
+      .attr("fill-opacity", (d) =>
+        this.coloringMode === "byEmails" ? d.opacity : 1
+      )
       .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
@@ -219,7 +223,7 @@ export class CalendarVisualisation extends Visualisation {
     return {
       date: this.___parseDate(d.date),
       emails: d.weight,
-      sentiment: this._getAvgSentiment(d.emails),
+      sentiment: d.avgSentiment,
     };
   }
   ___parseDate(date) {
@@ -241,6 +245,11 @@ export class CalendarVisualisation extends Visualisation {
     if (layerX > 150) return layerX - 150;
     return layerX + 30;
   }
+  ___getColoringMode(d) {
+    const mode = this.coloringMode(); //store.getters["coloring/coloringMode"];
+    if (mode == "byEmails") return d.fillColor_ByEmails;
+    return d.fillColor_BySentiment;
+  }
   updateInspectorData(event, cellData) {
     this._changeInspectedElement(event.target);
 
@@ -259,29 +268,11 @@ export class CalendarVisualisation extends Visualisation {
     delete inspectorData.emails.Date;
 
     inspectorData.additional_information = {
-      color: _RGBToHex(cellData.fillColor),
+      color: logic._RGBToHex(this.___getColoringMode(cellData)),
       opacity: Math.min(cellData.opacity.toPrecision(3), 1),
     };
+    console.log(logic._RGBToHex(this.___getColoringMode(cellData)));
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
-
-    // Functions //
-
-    function _RGBToHex(rgb) {
-      // Choose correct separator
-      let sep = rgb.indexOf(",") > -1 ? "," : " ";
-      // Turn "rgb(r,g,b)" into [r,g,b]
-      rgb = rgb.substr(4).split(")")[0].split(sep);
-
-      let r = Math.min(+rgb[0], 255).toString(16),
-        g = Math.min(+rgb[1], 255).toString(16),
-        b = Math.min(+rgb[2], 255).toString(16);
-
-      if (r.length == 1) r = "0" + r;
-      if (g.length == 1) g = "0" + g;
-      if (b.length == 1) b = "0" + b;
-
-      return "#" + r + g + b;
-    }
   }
 }

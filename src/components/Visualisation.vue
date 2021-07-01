@@ -4,8 +4,10 @@
     <VisualisationSettings
       class="vis-sett-cont"
       @apply="changeDates"
+      @color_change="changeColoringMode"
       @setDateFilter="setDateFilter"
       :dates="localFilteredDates"
+      :vis_id="type"
     />
     <ZoomBtns class="zoom-btns" @zoomIn="zoomIn" @zoomOut="zoomOut" />
     <Spinner :show="showSpinner" offset="0.5rem" />
@@ -65,6 +67,7 @@ export default {
       tooltipPosition: { top: 0, left: 0 },
       tooltipData: {},
       emails: this.filteredEmails,
+      coloringMode: "byEmails",
     };
   },
   computed: {
@@ -85,6 +88,12 @@ export default {
       deep: true,
       handler() {
         this.emails = this.filteredEmails;
+        this.spinnerFunctionality(this.redraw);
+      },
+    },
+    coloringMode: {
+      deep: true,
+      handler() {
         this.spinnerFunctionality(this.redraw);
       },
     },
@@ -135,7 +144,8 @@ export default {
       let newType = type.split("-")[0];
       this.visualisation = new visualisations[newType](
         "#" + this.id,
-        this.tooltipUpdate
+        this.tooltipUpdate,
+        this.getColoringMode
       );
     },
     toString(date) {
@@ -159,6 +169,7 @@ export default {
     changeVisualisation(type) {
       let myFunction = () => {
         this.type = type;
+        this.changeColoringMode("byEmails");
         this.visualisation.resetVisualisation();
         this.createVisualisation(this.type);
         this.redraw();
@@ -262,6 +273,12 @@ export default {
     },
     zoomOut() {
       this.zoom.scaleBy(this.svg.transition().duration(250), 1 / 1.6);
+    },
+    getColoringMode() {
+      return this.coloringMode;
+    },
+    changeColoringMode(mode) {
+      this.coloringMode = mode;
     },
   },
 };

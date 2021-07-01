@@ -28,20 +28,24 @@ export class NodeLink extends Visualisation {
 
     store.dispatch("dark_mode/onChange", this.updateColors.bind(this));
   }
-
   updateColors(theme) {
     const svg = this._getSVG();
 
     if (theme === "light") {
       this.colors.nodeOutline = "#fff";
       svg.selectAll(".nl-node").attr("stroke", "#fff");
+      svg.selectAll(".nl-node").attr("default-stroke", "#fff");
+      svg.selectAll(".nl-node").attr("select-stroke", "#A585C1");
     } else {
       this.colors.nodeOutline = "#1A1A1A";
       svg.selectAll(".nl-node").attr("stroke", "#1A1A1A");
+      svg.selectAll(".nl-node").attr("default-stroke", "#1A1A1A");
+      svg.selectAll(".nl-node").attr("select-stroke", "#e6ab45");
     }
   }
 
   redraw(emails, persons) {
+    this.updateVisColors(store.getters["dark_mode/theme"]);
     this.updateColors(store.getters["dark_mode/theme"]);
     this._persons = persons;
     this.resetVisualisation();
@@ -112,7 +116,8 @@ export class NodeLink extends Visualisation {
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
-      this.nodeSelectColor
+      this.nodeSelectColor,
+      "node-link"
     );
 
     // Toggle brush based on current {interactionMode}

@@ -1,3 +1,4 @@
+import { getSampleVariance } from "../../../logic/componentsLogic";
 import {
   passesDateFilter,
   passesJobTitleFilter,
@@ -68,5 +69,14 @@ export default {
   },
   maxDate(state) {
     return state.maxDate;
+  },
+  maxEmailsDay(state) {
+    return state.maxEmailsDay_Filtered;
+  },
+  meanSentiment(state) {
+    return state.meanSentiment_Filtered;
+  },
+  sampleVarianceSentiment(state) {
+    return state.sampleVarianceSentiment_Filtered;
   },
 };

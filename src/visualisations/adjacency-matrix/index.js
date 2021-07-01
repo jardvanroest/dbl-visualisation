@@ -16,6 +16,8 @@ export class AdjacencyMatrix extends Visualisation {
   }
 
   redraw(emails, personsRows, personsCols) {
+    this.updateVisColors(store.getters["dark_mode/theme"]);
+    store.dispatch("dataset/updateCalculationVariables", emails);
     this.emails = emails;
     this.personsRows = personsRows;
     this.personsCols = personsCols;
@@ -132,7 +134,8 @@ export class AdjacencyMatrix extends Visualisation {
       this.width,
       this.height,
       null,
-      this.edgeSelectColor
+      this.edgeSelectColor,
+      "adj-mat"
     );
 
     // Toggle brush based on current {interactionMode}
@@ -258,11 +261,11 @@ export class AdjacencyMatrix extends Visualisation {
     };
   }
   ___styleTop(layerY) {
-    if (layerY > 100) return layerY - 90;
+    if (layerY > 100) return layerY - 100;
     return layerY + 30;
   }
   ___styleLeft(layerX) {
-    if (layerX > 190) return layerX - 190;
+    if (layerX > 230) return layerX - 170;
     return layerX + 20;
   }
 

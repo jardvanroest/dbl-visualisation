@@ -1,4 +1,6 @@
 import * as d3 from "d3";
+import store from "@/store";
+import * as logic from "../../logic/componentsLogic";
 
 export class CalendarYear {
   constructor(data) {
@@ -6,15 +8,27 @@ export class CalendarYear {
   }
 
   _getData() {
+    this._updateMaxEmailsDay();
     return this.parsedData;
   }
 
   _parseData(set) {
+    store.dispatch("dataset/updateCalculationVariables", set);
     let group = d3.groups(set, (d) => d.date.getUTCFullYear()).sort();
     for (let i = 0; i < group.length; i++) {
       group[i][1] = this.__parseDates(group[i][1]);
     }
     return group;
+  }
+  _updateMaxEmailsDay() {
+    let max = 0;
+    for (let i = 0; i < this.parsedData.length; i++) {
+      for (let j = 0; j < this.parsedData[i][1].length; j++) {
+        if (this.parsedData[i][1][j].weight > max)
+          max = this.parsedData[i][1][j].weight;
+      }
+    }
+    store.dispatch("dataset/updateMaxEmailsDay", max);
   }
 
   __parseDates(arrDates) {
@@ -54,16 +68,15 @@ class CellDate {
     this.emails = emails;
   }
   get opacity() {
-    return this.weight / 7;
+    return this.weight / (store.getters["dataset/maxEmailsDay"] / 20);
   }
-  get fillColor() {
-    // dif type of vis
-    // return (
-    //   "rgb(" + number * 1.5 + ", " + number * 0.8 + "," + number * 0.5 + ")"
-    // );
+  get opacity_BySentiment() {
+    return this.weight / (store.getters["dataset/maxEmailsDay"] / 20);
+  }
+  get fillColor_ByEmails() {
     return (
       "rgb(" +
-      this.weight / 0.5 +
+      this.weight * (255 / store.getters["dataset/maxEmailsDay"]) +
       ", " +
       /*this.weight / 1.4 */ 98 +
       "," +
@@ -71,13 +84,29 @@ class CellDate {
       ")"
     );
   }
+  get fillColor_BySentiment() {
+    let zScore = this.calculateZscore();
+    let B = 130; // Blue
+    let R = 127 - Math.round(3000 * zScore); // RED
+    let G = 127 + Math.round(3000 * zScore); // GREEN
+    return "rgb(" + this.checkVal(R) + ", " + this.checkVal(G) + "," + B + ")";
+  }
   get avgSentiment() {
-    // fix -- another branch
-    return (
-      this.emails.reduce((a, b) => a.sentiment + b.sentiment, 0) / this.weight
-    );
+    return logic.getAvg(this.emails, "sentiment");
   }
   get weight() {
     return this.emails.length;
+  }
+
+  calculateZscore() {
+    return (
+      logic.getAvg(this.emails, "sentiment") / //store.getters["dataset/meanSentiment"]) /
+      store.getters["dataset/sampleVarianceSentiment"]
+    );
+  }
+  checkVal(val) {
+    if (val < 0) return 0;
+    if (val > 255) return 255;
+    return val;
   }
 }

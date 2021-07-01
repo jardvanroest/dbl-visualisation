@@ -18,6 +18,9 @@ export default {
       datasetID: "default",
       minDate: undefined,
       maxDate: undefined,
+      maxEmailsDay_Filtered: undefined,
+      meanSentiment_Filtered: undefined,
+      sampleVarianceSentiment_Filtered: undefined,
     };
   },
   getters,

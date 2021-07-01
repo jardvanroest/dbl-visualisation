@@ -8,7 +8,7 @@
       left: `${styleLeft}px`,
     }"
   >
-    <div class="txt" v-for="(item, index) in data" :key="index">
+    <div v-for="(item, index) in data" :key="index">
       <p>
         <b class="index">{{ index }}: </b> {{ item }}
       </p>
@@ -50,7 +50,6 @@ export default {
 .index {
   color: #4ee6e0;
 }
-
 @keyframes fadeIn {
   0% {
     opacity: 0;
