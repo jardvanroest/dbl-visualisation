@@ -170,6 +170,7 @@ export default {
     changeVisualisation(type) {
       let myFunction = () => {
         this.type = type;
+        this.changeColoringMode("byEmails");
         this.visualisation.resetVisualisation();
         this.createVisualisation(this.type);
         this.redraw();
