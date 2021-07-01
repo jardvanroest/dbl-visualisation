@@ -6,6 +6,7 @@
       @color_change="changeColoringMode"
       @setDateFilter="setDateFilter"
       :dates="localFilteredDates"
+      :vis_id="type"
     />
     <ZoomBtns class="zoom-btns" @zoomIn="zoomIn" @zoomOut="zoomOut" />
     <Spinner :show="showSpinner" offset="0.5rem" />

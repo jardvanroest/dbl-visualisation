@@ -2,24 +2,27 @@
   <div class="vis-sett-cont">
     <Btn @click="toggleMenu" text="Local Settings" class="btn-local-sett" />
     <div class="vis-settings" :style="{ display: display }">
-      <Setting v-if="vis_id == '' || vis_id == '' || true" name="Color by">
-        <ColoringByParameter @updateColor="updateColoringMode" />
-      </Setting>
-      <Section title="Local Filters" fields="none" />
-      <Btn class="enable-btn" :text="enableBtn" @click="toggleDateFilter" />
-      <Btn
-        class="apply-filters"
-        :style="{ display: displayDateFilter }"
-        text="Apply filters"
-        @click="applyFilters"
-      />
-      <Setting name="By date" :style="{ display: displayDateFilter }">
-        <LocalDateFilter
-          ref="dateFilter"
-          :dates="dates"
-          @setFilteredDates="setFilteredDates"
+      <div v-if="vis_id == 'CalendarVisualisation'" class="coloring-mode">
+        <Section title="Color by" fields="none" />
+        <ColoringByParameter @updateColor="updateColoringMode" class="col" />
+      </div>
+      <div class="local-filters">
+        <Section title="Local Filters" fields="none" />
+        <Btn class="enable-btn" :text="enableBtn" @click="toggleDateFilter" />
+        <Btn
+          class="apply-filters"
+          :style="{ display: displayDateFilter }"
+          text="Apply filters"
+          @click="applyFilters"
         />
-      </Setting>
+        <Setting name="By date" :style="{ display: displayDateFilter }">
+          <LocalDateFilter
+            ref="dateFilter"
+            :dates="dates"
+            @setFilteredDates="setFilteredDates"
+          />
+        </Setting>
+      </div>
     </div>
   </div>
 </template>
@@ -98,6 +101,7 @@ export default {
   width: var(--stt-width);
   padding: var(--vs-padd);
   padding-right: 0;
+  padding-top: 0;
 
   background-color: var(--background-color);
   border: var(--settings-border);
@@ -105,11 +109,19 @@ export default {
   font-size: 1rem;
 }
 
+.coloring-mode .col {
+  margin: 0.5rem;
+}
+
+.local-filters {
+  position: relative;
+}
+
 .apply-filters {
   margin-left: 1em;
   position: absolute;
   right: var(--vs-padd);
-  top: calc(var(--vs-padd) - 2px);
+  top: -1em;
   background-color: var(--background-color);
 }
 

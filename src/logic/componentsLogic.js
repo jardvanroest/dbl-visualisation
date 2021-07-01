@@ -41,9 +41,17 @@ export function _RGBToHex(rgb) {
   // Turn "rgb(r,g,b)" into [r,g,b]
   rgb = rgb.substr(4).split(")")[0].split(sep);
 
-  let r = Math.min(+rgb[0], 255).toString(16),
-    g = Math.min(+rgb[1], 255).toString(16),
-    b = Math.min(+rgb[2], 255).toString(16);
+  let r = Math.min(+Math.round(rgb[0]), 255),
+    g = Math.min(+Math.round(rgb[1]), 255),
+    b = Math.min(+Math.round(rgb[2]), 255);
+
+  if (r < 0) r = 0;
+  if (g < 0) g = 0;
+  if (b < 0) b = 0;
+
+  r = r.toString(16);
+  g = g.toString(16);
+  b = b.toString(16);
 
   if (r.length == 1) r = "0" + r;
   if (g.length == 1) g = "0" + g;

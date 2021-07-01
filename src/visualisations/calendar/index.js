@@ -240,9 +240,10 @@ export class CalendarVisualisation extends Visualisation {
     delete inspectorData.emails.Date;
 
     inspectorData.additional_information = {
-      color: logic._RGBToHex(cellData.fillColor_ByEmails),
+      color: logic._RGBToHex(this.___getColoringMode(cellData)),
       opacity: Math.min(cellData.opacity.toPrecision(3), 1),
     };
+    console.log(logic._RGBToHex(this.___getColoringMode(cellData)));
 
     store.dispatch("dataset/changeInspectorData", inspectorData);
   }
