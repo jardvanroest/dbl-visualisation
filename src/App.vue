@@ -49,6 +49,7 @@ export default {
 
   --hdr-size: 3.125rem;
   --stt-width: 300px;
+  --bg-spinner: rgba(255, 255, 255, 0.5);
 }
 
 [data-theme="dark"] {
@@ -59,11 +60,16 @@ export default {
   --link-color: #0000ff;
   --error-color: #ff0000;
   --background-color: #1d1d1d;
-  --background-color-2: #000000;
+  --background-color-2: #111111;
   --border-color: #292929;
   --settings-border: var(--brdr-size) solid var(--border-color);
   --box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  --bg-spinner: rgba(255, 255, 255, 0.0675);
+
+  input {
+    filter: invert(1);
+  }
 }
 
 #app {
@@ -82,6 +88,7 @@ select {
 /* Scroll bar styling */
 ::-webkit-scrollbar {
   width: 12px;
+  background-color: var(--background-color);
 }
 
 ::-webkit-scrollbar-track {
