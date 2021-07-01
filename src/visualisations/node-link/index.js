@@ -25,9 +25,24 @@ export class NodeLink extends Visualisation {
       edgeOpacity: 0.6,
       sentimentThreshold: 0.01,
     };
+
+    store.dispatch("dark_mode/onChange", this.updateColors.bind(this));
+  }
+
+  updateColors(theme) {
+    const svg = this._getSVG();
+
+    if (theme === "light") {
+      this.colors.nodeOutline = "#fff";
+      svg.selectAll(".nl-node").attr("stroke", "#fff");
+    } else {
+      this.colors.nodeOutline = "#1A1A1A";
+      svg.selectAll(".nl-node").attr("stroke", "#1A1A1A");
+    }
   }
 
   redraw(emails, persons) {
+    this.updateColors(store.getters["dark_mode/theme"]);
     this._persons = persons;
     this.resetVisualisation();
     this._generateVis(emails);
@@ -161,6 +176,7 @@ export class NodeLink extends Visualisation {
       .attr("stroke-width", this.options.nodeOutlineSize)
       .attr("r", this.options.nodeRadius)
       .attr("fill", this.colors.nodeBody)
+      .classed("nl-node", true)
       .call(this._handleMouseDragOnNode(simulation)) // Append listener for drag events
       .on("click", this.nodeClick.bind(this))
       .on("mousemove", (e, d) => {
