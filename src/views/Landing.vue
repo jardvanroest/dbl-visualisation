@@ -48,9 +48,6 @@ export default {
   computed: {
     ...mapGetters("dark_mode", ["theme"]),
   },
-  mounted() {
-    console.log(this.theme);
-  },
 };
 </script>
 

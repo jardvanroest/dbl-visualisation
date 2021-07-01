@@ -43,6 +43,17 @@ export class CalendarVisualisation extends Visualisation {
       "November",
       "December",
     ];
+
+    store.dispatch("dark_mode/onChange", this.updateColors.bind(this));
+    this.updateColors(store.getters["dark_mode/theme"]);
+  }
+
+  updateColors(theme) {
+    if (theme === "light") {
+      console.log("Switching to light colors");
+    } else {
+      console.log("Switching to dark colors");
+    }
   }
 
   redraw(data) {
