@@ -1,5 +1,6 @@
 <template>
   <div class="landing">
+    <Spinner :show="showSpinner" offset="0.5rem" style="z-index: 10" />
     <div class="home">
       <img
         v-if="theme === 'dark'"
@@ -9,8 +10,11 @@
       <img v-else src="@/assets/icons/logo.svg" alt="logo" />
       <h1 class="title">MailVis</h1>
       <p class="introduction">A tool to analyze e-mail traffic.</p>
-      <ImportDataSetBtn />
-      <ViewExampleDataSetBtn />
+      <ImportDataSetBtn @newFile="spinnerShow" />
+      <ViewExampleDataSetBtn @click="spinnerShow" />
+    </div>
+    <div @click="redirectToInfo" class="info">
+      <img src="@/assets/icons/info.svg" alt="information" />
     </div>
   </div>
 </template>
@@ -19,12 +23,27 @@
 import ImportDataSetBtn from "@/components/buttons/ImportDataSetBtn.vue";
 import ViewExampleDataSetBtn from "@/components/buttons/ViewExampleDataSetBtn.vue";
 import { mapGetters } from "vuex";
+import Spinner from "@/components/Spinner.vue";
 
 export default {
   name: "Landing",
   components: {
     ImportDataSetBtn,
     ViewExampleDataSetBtn,
+    Spinner,
+  },
+  data() {
+    return {
+      showSpinner: false,
+    };
+  },
+  methods: {
+    redirectToInfo() {
+      this.$router.push({ path: "/info" });
+    },
+    spinnerShow() {
+      this.showSpinner = true;
+    },
   },
   computed: {
     ...mapGetters("dark_mode", ["theme"]),
@@ -54,6 +73,15 @@ export default {
     background-image: url("../assets/icons/tileable-hex-dark.png");
     background-blend-mode: normal;
   }
+}
+
+.info img {
+  width: 5%;
+  height: 5%;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
 }
 
 .home {

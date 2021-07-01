@@ -7,7 +7,9 @@ export default {
   state() {
     return {
       selectedNodes: [],
+      selectedEdges: [],
       interactionMode: "inspect",
+      inspectedElement: undefined,
     };
   },
   getters,

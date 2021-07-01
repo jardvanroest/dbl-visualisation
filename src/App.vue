@@ -104,4 +104,8 @@ header,
   -o-user-select: none;
   user-select: none;
 }
+
+html {
+  scroll-behavior: smooth;
+}
 </style>

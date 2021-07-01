@@ -1,16 +1,15 @@
-import store from "@/store";
-
 export class Matrix {
-  constructor(persons) {
+  constructor(persons, colors, emails) {
     this.persons = persons;
-    this.matrixData = this._createMatrixData();
+    this.colors = colors;
+    this.matrixData = this._createMatrixData(emails);
   }
 
   getMatrixData() {
     return this.matrixData;
   }
 
-  _createMatrixData() {
+  _createMatrixData(emails) {
     let matrix = {};
 
     this.persons.forEach((recipient) => {
@@ -19,11 +18,12 @@ export class Matrix {
 
       this.persons.forEach((sender) => {
         matrix[recipient.id][sender.id] = this._createCell(sender, recipient);
-        matrix[recipient.id][sender.id].addEmails(
-          sender.sendEmails,
-          recipient.id
-        );
       });
+    });
+
+    emails.forEach((email) => {
+      let cell = matrix[email.toId][email.fromId];
+      cell.addEmail(email);
     });
 
     matrix = this._convertToArrayOfArrays(matrix);
@@ -52,36 +52,23 @@ class Cell {
     this.sender = sender;
     this.recipient = recipient;
     this._emails = [];
+
+    this.x = 0;
+    this.y = 0;
   }
 
-  addEmails(emails, recipientId) {
-    emails.forEach((email) => {
-      if (email.toId === recipientId) this._addEmail(email);
-    });
-  }
-
-  _addEmail(email) {
+  addEmail(email) {
     this._emails.push(email);
   }
 
-  _isFiltered(person) {
-    const filteredJobTitles = store.getters["dataset/filteredJobTitles"];
-    let isFilteredByJobTitle = filteredJobTitles.includes(person.jobTitle);
-    let filtered = isFilteredByJobTitle || person.isSelectedInEmailFilter;
-
-    return filtered;
+  set coords({ x, y }) {
+    this.x = x;
+    this.y = y;
   }
 
   get fillColor() {
-    if (
-      this._isFiltered(this.sender) ||
-      this._isFiltered(this.recipient) ||
-      (!store.getters["dataset/thereAreAddressesSelectedInTheEmailFilter"] &&
-        store.getters["dataset/filteredJobTitles"].length <= 0)
-    ) {
-      if (this._emails.length !== 0) {
-        return "#df848f";
-      }
+    if (this._emails.length !== 0) {
+      return "#df848f";
     }
     return "#b8e0f6";
   }
