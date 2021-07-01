@@ -1,5 +1,6 @@
 <template>
   <div class="visualisation">
+    <svg class="vis-svg" :id="id"></svg>
     <VisualisationSettings
       class="vis-sett-cont"
       @apply="changeDates"
@@ -25,7 +26,6 @@
       :pos="tooltipPosition"
       @tooltipUpdate="tooltipUpdate"
     />
-    <svg class="vis-svg" :id="id"></svg>
   </div>
 </template>
 
@@ -316,5 +316,13 @@ export default {
   background-size: 6%;
   background-color: rgb(235, 235, 235);
   background-blend-mode: screen;
+}
+
+[data-theme="dark"] {
+  .vis-svg {
+    background-image: url("../assets/icons/tileable-hex-dark.png");
+    background-blend-mode: normal;
+    filter: saturate(200%);
+  }
 }
 </style>

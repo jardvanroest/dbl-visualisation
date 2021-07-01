@@ -2,11 +2,22 @@
   <header>
     <div class="container-header">
       <div class="logo" @click="redirectToHome()">
-        <img src="@/assets/icons/logo.svg" alt="logo" />
+        <img
+          v-if="theme === 'dark'"
+          src="@/assets/icons/logo-dark.svg"
+          alt="logo"
+        />
+        <img v-else src="@/assets/icons/logo.svg" alt="logo" />
         <span>MailVis</span>
       </div>
       <div class="nav_icons">
         <ul>
+          <li @click="switchColorTheme">
+            <img
+              src="@/assets/icons/color-theme.svg"
+              alt="switch color theme"
+            />
+          </li>
           <li @click="rotateSettings($event)">
             <img src="@/assets/icons/settings.svg" alt="settings" />
           </li>
@@ -23,6 +34,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Visualisation",
   components: {},
@@ -30,6 +43,9 @@ export default {
     return {
       rotSett: false,
     };
+  },
+  computed: {
+    ...mapGetters("dark_mode", ["theme"]),
   },
   methods: {
     redirectToHome() {
@@ -53,11 +69,12 @@ export default {
       // Emit corresponding event
       this.$emit("toggle-settings");
     },
+    ...mapActions("dark_mode", ["switchColorTheme"]),
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   transition: all ease-in-out 200ms;
 }
@@ -131,6 +148,12 @@ export default {
 
 .nav_icons li:hover img {
   filter: invert(1);
+}
+
+[data-theme="dark"] {
+  .nav_icons li img {
+    filter: invert(1);
+  }
 }
 
 .nav_icons li img {

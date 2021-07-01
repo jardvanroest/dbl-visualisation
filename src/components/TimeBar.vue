@@ -99,7 +99,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .total {
   position: absolute;
   bottom: 0;
@@ -113,6 +113,12 @@ export default {
   bottom: 0;
   border-bottom: 0.4em solid #c9c9c9af;
   border-radius: var(--border-rad);
+}
+
+[data-theme="dark"] {
+  .global {
+    border-bottom-color: #353535af;
+  }
 }
 
 .local {

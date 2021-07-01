@@ -514,7 +514,7 @@ p {
   right: 0;
   width: calc((100vw - var(--width-ic) - 4rem) / 2);
   padding: 0.25rem;
-  background: white;
+  background: var(--background-color);
   border-left: var(--settings-border);
   border-bottom: var(--settings-border);
   border-bottom-left-radius: var(--border-rad);
@@ -528,7 +528,6 @@ p {
 
 .all-features {
   list-style-type: "\2b21  ";
-
   font-size: 1rem;
 
   li {

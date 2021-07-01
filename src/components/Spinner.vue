@@ -16,9 +16,11 @@ export default {
   --offset: 0;
   position: absolute;
   display: flex;
-  width: calc(100% - var(--offset));
-  height: calc(100% - var(--offset));
-  background-color: rgba(255, 255, 255, 0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-spinner);
 
   justify-content: center;
 }
