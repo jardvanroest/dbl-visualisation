@@ -2,7 +2,12 @@
   <div class="landing">
     <Spinner :show="showSpinner" offset="0.5rem" style="z-index: 10" />
     <div class="home">
-      <img src="@/assets/icons/logo.svg" alt="logo" />
+      <img
+        v-if="theme === 'dark'"
+        src="@/assets/icons/logo-dark.svg"
+        alt="logo"
+      />
+      <img v-else src="@/assets/icons/logo.svg" alt="logo" />
       <h1 class="title">MailVis</h1>
       <p class="introduction">A tool to analyze e-mail traffic.</p>
       <ImportDataSetBtn @newFile="spinnerShow" />
@@ -17,6 +22,7 @@
 <script>
 import ImportDataSetBtn from "@/components/buttons/ImportDataSetBtn.vue";
 import ViewExampleDataSetBtn from "@/components/buttons/ViewExampleDataSetBtn.vue";
+import { mapGetters } from "vuex";
 import Spinner from "@/components/Spinner.vue";
 
 export default {
@@ -39,6 +45,9 @@ export default {
       this.showSpinner = true;
     },
   },
+  computed: {
+    ...mapGetters("dark_mode", ["theme"]),
+  },
 };
 </script>
 
@@ -54,6 +63,17 @@ export default {
   background-blend-mode: screen;
 
   animation: animatedBackground 50s linear infinite;
+}
+
+[data-theme="dark"] {
+  .landing {
+    background-image: url("../assets/icons/tileable-hex-dark.png");
+    background-blend-mode: normal;
+  }
+
+  .info img {
+    filter: invert(0.6);
+  }
 }
 
 .info img {

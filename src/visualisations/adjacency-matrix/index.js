@@ -3,8 +3,6 @@ import { Matrix } from "@/visualisations/adjacency-matrix/matrix.js";
 import { RectBrush } from "@/visualisations/brushes/rect-brush.js";
 import * as d3 from "d3";
 import store from "@/store";
-import { hydrate } from "vue";
-import { addEmitHelper } from "typescript";
 
 export class AdjacencyMatrix extends Visualisation {
   constructor(HTMLSelector, tooltipsUpdate) {
