@@ -323,7 +323,7 @@ export default {
     background-image: url("../assets/icons/tileable-hex-dark.png");
     background-blend-mode: normal;
     filter: saturate(200%);
-    filter: opacity(90%);
+    filter: opacity(95%);
   }
 }
 </style>
