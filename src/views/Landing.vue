@@ -70,6 +70,10 @@ export default {
     background-image: url("../assets/icons/tileable-hex-dark.png");
     background-blend-mode: normal;
   }
+
+  .info img {
+    filter: invert(0.6);
+  }
 }
 
 .info img {

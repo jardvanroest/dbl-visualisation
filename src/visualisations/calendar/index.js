@@ -59,10 +59,12 @@ export class CalendarVisualisation extends Visualisation {
 
   switchToLightTheme(svg) {
     svg.selectAll("text").attr("fill", "#000000");
+    svg.selectAll(".month-line").attr("stroke", "#fff");
   }
 
   switchToDarkTheme(svg) {
     svg.selectAll("text").attr("fill", "#ffffff");
+    svg.selectAll(".month-line").attr("stroke", "#1A1A1A");
   }
 
   redraw(data) {
@@ -131,7 +133,8 @@ export class CalendarVisualisation extends Visualisation {
       .attr("fill", "none")
       .attr("stroke", "#fff")
       .attr("stroke-width", 2.5)
-      .attr("d", (t) => this.___mapMonths(t));
+      .attr("d", (t) => this.___mapMonths(t))
+      .classed("month-line", true);
     month
       .append("text")
       .attr("font-size", this.fontSize)
