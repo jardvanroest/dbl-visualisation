@@ -1,7 +1,6 @@
 import * as d3 from "d3";
 import store from "@/store";
 import * as logic from "../../logic/componentsLogic";
-import getters from "../../store/modules/coloring/getters";
 
 export class CalendarYear {
   constructor(data) {
@@ -88,10 +87,9 @@ class CellDate {
   get fillColor_BySentiment() {
     let zScore = this.calculateZscore();
     let B = 130; // Blue
-    let R = 127 - Math.round(3000 * zScore);
-    let G = 127 + Math.round(3000 * zScore);
-    console.log("rgb(" + R + ", " + G + "," + B + ")");
-    return "rgb(" + R + ", " + G + "," + B + ")";
+    let R = 127 - Math.round(3000 * zScore); // RED
+    let G = 127 + Math.round(3000 * zScore); // GREEN
+    return "rgb(" + this.checkVal(R) + ", " + this.checkVal(G) + "," + B + ")";
   }
   get avgSentiment() {
     return logic.getAvg(this.emails, "sentiment");
@@ -105,5 +103,10 @@ class CellDate {
       logic.getAvg(this.emails, "sentiment") / //store.getters["dataset/meanSentiment"]) /
       store.getters["dataset/sampleVarianceSentiment"]
     );
+  }
+  checkVal(val) {
+    if (val < 0) return 0;
+    if (val > 255) return 255;
+    return val;
   }
 }

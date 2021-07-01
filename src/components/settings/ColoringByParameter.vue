@@ -11,7 +11,6 @@
 
 <script>
 import DropDown from "@/components/DropDown.vue";
-import { mapActions } from "vuex";
 
 export default {
   name: "ColoringByParameter",
@@ -27,12 +26,9 @@ export default {
     };
   },
   methods: {
-    //...mapActions("coloring", ["updateColoringMode"]),
     changeColoringMode(value) {
-      console.log(4);
       this.$emit("updateColor", value);
     },
-    //updateColoringMode(value)
   },
 };
 </script>

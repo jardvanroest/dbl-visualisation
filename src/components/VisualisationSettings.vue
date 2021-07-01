@@ -84,7 +84,6 @@ export default {
       this.$emit("setDateFilter", this.doDateFilter);
     },
     updateColoringMode(val) {
-      console.log(3);
       this.$emit("color_change", val);
     },
   },

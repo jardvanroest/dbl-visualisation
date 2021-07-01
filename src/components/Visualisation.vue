@@ -78,7 +78,6 @@ export default {
       "getSortedMatrixData",
     ]),
     ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
-    //...mapGetters("coloring", ["coloringMode"]),
     ...mapGetters("brush_and_link", [
       "selectedNodes",
       "selectedEdges",
@@ -276,11 +275,9 @@ export default {
       this.zoom.scaleBy(this.svg.transition().duration(250), 1 / 1.6);
     },
     getColoringMode() {
-      console.log(1);
       return this.coloringMode;
     },
     changeColoringMode(mode) {
-      console.log(2);
       this.coloringMode = mode;
     },
   },

@@ -169,7 +169,9 @@ export class CalendarVisualisation extends Visualisation {
       .attr("y", (d) => this.___getYposCellDate(d))
       // coloring and opacity
       .attr("fill", (d) => this.___getColoringMode(d))
-      .attr("fill-opacity", (d) => d.opacity)
+      .attr("fill-opacity", (d) =>
+        this.coloringMode === "byEmails" ? d.opacity : 1
+      )
       .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
         vm.updateInspectorData(e, d);
