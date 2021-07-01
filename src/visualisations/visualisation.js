@@ -10,7 +10,21 @@ export class Visualisation {
 
     this.nodeSelectColor = "#A585C1";
     this.edgeSelectColor = "#1D2F6F";
-    this.inspectColor = "#123456";
+    this.inspectColor = "#f799ff";
+
+    store.dispatch("dark_mode/onChange", this.updateVisColors.bind(this));
+  }
+
+  updateVisColors(theme) {
+    if (theme === "light") {
+      this.nodeSelectColor = "#A585C1";
+      this.edgeSelectColor = "#1D2F6F";
+      this.inspectColor = "#f799ff";
+    } else {
+      this.nodeSelectColor = "#e6ab45";
+      this.edgeSelectColor = "#ff00e2";
+      this.inspectColor = "#ffffff";
+    }
   }
 
   redraw() {

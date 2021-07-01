@@ -11,6 +11,7 @@ export default {
   name: "ViewExampleDataSetBtn",
   methods: {
     importExampleDataset() {
+      let a = true;
       new Promise((resolve, reject) => {
         setTimeout(() => {
           this.saveData({ data: parseString(exampleDataSet), isDefault: true });

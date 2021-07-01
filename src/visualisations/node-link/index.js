@@ -28,7 +28,6 @@ export class NodeLink extends Visualisation {
 
     store.dispatch("dark_mode/onChange", this.updateColors.bind(this));
   }
-
   updateColors(theme) {
     const svg = this._getSVG();
 
@@ -42,6 +41,7 @@ export class NodeLink extends Visualisation {
   }
 
   redraw(emails, persons) {
+    this.updateVisColors(store.getters["dark_mode/theme"]);
     this.updateColors(store.getters["dark_mode/theme"]);
     this._persons = persons;
     this.resetVisualisation();
@@ -112,7 +112,8 @@ export class NodeLink extends Visualisation {
       this.options.width,
       this.options.height,
       this.colors.nodeOutline,
-      this.nodeSelectColor
+      this.nodeSelectColor,
+      "node-link"
     );
 
     // Toggle brush based on current {interactionMode}

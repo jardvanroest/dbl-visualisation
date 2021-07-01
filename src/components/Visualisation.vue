@@ -77,7 +77,6 @@ export default {
       "persons",
       "getSortedMatrixData",
     ]),
-    ...mapGetters("brush_and_link", ["selectedNodes", "interactionMode"]),
     ...mapGetters("brush_and_link", [
       "selectedNodes",
       "selectedEdges",

@@ -69,6 +69,7 @@ export class CalendarVisualisation extends Visualisation {
   }
 
   redraw(data) {
+    this.updateVisColors(store.getters["dark_mode/theme"]);
     this.resetVisualisation();
     const calendarData = new CalendarYear(data);
     this._generateVisualisation(calendarData._getData());
