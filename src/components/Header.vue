@@ -152,7 +152,7 @@ export default {
 
 [data-theme="dark"] {
   .nav_icons li img {
-    filter: invert(1);
+    filter: invert(0.6);
   }
 }
 
