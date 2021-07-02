@@ -14,9 +14,7 @@ export default {
   mounted() {
     const storedTheme = localStorage.getItem("theme");
 
-    if (storedTheme === undefined) {
-      this.setColorTheme("light");
-    } else {
+    if (storedTheme === "light" || storedTheme === "dark") {
       this.setColorTheme(storedTheme);
     }
   },
