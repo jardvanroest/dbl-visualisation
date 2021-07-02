@@ -196,7 +196,7 @@ export class CalendarVisualisation extends Visualisation {
       // coloring and opacity
       .attr("fill", (d) => this.___getColoringMode(d))
       .attr("fill-opacity", (d) =>
-        this.coloringMode === "byEmails" ? d.opacity : 1
+        this.coloringMode() === "byEmails" ? d.opacity : 1
       )
       .attr("stroke-opacity", "1.0")
       .on("click", (e, d) => {
